@@ -39,7 +39,7 @@ export function User() {
               Allen Ponce de Leon
             </Text>
             <Text color="dimmed" size="xs">
-              allen-25sqm@gmail.com
+              Supervisor
             </Text>
           </Box>
 

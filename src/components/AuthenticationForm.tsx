@@ -12,6 +12,7 @@ import {
   Container,
   Center
 } from '@mantine/core';
+import { Logo } from '../modules/dashboard/_logo';
 
 export function AuthenticationForm(props: PaperProps<'div'>) {
   const form = useForm({
@@ -39,10 +40,14 @@ export function AuthenticationForm(props: PaperProps<'div'>) {
   return (
     <Container size="xs" px="xs" pt={90}>
       <Paper radius="md" p="xl" withBorder {...props}>
-            <Text size="lg" weight={500}>
+        <Center py="sm">
+          <Logo colorScheme="light" />
+        </Center>
+        <Center>
+          <Text size="lg" weight={500}>
               Welcome to SIMS!
-            </Text>
-
+          </Text>
+        </Center>
             <form onSubmit={form.onSubmit(() => {})}>
               <Group direction="column" grow>
 
