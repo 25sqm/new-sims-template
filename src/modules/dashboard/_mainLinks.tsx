@@ -2,16 +2,19 @@ import React from 'react';
 // import { GitPullRequest, AlertCircle, Messages, Database } from 'tabler-icons-react';
 import { Dashboard, AlertTriangle, Search, UserSearch, Backpack, FileDescription, DeviceMobile, TriangleSquareCircle} from 'tabler-icons-react';
 import { ThemeIcon, UnstyledButton, Group, Text } from '@mantine/core';
+import { Link } from 'react-router-dom';
 
 interface MainLinkProps {
     icon: React.ReactNode;
     color: string;
     label: string;
+    link: string;
 }
 
-function MainLink({ icon, color, label }: MainLinkProps) {
-    return (
-    <UnstyledButton
+function MainLink({ icon, color, label, link }: MainLinkProps) {
+  return (
+    <Link to={link} style={{ textDecoration: 'none' }}>
+      <UnstyledButton
       sx={(theme) => ({
         display: 'block',
         width: '100%',
@@ -33,18 +36,20 @@ function MainLink({ icon, color, label }: MainLinkProps) {
         <Text size="sm">{label}</Text>
       </Group>
     </UnstyledButton>
+      </Link>
+      
     );
 }
 
 const data = [
-    { icon: <Dashboard size={16} />, color: 'blue', label: 'Dashboard' },
-    { icon: <AlertTriangle size={16} />, color: 'blue', label: 'Threshold Breach Incident' },
-    { icon: <Search size={16} />, color: 'blue', label: 'Findings' },
-    { icon: <UserSearch size={16} />, color: 'blue', label: 'Real Time Monitoring' },
-    { icon: <Backpack size={16} />, color: 'blue', label: 'Service Orders' },
-    { icon: <FileDescription size={16} />, color: 'blue', label: 'Reports' },
-    { icon: <DeviceMobile size={16} />, color: 'blue', label: 'Feedback' },
-    { icon: <TriangleSquareCircle size={16} />, color: 'blue', label: 'Bait Station Monitoring' },
+    { icon: <Dashboard size={16} />, color: 'blue', label: 'Dashboard', link: '/dashboard' },
+    { icon: <AlertTriangle size={16} />, color: 'blue', label: 'Threshold Breach Incident', link: "/" },
+    { icon: <Search size={16} />, color: 'blue', label: 'Findings', link: "/" },
+    { icon: <UserSearch size={16} />, color: 'blue', label: 'Real Time Monitoring', link: "/" },
+    { icon: <Backpack size={16} />, color: 'blue', label: 'Service Orders', link: "/" },
+    { icon: <FileDescription size={16} />, color: 'blue', label: 'Reports', link: "/" },
+    { icon: <DeviceMobile size={16} />, color: 'blue', label: 'Feedback', link: "/" },
+    { icon: <TriangleSquareCircle size={16} />, color: 'blue', label: 'Bait Station Monitoring', link: "/" },
 ];
   
 export function MainLinks() {
