@@ -42,8 +42,8 @@ function MainLink({ icon, color, label, link }: MainLinkProps) {
 }
 
 const data = [
-    { icon: <Dashboard size={16} />, color: 'blue', label: 'Dashboard', link: '/dashboard' },
-    { icon: <AlertTriangle size={16} />, color: 'blue', label: 'Threshold Breach Incident', link: "/" },
+    { icon: <Dashboard size={16} />, color: 'blue', label: 'Dashboard', link: '/' },
+    { icon: <AlertTriangle size={16} />, color: 'blue', label: 'Threshold Breach Incident', link: "/threshold-breach" },
     { icon: <Search size={16} />, color: 'blue', label: 'Findings', link: "/" },
     { icon: <UserSearch size={16} />, color: 'blue', label: 'Real Time Monitoring', link: "/" },
     { icon: <Backpack size={16} />, color: 'blue', label: 'Service Orders', link: "/" },

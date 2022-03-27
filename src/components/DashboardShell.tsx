@@ -1,10 +1,15 @@
 import React, {useState} from 'react'
 import { Sun, MoonStars } from 'tabler-icons-react';
-import { AppShell, Navbar, Header, Group, ActionIcon, useMantineColorScheme, MediaQuery, Burger, useMantineTheme } from '@mantine/core';
+import { Badge, AppShell, Navbar, Header, Group, ActionIcon, useMantineColorScheme, MediaQuery, Burger, useMantineTheme } from '@mantine/core';
 import { MainLinks } from '../modules/dashboard/_mainLinks';
 import { User } from '../modules/dashboard/_user';
 import { Logo } from '../modules/dashboard/_logo';
 import DashboardContents from './DashboardContents';
+import {
+  Routes,
+  Route,
+} from "react-router-dom";
+import ThresholdBreaches from './ThresholdBreaches';
 
 const DashboardShell = () => {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
@@ -48,7 +53,12 @@ const DashboardShell = () => {
         main: { backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0] },
       })}
     >
-      <DashboardContents />
+      <Badge>Sterix Incorporated - Unit 701</Badge>
+      <Routes>
+        <Route index element={<DashboardContents />} />
+        <Route path='/threshold-breach' element={<ThresholdBreaches />} />
+      </Routes>
+      
     </AppShell>
   )
 }

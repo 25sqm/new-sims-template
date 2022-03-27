@@ -1,6 +1,6 @@
 import React from 'react'
 import { Badge, Grid , Paper, ThemeIcon, Group, ActionIcon, Text, Center } from '@mantine/core';
-import {CalendarEvent, ChevronRight, Stack2, Search } from 'tabler-icons-react'
+import {CalendarEvent, ChevronRight, Stack2, Search, AlertTriangle } from 'tabler-icons-react'
 import DataTable from '../modules/dashboard/dataTable';
 import { pestOptions, pestData } from '../modules/dashboard/dummyData/pestCountDummyData';
 import { findingsData, findingsOptions } from '../modules/dashboard/dummyData/findingsDummyData';
@@ -9,7 +9,6 @@ const DashboardContents = () => {
     
   return (
       <>
-          <Badge>Sterix Incorporated - Unit 701</Badge>
           <Grid py="md">
               <Grid.Col md={6} lg={3}>
                   <Paper shadow="md" p="md">
@@ -19,7 +18,7 @@ const DashboardContents = () => {
                           </ThemeIcon>
                           <Group grow direction='column' spacing={0}>
                               <h5 style={{ marginTop: 0, marginBottom: 5}}>March 26, 2022</h5>
-                              <Text size="sm" sx={{ marginTop: 0, marginBottom: 5 }}>Schedule of Next Visit</Text>
+                              <Text color="dimmed" size="sm" sx={{ marginTop: 0, marginBottom: 5 }}>Schedule of Next Visit</Text>
                               
                           </Group>
                           <ActionIcon sx={{marginLeft: 'auto'}} size="xl" radius="xs">
@@ -36,7 +35,7 @@ const DashboardContents = () => {
                           </ThemeIcon>
                           <Group grow direction='column' spacing={0}>
                               <h5 style={{ marginTop: 0, marginBottom: 5}}>3</h5>
-                              <Text size="sm" sx={{ marginTop: 0, marginBottom: 5 }}>S.O. for Acknowledgement</Text>
+                              <Text color="dimmed" size="sm" sx={{ marginTop: 0, marginBottom: 5 }}>S.O. for Acknowledgement</Text>
                               
                           </Group>
                           <ActionIcon sx={{marginLeft: 'auto'}} size="xl" radius="xs">
@@ -53,7 +52,7 @@ const DashboardContents = () => {
                           </ThemeIcon>
                           <Group grow direction='column' spacing={0}>
                               <h5 style={{ marginTop: 0, marginBottom: 5}}>5</h5>
-                              <Text size="sm" sx={{ marginTop: 0, marginBottom: 5 }}>Findings for Acknowledgement</Text>
+                              <Text color="dimmed" size="sm" sx={{ marginTop: 0, marginBottom: 5 }}>Findings for Acknowledgement</Text>
                               
                           </Group>
                           <ActionIcon sx={{marginLeft: 'auto'}} size="xl" radius="xs">
@@ -65,12 +64,12 @@ const DashboardContents = () => {
               <Grid.Col md={6} lg={3}>
                   <Paper shadow="md" p="md">
                   <Group>
-                      <ThemeIcon variant="light" radius="xs" size={60}>
-                        <CalendarEvent size={40}/>
+                      <ThemeIcon color="gray" variant="light" radius="xs" size={60}>
+                        <AlertTriangle size={40}/>
                           </ThemeIcon>
                           <Group grow direction='column' spacing={0}>
-                              <h5 style={{ marginTop: 0, marginBottom: 5}}>March 26, 2022</h5>
-                              <Text size="sm" sx={{ marginTop: 0, marginBottom: 5 }}>Schedule of Next Visit</Text>
+                              <h5 style={{ marginTop: 0, marginBottom: 5}}>76/76</h5>
+                              <Text color="dimmed" size="sm" sx={{ marginTop: 0, marginBottom: 5 }}>Threshold Breach</Text>
                           </Group>
                           <ActionIcon sx={{marginLeft: 'auto'}} size="xl" radius="xs">
                             <ChevronRight />

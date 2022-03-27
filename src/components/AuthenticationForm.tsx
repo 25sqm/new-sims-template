@@ -14,7 +14,13 @@ import {
 } from '@mantine/core';
 import { Logo } from '../modules/dashboard/_logo';
 
-export function AuthenticationForm(props: PaperProps<'div'>) {
+// temporary user state management 
+interface AuthFormProps {
+  user: any,
+  setUserState: any,
+}
+
+export function AuthenticationForm({ user, setUserState }: AuthFormProps) {
   const form = useForm({
     initialValues: {
       email: '',
@@ -33,13 +39,12 @@ export function AuthenticationForm(props: PaperProps<'div'>) {
   const handleAuth = () => {
     // Auth Code goes here or import from ../api
 
-    console.log('User Authenticated 🚀');
-    navigate('/dashboard');
+    setUserState('auth');
   }
 
   return (
     <Container size="xs" px="xs" pt={90}>
-      <Paper radius="md" p="xl" withBorder {...props}>
+      <Paper radius="md" p="xl" withBorder>
         <Center py="sm">
           <Logo colorScheme="light" />
         </Center>
