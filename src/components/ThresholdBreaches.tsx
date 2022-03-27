@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Paper, Group, Text, MultiSelect, Divider  } from '@mantine/core';
 import { DateRangePicker } from '@mantine/dates';
+import {TableLister} from '../modules/TableLister';
 
 const data = [
     { value: 'new', label: 'New' },
@@ -13,6 +14,92 @@ const areaData = [
     { value: 'PantryArea-Level7', label: 'Pantry Area - Level 7' },
     { value: 'TrainingRoom-Level7', label: 'Training Room - Level 7' },
 ];
+
+const tableHeadings = ['Incident ID', 'Date and Time', 'Area', 'Pest', 'Pest Count', 'Threshold'];
+
+
+const thresholdData = [
+  {
+    incidentID: 253,
+    dateTime: '2022-01-27 06:35:23',
+    area: 'Pantry Area',
+    pest: 'Ghost Ant',
+    pestCount: '6',
+    threshold: '0'
+  },
+  {
+    incidentID: 253,
+    dateTime: '2022-01-27 06:35:23',
+    area: 'Pantry Area',
+    pest: 'Ghost Ant',
+    pestCount: '6',
+    threshold: '0'
+  },
+  {
+    incidentID: 253,
+    dateTime: '2022-01-27 06:35:23',
+    area: 'Pantry Area',
+    pest: 'Ghost Ant',
+    pestCount: '6',
+    threshold: '0'
+  },
+  {
+    incidentID: 253,
+    dateTime: '2022-01-27 06:35:23',
+    area: 'Pantry Area',
+    pest: 'Ghost Ant',
+    pestCount: '6',
+    threshold: '0'
+  },
+  {
+    incidentID: 253,
+    dateTime: '2022-01-27 06:35:23',
+    area: 'Pantry Area',
+    pest: 'Ghost Ant',
+    pestCount: '6',
+    threshold: '0'
+  },
+  {
+    incidentID: 253,
+    dateTime: '2022-01-27 06:35:23',
+    area: 'Pantry Area',
+    pest: 'Ghost Ant',
+    pestCount: '6',
+    threshold: '0'
+  },
+  {
+    incidentID: 253,
+    dateTime: '2022-01-27 06:35:23',
+    area: 'Pantry Area',
+    pest: 'Ghost Ant',
+    pestCount: '6',
+    threshold: '0'
+  },
+  {
+    incidentID: 253,
+    dateTime: '2022-01-27 06:35:23',
+    area: 'Pantry Area',
+    pest: 'Ghost Ant',
+    pestCount: '6',
+    threshold: '0'
+  },
+  {
+    incidentID: 253,
+    dateTime: '2022-01-27 06:35:23',
+    area: 'Pantry Area',
+    pest: 'Ghost Ant',
+    pestCount: '6',
+    threshold: '0'
+  },
+  {
+    incidentID: 253,
+    dateTime: '2022-01-27 06:35:23',
+    area: 'Pantry Area',
+    pest: 'Ghost Ant',
+    pestCount: '6',
+    threshold: '0'
+  },
+]
 
 const ThresholdBreaches = () => {
     const [value, setValue] = useState<[Date | null, Date | null]>();
@@ -35,7 +122,9 @@ const ThresholdBreaches = () => {
                     data={areaData}
                     placeholder="Area"
                   />
-            </Group>
+        </Group>
+        
+          <TableLister tableHeadings={tableHeadings} listData={thresholdData} />
           </Paper>
       </>
   )
