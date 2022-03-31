@@ -10,6 +10,7 @@ import {
   Route,
 } from "react-router-dom";
 import ThresholdBreaches from './ThresholdBreaches';
+import Findings from './Findings';
 
 const DashboardShell = () => {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
@@ -57,6 +58,8 @@ const DashboardShell = () => {
       <Routes>
         <Route index element={<DashboardContents />} />
         <Route path='/threshold-breach' element={<ThresholdBreaches />} />
+        
+        <Route path='/findings' element={<Findings />} />
       </Routes>
       
     </AppShell>
