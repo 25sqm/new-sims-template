@@ -1,8 +1,7 @@
 import React, {useEffect} from 'react'
 
 import {ChevronRight, AlertTriangle, ArrowUpCircle, ArrowDownCircle, FileDescription } from 'tabler-icons-react'
-import { Paper, Text, Divider, Grid, Group, ThemeIcon, ActionIcon, Tab } from '@mantine/core';
-import TableLister from '../modules/TableLister';
+import { Paper, Text, Grid, Group, ThemeIcon, ActionIcon } from '@mantine/core';
 import FindingsTabView from '../modules/FindingsTabView';
 
 
@@ -34,6 +33,70 @@ const dummyData = [
             }, {
             area: 'Lobby', 
             areaFindings: [{
+                serviceOrder: '1035',
+                refNumber: '693',
+                findings: 'DOORS, WINDOWS, LOUVERS, AIR AND PLASTIC CURTAIN - Chipped off paints in door',
+                proposed: 'Repair chipped off paint',
+                actionTaken: '',
+                personInCharge: 'Engineering',
+                date: '2022-02-26',
+            }, {
+                serviceOrder: '1035',
+                refNumber: '693',
+                findings: 'DOORS, WINDOWS, LOUVERS, AIR AND PLASTIC CURTAIN - Chipped off paints in door',
+                proposed: 'Repair chipped off paint',
+                actionTaken: '',
+                personInCharge: 'Engineering',
+                date: '2022-02-26',
+            }, {
+                serviceOrder: '1035',
+                refNumber: '693',
+                findings: 'DOORS, WINDOWS, LOUVERS, AIR AND PLASTIC CURTAIN - Chipped off paints in door',
+                proposed: 'Repair chipped off paint',
+                actionTaken: '',
+                personInCharge: 'Engineering',
+                date: '2022-02-26',
+            }, {
+                serviceOrder: '1035',
+                refNumber: '693',
+                findings: 'DOORS, WINDOWS, LOUVERS, AIR AND PLASTIC CURTAIN - Chipped off paints in door',
+                proposed: 'Repair chipped off paint',
+                actionTaken: '',
+                personInCharge: 'Engineering',
+                date: '2022-02-26',
+            }, {
+                serviceOrder: '1035',
+                refNumber: '693',
+                findings: 'DOORS, WINDOWS, LOUVERS, AIR AND PLASTIC CURTAIN - Chipped off paints in door',
+                proposed: 'Repair chipped off paint',
+                actionTaken: '',
+                personInCharge: 'Engineering',
+                date: '2022-02-26',
+            }, {
+                serviceOrder: '1035',
+                refNumber: '693',
+                findings: 'DOORS, WINDOWS, LOUVERS, AIR AND PLASTIC CURTAIN - Chipped off paints in door',
+                proposed: 'Repair chipped off paint',
+                actionTaken: '',
+                personInCharge: 'Engineering',
+                date: '2022-02-26',
+            }, {
+                serviceOrder: '1035',
+                refNumber: '693',
+                findings: 'DOORS, WINDOWS, LOUVERS, AIR AND PLASTIC CURTAIN - Chipped off paints in door',
+                proposed: 'Repair chipped off paint',
+                actionTaken: '',
+                personInCharge: 'Engineering',
+                date: '2022-02-26',
+            }, {
+                serviceOrder: '1035',
+                refNumber: '693',
+                findings: 'DOORS, WINDOWS, LOUVERS, AIR AND PLASTIC CURTAIN - Chipped off paints in door',
+                proposed: 'Repair chipped off paint',
+                actionTaken: '',
+                personInCharge: 'Engineering',
+                date: '2022-02-26',
+            }, {
                 serviceOrder: '1035',
                 refNumber: '693',
                 findings: 'DOORS, WINDOWS, LOUVERS, AIR AND PLASTIC CURTAIN - Chipped off paints in door',
@@ -240,7 +303,7 @@ const Findings = () => {
     }, [])
   return (
     <>
-          <Paper shadow="md" p="sm" my="md" sx={{ height: "83vh" }}>
+          <Paper shadow="md" p="sm" my="md" >
           <Text size="xl">Findings</Text>
               <Grid py="md">
               <Grid.Col md={6} lg={3}>
