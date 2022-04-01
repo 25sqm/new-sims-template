@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 
 import {ChevronRight, AlertTriangle, ArrowUpCircle, ArrowDownCircle, FileDescription } from 'tabler-icons-react'
 import { Paper, Text, Grid, Group, ThemeIcon, ActionIcon } from '@mantine/core';
@@ -298,9 +298,6 @@ const dummyData = [
 ]
 
 const Findings = () => {
-    useEffect(() => {
-        console.log(Object.keys(dummyData).length);
-    }, [])
   return (
     <>
           <Paper shadow="md" p="sm" my="md" >
@@ -332,7 +329,6 @@ const Findings = () => {
                           <Group grow direction='column' spacing={0}>
                               <h5 style={{ marginTop: 0, marginBottom: 5}}>3</h5>
                               <Text color="dimmed" size="sm" sx={{ marginTop: 0, marginBottom: 5 }}>High Priority Findings</Text>
-                              
                           </Group>
                           <ActionIcon sx={{marginLeft: 'auto'}} size="xl" radius="xs">
                             <ChevronRight />
@@ -349,7 +345,6 @@ const Findings = () => {
                           <Group grow direction='column' spacing={0}>
                               <h5 style={{ marginTop: 0, marginBottom: 5}}>5</h5>
                               <Text color="dimmed" size="sm" sx={{ marginTop: 0, marginBottom: 5 }}>Low Priority Findings</Text>
-                              
                           </Group>
                           <ActionIcon sx={{marginLeft: 'auto'}} size="xl" radius="xs">
                             <ChevronRight />

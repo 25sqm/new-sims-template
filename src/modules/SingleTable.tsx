@@ -40,7 +40,7 @@ export function SingleTable({ listData, tableHeadings }: DataProps) {
     console.log(listData);
   }, []);
 
-  const rows = listData.map((entry: any) => (
+  const rows = (listData !== []) ? listData.map((entry: any) => (
     <tr key={entry.incidentID}>
       <td>{entry.incidentID}</td>
       <td>{entry.dateTime}</td>
@@ -49,17 +49,17 @@ export function SingleTable({ listData, tableHeadings }: DataProps) {
       <td>{entry.pestCount}</td>
       <td>{entry.threshold}</td>
     </tr>
-  ))
+  )) : <tr>
+      <td>No Data to show</td>
+  </tr>
 
   const headings = tableHeadings.map((entry: any) => (
     <th>{entry}</th>
   ))
-
-  
   return (
     <>
       <ScrollArea sx={{ height: '70vh' }} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
-      <Table striped highlightOnHover horizontalSpacing="sm" verticalSpacing="lg" sx={{marginTop: 20, overflowY: 'scroll'}}>
+      <Table striped highlightOnHover horizontalSpacing="sm" verticalSpacing="lg" sx={{marginTop: 5, overflowY: 'scroll'}}>
             <thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
                 <tr>
                 {headings}

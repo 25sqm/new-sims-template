@@ -1,13 +1,11 @@
 import React from 'react';
-import { useForm, useToggle, upperFirst } from '@mantine/hooks';
-import { useNavigate } from "react-router-dom";
+import { useForm } from '@mantine/hooks';
 import {
   TextInput,
   PasswordInput,
   Text,
   Paper,
   Group,
-  PaperProps,
   Button,
   Container,
   Center
@@ -34,11 +32,8 @@ export function AuthenticationForm({ user, setUserState }: AuthFormProps) {
       password: (val) => val.length >= 6,
     },
   });
-
-  const navigate = useNavigate();
   const handleAuth = () => {
     // Auth Code goes here or import from ../api
-
     setUserState('auth');
   }
 

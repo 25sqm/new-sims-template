@@ -1,5 +1,5 @@
 import React from 'react'
-import { Badge, Grid , Paper, ThemeIcon, Group, ActionIcon, Text, Center } from '@mantine/core';
+import {  Grid , Paper, ThemeIcon, Group, ActionIcon, Text, Center } from '@mantine/core';
 import {CalendarEvent, ChevronRight, Stack2, Search, AlertTriangle } from 'tabler-icons-react'
 import DataTable from '../modules/dashboard/dataTable';
 import { pestOptions, pestData } from '../modules/dashboard/dummyData/pestCountDummyData';
