@@ -11,6 +11,7 @@ import {
 } from "react-router-dom";
 import ThresholdBreaches from './ThresholdBreaches';
 import Findings from './Findings';
+import RealtimeMonitoring from './RealtimeMonitoring';
 
 const DashboardShell = () => {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
@@ -58,8 +59,8 @@ const DashboardShell = () => {
       <Routes>
         <Route index element={<DashboardContents />} />
         <Route path='/threshold-breach' element={<ThresholdBreaches />} />
-        
         <Route path='/findings' element={<Findings />} />
+        <Route path='/realtime' element={<RealtimeMonitoring />} />
       </Routes>
       
     </AppShell>

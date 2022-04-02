@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 
 import {ChevronRight, AlertTriangle, ArrowUpCircle, ArrowDownCircle, FileDescription } from 'tabler-icons-react'
 import { Paper, Text, Grid, Group, ThemeIcon, ActionIcon } from '@mantine/core';
@@ -298,9 +298,6 @@ const dummyData = [
 ]
 
 const Findings = () => {
-    useEffect(() => {
-        console.log(Object.keys(dummyData).length);
-    }, [])
   return (
     <>
           <Paper shadow="md" p="sm" my="md" >
@@ -309,15 +306,15 @@ const Findings = () => {
               <Grid.Col md={6} lg={3}>
                   <Paper shadow="md" p="md" withBorder>
                       <Group>
-                      <ThemeIcon color="red" variant="light" radius="xs" size={60}>
-                        <AlertTriangle size={40}/>
+                      <ThemeIcon color="red" variant="light" radius="xs" size={40}>
+                        <AlertTriangle size={20}/>
                           </ThemeIcon>
                           <Group grow direction='column' spacing={0}>
-                              <h5 style={{ marginTop: 0, marginBottom: 5}}>0</h5>
+                              <h5 style={{ marginTop: 0, marginBottom: 0}}>0</h5>
                               <Text color="dimmed" size="sm" sx={{ marginTop: 0, marginBottom: 5 }}>Critical Priority Findings</Text>
                               
                           </Group>
-                          <ActionIcon sx={{marginLeft: 'auto'}} size="xl" radius="xs">
+                          <ActionIcon sx={{marginLeft: 'auto'}} size="lg" radius="xs">
                             <ChevronRight />
                         </ActionIcon>
                     </Group>
@@ -326,15 +323,14 @@ const Findings = () => {
               <Grid.Col md={6} lg={3}>
                   <Paper shadow="md" p="md" withBorder>
                   <Group>
-                      <ThemeIcon color="yellow" variant="light" radius="xs" size={60}>
-                        <ArrowUpCircle size={40}/>
+                      <ThemeIcon color="yellow" variant="light" radius="xs" size={40}>
+                        <ArrowUpCircle size={20}/>
                           </ThemeIcon>
                           <Group grow direction='column' spacing={0}>
-                              <h5 style={{ marginTop: 0, marginBottom: 5}}>3</h5>
+                              <h5 style={{ marginTop: 0, marginBottom: 0}}>3</h5>
                               <Text color="dimmed" size="sm" sx={{ marginTop: 0, marginBottom: 5 }}>High Priority Findings</Text>
-                              
                           </Group>
-                          <ActionIcon sx={{marginLeft: 'auto'}} size="xl" radius="xs">
+                          <ActionIcon sx={{marginLeft: 'auto'}} size="lg" radius="xs">
                             <ChevronRight />
                         </ActionIcon>
                     </Group>
@@ -343,15 +339,14 @@ const Findings = () => {
               <Grid.Col md={6} lg={3}>
                   <Paper shadow="md" p="md" withBorder>
                   <Group>
-                      <ThemeIcon variant="light" radius="xs" size={60}>
-                        <ArrowDownCircle size={40}/>
+                      <ThemeIcon variant="light" radius="xs" size={40}>
+                        <ArrowDownCircle size={20}/>
                           </ThemeIcon>
                           <Group grow direction='column' spacing={0}>
-                              <h5 style={{ marginTop: 0, marginBottom: 5}}>5</h5>
+                              <h5 style={{ marginTop: 0, marginBottom: 0}}>5</h5>
                               <Text color="dimmed" size="sm" sx={{ marginTop: 0, marginBottom: 5 }}>Low Priority Findings</Text>
-                              
                           </Group>
-                          <ActionIcon sx={{marginLeft: 'auto'}} size="xl" radius="xs">
+                          <ActionIcon sx={{marginLeft: 'auto'}} size="lg" radius="xs">
                             <ChevronRight />
                         </ActionIcon>
                     </Group>
@@ -360,14 +355,14 @@ const Findings = () => {
               <Grid.Col md={6} lg={3}>
                   <Paper shadow="md" p="md" withBorder>
                   <Group>
-                      <ThemeIcon color="gray" variant="light" radius="xs" size={60}>
-                        <FileDescription size={40}/>
+                      <ThemeIcon color="gray" variant="light" radius="xs" size={40}>
+                        <FileDescription size={20}/>
                           </ThemeIcon>
                           <Group grow direction='column' spacing={0}>
-                              <h5 style={{ marginTop: 0, marginBottom: 5}}>1</h5>
+                              <h5 style={{ marginTop: 0, marginBottom: 0}}>1</h5>
                               <Text color="dimmed" size="sm" sx={{ marginTop: 0, marginBottom: 5 }}>Open Findings</Text>
                           </Group>
-                          <ActionIcon sx={{marginLeft: 'auto'}} size="xl" radius="xs">
+                          <ActionIcon sx={{marginLeft: 'auto'}} size="lg" radius="xs">
                             <ChevronRight />
                         </ActionIcon>
                     </Group>
