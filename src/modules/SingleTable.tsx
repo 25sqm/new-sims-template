@@ -38,24 +38,32 @@ export function SingleTable({ listData, tableHeadings }: DataProps) {
   const { classes, cx } = useStyles();
   useEffect(() => {
     console.log(listData);
+
+    listData.forEach((data: any) => {
+      for (let key in data) {
+        if (data.hasOwnProperty(key)) {
+          console.log(key + " = " + data[key]);
+        }
+      }
+    })
   }, []);
 
-  const rows = (listData !== []) ? listData.map((entry: any) => (
-    <tr key={entry.incidentID}>
-      <td>{entry.incidentID}</td>
-      <td>{entry.dateTime}</td>
-      <td>{entry.area}</td>
-      <td>{entry.pest}</td>
-      <td>{entry.pestCount}</td>
-      <td>{entry.threshold}</td>
+  const innerRows = listData.map((entry: any) => (
+    <td>{ }</td>
+  ))
+
+  const rows = (listData !== []) ? listData.map((entry: any, index: number) => (
+    <tr key={index}>
+      {innerRows}
     </tr>
-  )) : <tr>
-      <td>No Data to show</td>
-  </tr>
+  )) : (<tr>
+    <td>No Data to show</td>
+  </tr>)
 
   const headings = tableHeadings.map((entry: any) => (
     <th>{entry}</th>
   ))
+
   return (
     <>
       <ScrollArea sx={{ height: '70vh' }} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
