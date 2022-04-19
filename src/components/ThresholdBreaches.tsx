@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Paper, Group, Text, MultiSelect, Divider  } from '@mantine/core';
 import { DateRangePicker } from '@mantine/dates';
-import {SingleTable} from '../modules/SingleTable';
+import {ThresholdBreachTable} from '../modules/ThresholdBreachTable';
 
 const data = [
     { value: 'new', label: 'New' },
@@ -124,7 +124,7 @@ const ThresholdBreaches = () => {
                   />
         </Group>
         
-          <SingleTable tableHeadings={tableHeadings} listData={thresholdData} />
+          <ThresholdBreachTable tableHeadings={tableHeadings} listData={thresholdData} />
           </Paper>
       </>
   )

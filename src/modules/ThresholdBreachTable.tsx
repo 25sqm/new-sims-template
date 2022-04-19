@@ -32,7 +32,7 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export function SingleTable({ listData, tableHeadings }: DataProps) {
+export function ThresholdBreachTable({ listData, tableHeadings }: DataProps) {
   
   const [scrolled, setScrolled] = useState(false);
   const { classes, cx } = useStyles();
