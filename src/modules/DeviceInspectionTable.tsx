@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { Table, ScrollArea, createStyles } from '@mantine/core';
+import { File } from 'tabler-icons-react';
+import { Table, ScrollArea, createStyles, Text, Modal, useMantineTheme, Group, Button, Image } from '@mantine/core';
 interface DataProps {
   listData: Array<Object>,
   tableHeadings: Array<String>,
@@ -32,10 +33,12 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export function SingleTable({ listData, tableHeadings }: DataProps) {
+export function DeviceInspectionTable({ listData, tableHeadings }: DataProps) {
   
   const [scrolled, setScrolled] = useState(false);
+  const [opened, setOpened] = useState(false);
   const { classes, cx } = useStyles();
+  const theme = useMantineTheme();
   useEffect(() => {
     console.log(listData);
 
@@ -48,18 +51,32 @@ export function SingleTable({ listData, tableHeadings }: DataProps) {
     })
   }, []);
 
-  const rows = (listData !== []) ? listData.map((entry: any) => (
-    <tr key={entry.incidentID}>
-      <td>{entry.incidentID}</td>
-      <td>{entry.dateTime}</td>
+  const rows = (listData !== [{}]) ? listData.map((entry: any) => (
+    <tr key={entry.serviceOrder}>
+      <td>{entry.serviceOrder}</td>
       <td>{entry.area}</td>
-      <td>{entry.pest}</td>
-      <td>{entry.pestCount}</td>
-      <td>{entry.threshold}</td>
+      <td>{entry.deviceCode}</td>
+      <td>{entry.condition}</td>
+      <td>{entry.activity}</td>
+      <td>
+        <Modal
+          opened={opened}
+          onClose={() => setOpened(false)}
+          overlayOpacity={0.55}
+        >
+          <Image
+        radius="md"
+        src={entry.image}
+        alt="Random unsplash image"
+      />
+        </Modal>
+        <Group>
+        <Button size='xs' leftIcon={<File size={15} />} onClick={() => setOpened(true)}>View</Button>
+      </Group>
+        </td>
+      <td>{entry.dateTime}</td>
     </tr>
-  )) : <tr>
-      <td>No Data to show</td>
-  </tr>
+  )) : <Text>No Matching Records Found.</Text>
 
   const headings = tableHeadings.map((entry: any) => (
     <th>{entry}</th>

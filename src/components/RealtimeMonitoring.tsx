@@ -1,9 +1,37 @@
 import React from 'react'
 import {ArrowUpCircle, DeviceMobile } from 'tabler-icons-react'
 import { Paper, Text, Grid, Group, ThemeIcon, Button, Divider } from '@mantine/core';
-import {SingleTable} from '../modules/SingleTable'
+import {DeviceInspectionTable} from '../modules/DeviceInspectionTable'
 
-const data = [{}];
+const data = [
+  {
+  serviceOrder: 101,
+  dateTime: '2022-01-27 06:35:23',
+  area: 'Pantry Area',
+  deviceCode: 'MT',
+  condition: 'Ready',
+  activity: '0',
+  image: ''
+},
+{
+  serviceOrder: 102,
+  dateTime: '2022-01-27 06:35:23',
+  area: 'Pantry Area',
+  deviceCode: 'MT',
+  condition: 'Ready',
+  activity: '0',
+  image: ''
+},
+{
+  serviceOrder: 103,
+  dateTime: '2022-01-27 06:35:23',
+  area: 'Pantry Area',
+  deviceCode: 'MT',
+  condition: 'Ready',
+  activity: '0',
+  image: 'https://images.unsplash.com/photo-1511216335778-7cb8f49fa7a3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=720&q=80'
+}
+];
 const tableHeadings = ['Service Order', 'Area', 'Device Code', 'Condition', 'Activity', 'Image', 'Timestamp']
 
 const RealtimeMonitoring = () => {
@@ -23,7 +51,7 @@ const RealtimeMonitoring = () => {
                           </Group>
                           </Group>
                           <Divider my="sm" />
-                          <SingleTable listData={data} tableHeadings={tableHeadings} />
+                          <DeviceInspectionTable listData={data} tableHeadings={tableHeadings} />
                   </Paper>
               </Grid.Col>
               <Grid.Col md={6} lg={3}>
@@ -35,14 +63,15 @@ const RealtimeMonitoring = () => {
                           <Group grow direction='column' spacing={0}>
                             <Text size='lg' weight={500}>Ongoing Sterix Activity</Text>
                           </Group>
-                              <div>No Activity Today.</div>    
-                              <Group grow direction='row'>
+                              <Text>No Activity Today.</Text>    
+                              <Group direction='row'>
                               <Button>
                                 View Report
-                                  </Button>
-                                  <Button>
+                              </Button>
+                              <Button>
                                 Feedback
                               </Button>
+                              
                             </Group>
                     </Group>
                   </Paper>
