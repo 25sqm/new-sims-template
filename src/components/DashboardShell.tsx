@@ -13,6 +13,7 @@ import ThresholdBreaches from './ThresholdBreaches';
 import Findings from './Findings';
 import RealtimeMonitoring from './RealtimeMonitoring';
 import ServiceOrders from './ServiceOrders';
+import { Feedback } from './Feedback';
 
 const DashboardShell = () => {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
@@ -63,6 +64,8 @@ const DashboardShell = () => {
         <Route path='/findings' element={<Findings />} />
         <Route path='/realtime' element={<RealtimeMonitoring />} />
         <Route path='/service-orders' element={<ServiceOrders />} />
+        
+        <Route path='/feedback' element={<Feedback />} />
       </Routes>
       
     </AppShell>
