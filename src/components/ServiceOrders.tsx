@@ -131,7 +131,7 @@ function ServiceOrders() {
                                   <Text size='sm'>{entry.serviceOrder}</Text>
                                   <Group direction='row' spacing='xs'>
                                         <Tooltip
-                                        label="Edit"
+                                        label="View Report"
                                         radius="xs"
                                         withArrow
                                         >
@@ -174,7 +174,7 @@ function ServiceOrders() {
                               <Group spacing='sm' grow>
                                   <Text size='sm' weight={500}>{entry.dateTime.toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'})}</Text>
                                   <Text size='sm'>{entry.serviceOrder}</Text>
-                                  <Button size='xs' leftIcon={<Pencil size={15} />}>Edit S.O.</Button>
+                                  <Button size='xs' leftIcon={<Pencil size={15} />}>View Report</Button>
                               </Group> 
                         </Box>
                     ))}
