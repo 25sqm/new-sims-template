@@ -46,9 +46,9 @@ const data = [
     { icon: <AlertTriangle size={16} />, color: 'blue', label: 'Threshold Breach Incident', link: "/threshold-breach" },
     { icon: <Search size={16} />, color: 'blue', label: 'Findings', link: "/findings" },
     { icon: <UserSearch size={16} />, color: 'blue', label: 'Real Time Monitoring', link: "/realtime" },
-    { icon: <Backpack size={16} />, color: 'blue', label: 'Service Orders', link: "/" },
+    { icon: <Backpack size={16} />, color: 'blue', label: 'Service Orders', link: "/service-orders" },
     { icon: <FileDescription size={16} />, color: 'blue', label: 'Reports', link: "/" },
-    { icon: <DeviceMobile size={16} />, color: 'blue', label: 'Feedback', link: "/" },
+    { icon: <DeviceMobile size={16} />, color: 'blue', label: 'Feedback', link: "/feedback" },
     { icon: <TriangleSquareCircle size={16} />, color: 'blue', label: 'Bait Station Monitoring', link: "/" },
 ];
   

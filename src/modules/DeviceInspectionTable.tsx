@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { File } from 'tabler-icons-react';
+import { Eye } from 'tabler-icons-react';
 import { Table, ScrollArea, createStyles, Text, Modal, useMantineTheme, Group, Button, Image } from '@mantine/core';
 interface DataProps {
   listData: Array<Object>,
@@ -58,6 +58,7 @@ export function DeviceInspectionTable({ listData, tableHeadings }: DataProps) {
       <td>{entry.deviceCode}</td>
       <td>{entry.condition}</td>
       <td>{entry.activity}</td>
+      {/* Modal implementation has a bug. Use modal manager from mantine */}
       <td>
         <Modal
           opened={opened}
@@ -71,7 +72,7 @@ export function DeviceInspectionTable({ listData, tableHeadings }: DataProps) {
       />
         </Modal>
         <Group>
-        <Button size='xs' leftIcon={<File size={15} />} onClick={() => setOpened(true)}>View</Button>
+        <Button variant='outline' size='xs' leftIcon={<Eye size={15} />} onClick={() => setOpened(true)}>View</Button>
       </Group>
         </td>
       <td>{entry.dateTime}</td>
