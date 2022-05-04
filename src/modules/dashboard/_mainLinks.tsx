@@ -47,7 +47,7 @@ const data = [
     { icon: <Search size={16} />, color: 'blue', label: 'Findings', link: "/findings" },
     { icon: <UserSearch size={16} />, color: 'blue', label: 'Real Time Monitoring', link: "/realtime" },
     { icon: <Backpack size={16} />, color: 'blue', label: 'Service Orders', link: "/service-orders" },
-    { icon: <FileDescription size={16} />, color: 'blue', label: 'Reports', link: "/" },
+    { icon: <FileDescription size={16} />, color: 'blue', label: 'Reports', link: "/reports" },
     { icon: <DeviceMobile size={16} />, color: 'blue', label: 'Feedback', link: "/feedback" },
     { icon: <TriangleSquareCircle size={16} />, color: 'blue', label: 'Bait Station Monitoring', link: "/" },
 ];

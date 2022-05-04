@@ -107,7 +107,7 @@ function ServiceOrders() {
           <Grid pb="md">
           <Grid.Col md={12} lg={4}>
                   <Paper shadow="md" p="md">
-                    <Text size="md">For Acknowledgement</Text>
+                    <Text weight={600} size="md">For Acknowledgement</Text>
                       <Divider my="sm" />
                       {(forAckData.length === 0) ?  <Text size='sm'>No Records Found</Text> : forAckData.map((entry) => (
                           <Box sx={(theme) => ({
@@ -152,7 +152,7 @@ function ServiceOrders() {
               </Grid.Col>
               <Grid.Col md={12} lg={4}>
                   <Paper shadow="md" p="md">
-                    <Text size="md">Upcoming Service</Text>
+                    <Text weight={600} size="md">Upcoming Service</Text>
                     <Divider my="sm" />
                     {(upcomingServiceData.length === 0) ?  <Text size='sm'>No Records Found</Text> : upcomingServiceData.map((entry) => (
                           <Box sx={(theme) => ({
@@ -182,7 +182,7 @@ function ServiceOrders() {
               </Grid.Col>
               <Grid.Col md={12} lg={4}>
                   <Paper shadow="md" p="md">
-                    <Text size="md">Past Service Order</Text>
+                    <Text weight={600} size="md">Past Service Order</Text>
                     <Divider my="sm" />
                     {(pastService.length === 0) ?  <Text size='sm'>No Records Found</Text> : pastService.map((entry) => (
                           <Box sx={(theme) => ({
