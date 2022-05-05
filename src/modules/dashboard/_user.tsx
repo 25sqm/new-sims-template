@@ -1,11 +1,12 @@
 import React from 'react';
-import { ChevronRight, ChevronLeft } from 'tabler-icons-react';
-import { UnstyledButton, Group, Avatar, Text, Box, useMantineTheme } from '@mantine/core';
+import { ChevronRight, ChevronLeft, ArrowsLeftRight, Logout } from 'tabler-icons-react';
+import { Link } from 'react-router-dom';
+import { UnstyledButton, Group, Avatar, Text, Box, useMantineTheme, Menu  } from '@mantine/core';
 
 export function User() {
   const theme = useMantineTheme();
 
-  return (
+  const userBtn = (
     <Box
       sx={{
         paddingTop: theme.spacing.sm,
@@ -27,8 +28,7 @@ export function User() {
               theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
           },
         }}
-          >
-              
+          >     
         <Group>
           <Avatar
             src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80"
@@ -47,5 +47,15 @@ export function User() {
         </Group>
       </UnstyledButton>
     </Box>
+  )
+
+  return (
+    <Menu sx={(theme) => ({
+      width: '100%',
+    })} control={userBtn}>
+      <Menu.Label>User Control</Menu.Label>
+      <Menu.Item component={Link} to="/change-password" icon={<ArrowsLeftRight size={14} />}>Change Password</Menu.Item>
+      <Menu.Item component="a" href="/" color="red" icon={<Logout size={14} />}>Log Out</Menu.Item>
+    </Menu>
   );
 }

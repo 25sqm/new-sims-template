@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import { AuthenticationForm } from '../components/AuthenticationForm';
-import {  MantineProvider, ColorSchemeProvider, ColorScheme } from '@mantine/core';
+import { MantineProvider, ColorSchemeProvider, ColorScheme } from '@mantine/core';
+import { useHotkeys, useLocalStorage } from '@mantine/hooks';
 
 import './App.css';
 
 import DashboardShell from '../components/DashboardShell';
 function App() {
-  const [colorScheme, setColorScheme] = useState<ColorScheme>('light');
+  const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
+    key: 'mantine-color-scheme',
+    defaultValue: 'light',
+  });
   const toggleColorScheme = (value?: ColorScheme) =>
-    setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark')); 
+    setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
   
   
   // temporary auth state management

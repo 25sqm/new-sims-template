@@ -49,7 +49,7 @@ const data = [
     { icon: <Backpack size={16} />, color: 'blue', label: 'Service Orders', link: "/service-orders" },
     { icon: <FileDescription size={16} />, color: 'blue', label: 'Reports', link: "/reports" },
     { icon: <DeviceMobile size={16} />, color: 'blue', label: 'Feedback', link: "/feedback" },
-    { icon: <TriangleSquareCircle size={16} />, color: 'blue', label: 'Bait Station Monitoring', link: "/" },
+    { icon: <TriangleSquareCircle size={16} />, color: 'blue', label: 'Bait Station Monitoring', link: "/bait-monitoring" },
 ];
   
 export function MainLinks() {

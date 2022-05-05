@@ -1,6 +1,7 @@
 import React from 'react';
 import { useForm } from '@mantine/hooks';
 import {
+  createStyles,
   TextInput,
   PasswordInput,
   Text,
@@ -8,7 +9,8 @@ import {
   Group,
   Button,
   Container,
-  Center
+  Center,
+  useMantineColorScheme
 } from '@mantine/core';
 import { Logo } from '../modules/dashboard/_logo';
 
@@ -18,7 +20,19 @@ interface AuthFormProps {
   setUserState: any,
 }
 
+const useStyles = createStyles((theme) => ({
+  container: {
+    backgroundColor: `${theme.colorScheme === 'dark' ? theme.colors.dark[8]: theme.white}`
+  },
+  containerCard: {
+    width: '32vw',
+  }
+}));
+
 export function AuthenticationForm({ user, setUserState }: AuthFormProps) {
+  
+  const { colorScheme } = useMantineColorScheme();
+  const { classes } = useStyles();
   const form = useForm({
     initialValues: {
       email: '',
@@ -38,10 +52,11 @@ export function AuthenticationForm({ user, setUserState }: AuthFormProps) {
   }
 
   return (
-    <Container size="xs" px="xs" pt={90}>
+    <Center style={{ width: '100vw', height: '100vh' }} className={classes.container}>
+    <Container size="xs" px="xs" className={classes.containerCard}>
       <Paper radius="md" p="xl" withBorder>
         <Center py="sm">
-          <Logo colorScheme="light" />
+          <Logo colorScheme={colorScheme} />
         </Center>
         <Center>
           <Text size="lg" weight={500}>
@@ -76,6 +91,6 @@ export function AuthenticationForm({ user, setUserState }: AuthFormProps) {
             </form>
           </Paper>
     </Container>
-    
+    </Center>
   );
 }
