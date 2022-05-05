@@ -14,6 +14,9 @@ import Findings from './Findings';
 import RealtimeMonitoring from './RealtimeMonitoring';
 import ServiceOrders from './ServiceOrders';
 import { Feedback } from './Feedback';
+import { ChangePasswordForm } from './ChangePasswordForm';
+import Reports from './Reports';
+import BaitStationMonitoring from './BaitStationMonitoring';
 
 const DashboardShell = () => {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
@@ -64,8 +67,10 @@ const DashboardShell = () => {
         <Route path='/findings' element={<Findings />} />
         <Route path='/realtime' element={<RealtimeMonitoring />} />
         <Route path='/service-orders' element={<ServiceOrders />} />
-        
+        <Route path='/reports' element={<Reports />} />
         <Route path='/feedback' element={<Feedback />} />
+        <Route path='/bait-monitoring' element={<BaitStationMonitoring />} />
+        <Route path='/change-password' element={<ChangePasswordForm />} />
       </Routes>
       
     </AppShell>

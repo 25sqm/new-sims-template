@@ -61,7 +61,6 @@ const FindingsTable = ({ tableData }: TableProps) => {
 const FindingsTabView = ({ data }: TabProps) => {
   return (
     <Tabs>
-          
           {data.map((item: any) => (
             <Tabs.Tab key={item.label} label={item.label} >
               <ScrollArea sx={{ height: '59vh' }}>
