@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { Tabs, createStyles, Table, Text, Paper, ScrollArea, Button, ThemeIcon, Box } from '@mantine/core';
+import { Tabs, createStyles, Table, Text, Paper, ScrollArea, Button, ThemeIcon, Box, Group, MultiSelect, Input } from '@mantine/core';
+import { DateRangePicker } from '@mantine/dates';
 import { Check, X } from 'tabler-icons-react';
 
 const useStyles = createStyles((theme) => ({
@@ -50,6 +51,30 @@ const inspectionReports = [
   },
 ] 
 
+const deviceSummary = [
+  {
+    deviceCode: 'STX-MQT-1712-0002-OPSQA-TRO-002',
+    deviceType: 'Mosquito Trap',
+    deviceLocation: 'Training Room',
+    dateDeployed: new Date('2021-02-12'),
+    status: 'Not Inspected'
+  },
+  {
+    deviceCode: 'STX-MQT-1712-0001-OPSQA-PAN-001',
+    deviceType: 'Mosquito Trap',
+    deviceLocation: 'Pantry Area',
+    dateDeployed: new Date('2022-04-12'),
+    status: 'Not Inspected'
+  },
+  {
+    deviceCode: 'STX-RBT-1712-1000',
+    deviceType: 'Rodent Bait Station (Tamper Proof)',
+    deviceLocation: 'Pantry Area',
+    dateDeployed: new Date('2022-02-02'),
+    status: '	Good Working Condition'
+  }
+]
+
 const InspectionTables = () => {
   const { classes, cx } = useStyles();
   const [scrolled, setScrolled] = useState(false);
@@ -90,6 +115,75 @@ const InspectionTables = () => {
   )
 }
 
+const dummyQuery = {
+  areas: [ 
+    { value: 'trainingRoom', label: 'Training Room' },
+    { value: 'pantryArea', label: 'Pantry Area' },
+    { value: 'lobby', label: 'Lobby' },
+  ],
+  deviceTypes: [ 
+    { value: 'birdScare', label: 'Bird Scare' },
+    { value: 'catTrap', label: 'Cat Trap' },
+    { value: 'glueTrap', label: 'Glue Trap' },
+    { value: 'mosquitoTrap', label: 'Mosquito Trap' },
+  ],
+  deviceStatus: [ 
+    { value: 'blocked', label: 'Blocked' },
+    { value: 'bustedBulb', label: 'Busted ILD Bulb' },
+    { value: 'damaged', label: 'Damaged' },
+    { value: 'missing', label: 'Missing' },
+    { value: 'needsRepair', label: 'Needs Repair' },
+  ]
+}
+
+const SummaryDevices = () => {
+  const { classes, cx } = useStyles();
+  const [scrolled, setScrolled] = useState(false);
+
+  const rows = deviceSummary.map((entry) => (
+    <tr key={entry.deviceCode}>
+      <td>{entry.deviceCode}</td>
+      <td>{entry.deviceType}</td>
+      <td>{entry.deviceLocation}</td>
+      <td>{entry.dateDeployed.toLocaleDateString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric' })}</td>
+      <td>{entry.status}</td>
+    </tr>
+  ))
+  return (
+    <>
+      <Group>
+        <Input placeholder="Device Code" />
+                  <MultiSelect
+                    data={dummyQuery.areas}
+                    placeholder="Area"
+                    />
+                    <MultiSelect
+                                data={dummyQuery.deviceTypes}
+                                placeholder="Device Type"
+                              />
+                  <MultiSelect
+                    data={dummyQuery.deviceStatus}
+                    placeholder="Device Status"
+                  />
+      </Group>
+      <ScrollArea sx={{ height: '68vh' }} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
+      <Table sx={{ minWidth: 700 }} striped highlightOnHover>
+        <thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
+          <tr>
+            <th>Device Code</th>
+            <th>Device Type</th>
+            <th>Device Location</th>
+            <th>Date Deployed</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>{rows}</tbody>
+      </Table>
+    </ScrollArea>
+    </>
+  )
+}
+
 const Reports = () => {
   return (
     <Paper shadow="md" p="sm" my="md" >
@@ -114,7 +208,7 @@ const Reports = () => {
           <Text weight={700} size="xl">Future Functionality</Text>
         </Box>
         </Tabs.Tab>
-        <Tabs.Tab label="Summary of Devices">Summary of Devices Content</Tabs.Tab>
+        <Tabs.Tab label="Summary of Devices"><SummaryDevices /></Tabs.Tab>
         </Tabs>
     </Paper>
   )
