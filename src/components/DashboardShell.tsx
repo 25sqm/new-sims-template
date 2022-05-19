@@ -18,7 +18,12 @@ import { ChangePasswordForm } from './ChangePasswordForm';
 import Reports from './Reports';
 import BaitStationMonitoring from './BaitStationMonitoring';
 
-const DashboardShell = () => {
+interface AuthFormProps {
+  user: any,
+  setUserState: any,
+}
+
+const DashboardShell = ({user, setUserState}: AuthFormProps) => {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const [opened, setOpened] = useState(false);
   const theme = useMantineTheme();
@@ -33,7 +38,7 @@ const DashboardShell = () => {
           <MainLinks />
         </Navbar.Section>
         <Navbar.Section>
-          <User />
+          <User user={user} setUserState={setUserState} />
         </Navbar.Section>
       </Navbar>}
       header={<Header height={70} p="md">

@@ -1,11 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ChevronRight, ChevronLeft, ArrowsLeftRight, Logout } from 'tabler-icons-react';
 import { Link } from 'react-router-dom';
 import { UnstyledButton, Group, Avatar, Text, Box, useMantineTheme, Menu  } from '@mantine/core';
+interface AuthFormProps {
+  user: any,
+  setUserState: any,
+}
 
-export function User() {
+export function User({ user, setUserState }: AuthFormProps) {
   const theme = useMantineTheme();
-
+  useEffect(() => {
+    console.log(user)
+  })
+  
   const userBtn = (
     <Box
       sx={{
@@ -31,12 +38,12 @@ export function User() {
           >     
         <Group>
           <Avatar
-            src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80"
+            src={null}
             radius="xl"
           />
           <Box sx={{ flex: 1 }}>
             <Text size="sm" weight={500}>
-              Allen Ponce de Leon
+              {user.name}
             </Text>
             <Text color="dimmed" size="xs">
               Supervisor
@@ -55,7 +62,7 @@ export function User() {
     })} control={userBtn}>
       <Menu.Label>User Control</Menu.Label>
       <Menu.Item component={Link} to="/change-password" icon={<ArrowsLeftRight size={14} />}>Change Password</Menu.Item>
-      <Menu.Item component="a" href="/" color="red" icon={<Logout size={14} />}>Log Out</Menu.Item>
+      <Menu.Item onClick={() => {setUserState({})}}component="a" href="/" color="red" icon={<Logout size={14} />}>Log Out</Menu.Item>
     </Menu>
   );
 }
