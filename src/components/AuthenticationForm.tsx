@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from '@mantine/hooks';
+import axios from 'axios';
 import {
   createStyles,
   TextInput,
@@ -12,7 +13,10 @@ import {
   Center,
   useMantineColorScheme
 } from '@mantine/core';
+import { Check } from 'tabler-icons-react';
 import { Logo } from '../modules/dashboard/_logo';
+import { logIn } from '../api/user'
+import { showNotification, updateNotification } from '@mantine/notifications';
 
 // temporary user state management 
 interface AuthFormProps {
@@ -46,9 +50,38 @@ export function AuthenticationForm({ user, setUserState }: AuthFormProps) {
       password: (val) => val.length >= 6,
     },
   });
-  const handleAuth = () => {
+
+
+  const handleAuth = async () => {
     // Auth Code goes here or import from ../api
-    setUserState('auth');
+    // logIn('allenpdl', 'tAi2C8sGlH');
+    // setUserState('auth');
+
+    showNotification({
+            id: 'load-data',
+            loading: true,
+            title: 'Logging you in...',
+            message: 'Have a cup of coffee while waiting! ☕️',
+            autoClose: false,
+            disallowClose: true,
+          })
+    const response = await logIn(form.values.name, form.values.password);
+    const user = response.data;
+    
+    console.log(user.data)
+
+
+    setTimeout(() => {
+            updateNotification({
+              id: 'load-data',
+              color: 'teal',
+              title: 'Logged you in successfully.',
+              message: `Welcome, ${user.data.name}`,
+              icon: <Check />,
+              autoClose: 2000,
+            });
+          }, 1000);
+    setUserState(user.data);
   }
 
   return (
@@ -63,16 +96,16 @@ export function AuthenticationForm({ user, setUserState }: AuthFormProps) {
               Welcome to SIMS!
           </Text>
         </Center>
-            <form onSubmit={form.onSubmit(() => {})}>
+          <form onSubmit={form.onSubmit(() => { })}>
               <Group direction="column" grow>
 
                 <TextInput
                   required
-                  label="Email"
-                  placeholder="hello@mantine.dev"
-                  value={form.values.email}
-                  onChange={(event) => form.setFieldValue('email', event.currentTarget.value)}
-                  error={form.errors.email && 'Invalid email'}
+                  label="Username"
+                  placeholder="hello"
+                  value={form.values.name}
+                  onChange={(event) => form.setFieldValue('name', event.currentTarget.value)}
+                  error={form.errors.name && 'Invalid username'}
                 />
 
                 <PasswordInput
