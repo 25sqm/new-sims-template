@@ -12,21 +12,20 @@ const http = axios.create({
 
 // Function for logging in user
 export async function logIn(username, password) { 
-  // return http.get('/sanctum/csrf-cookie').then(response => {
-  //   http.post('/api/login', {
-  //     'username': username,
-  //     'password': password,
-  //   }).then(response => {
-  //     response.json().data
-  //   }).catch(err => {
-  //     console.log(err)
-  //   })
-  // });
-  const csrf = await http.get('/sanctum/csrf-cookie');
-  const response = await http.post('/api/login', {
-    'username': username,
-    'password': password,
-  })
-  return response;
+  try {
+    const csrf = await http.get('/sanctum/csrf-cookie');
+    const response = await http.post('/api/login', {
+      'username': username,
+      'password': password,
+    })
+    return response;
+  } catch (err) { 
+    console.log(err.response);
+    if (err.response.status === 404) {
+      return null
+    } else {
+      return 'error'
+    }
+  }
 }
 

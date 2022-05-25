@@ -13,7 +13,7 @@ import {
   Center,
   useMantineColorScheme
 } from '@mantine/core';
-import { Check } from 'tabler-icons-react';
+import { Check, ExclamationMark } from 'tabler-icons-react';
 import { Logo } from '../modules/dashboard/_logo';
 import { logIn } from '../api/user'
 import { showNotification, updateNotification } from '@mantine/notifications';
@@ -51,12 +51,8 @@ export function AuthenticationForm({ user, setUserState }: AuthFormProps) {
     },
   });
 
-
+// Client function for handling auth success and error
   const handleAuth = async () => {
-    // Auth Code goes here or import from ../api
-    // logIn('allenpdl', 'tAi2C8sGlH');
-    // setUserState('auth');
-
     showNotification({
             id: 'load-data',
             loading: true,
@@ -66,22 +62,34 @@ export function AuthenticationForm({ user, setUserState }: AuthFormProps) {
             disallowClose: true,
           })
     const response = await logIn(form.values.name, form.values.password);
-    const user = response.data;
-    
-    console.log(user.data)
 
-
-    setTimeout(() => {
+    if (response === null) { 
+      setTimeout(() => {
             updateNotification({
               id: 'load-data',
-              color: 'teal',
-              title: 'Logged you in successfully.',
-              message: `Welcome, ${user.data.name}`,
-              icon: <Check />,
+              color: 'red',
+              title: 'Could not log you in.',
+              message: `Please check your user credentials`,
+              icon: <ExclamationMark />,
               autoClose: 2000,
             });
           }, 1000);
-    setUserState(user.data);
+    } else {
+      const user = response.data;
+      console.log(user.data)
+      setTimeout(() => {
+              updateNotification({
+                id: 'load-data',
+                color: 'teal',
+                title: 'Logged you in successfully.',
+                message: `Welcome, ${user.data.name}`,
+                icon: <Check />,
+                autoClose: 2000,
+              });
+            }, 1000);
+      setUserState(user.data);
+    }
+    
   }
 
   return (
