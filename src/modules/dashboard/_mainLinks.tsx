@@ -41,7 +41,7 @@ function MainLink({ icon, color, label, link }: MainLinkProps) {
     );
 }
 
-const data = [
+const clientNav = [
     { icon: <Dashboard size={16} />, color: 'blue', label: 'Dashboard', link: '/' },
     { icon: <AlertTriangle size={16} />, color: 'blue', label: 'Threshold Breach Incident', link: "/threshold-breach" },
     { icon: <Search size={16} />, color: 'blue', label: 'Findings', link: "/findings" },
@@ -51,8 +51,15 @@ const data = [
     { icon: <DeviceMobile size={16} />, color: 'blue', label: 'Feedback', link: "/feedback" },
     { icon: <TriangleSquareCircle size={16} />, color: 'blue', label: 'Bait Station Monitoring', link: "/bait-monitoring" },
 ];
+
+const adminNav = [
+  { icon: <UserSearch size={16} />, color: 'blue', label: 'User Management', link: "/user-management" },
+  { icon: <FileDescription size={16} />, color: 'blue', label: 'Device Management', link: "/device-management" },
+  { icon: <Backpack size={16} />, color: 'blue', label: 'Service Management', link: "/" },
+]
   
-export function MainLinks() {
+export function MainLinks({ isAdmin, setIsAdmin }: any) {
+    const data = isAdmin ? adminNav : clientNav
     const links = data.map((link) => <MainLink {...link} key={link.label} />);
     return <div>{links}</div>;
 }

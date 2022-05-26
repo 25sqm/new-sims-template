@@ -18,12 +18,13 @@ function App() {
   
   // temporary auth state management
   const [user, setUserState] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   return (
     <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
       <MantineProvider theme={{ colorScheme }}>
         <NotificationsProvider>
-            {user !== null ? <DashboardShell user={user} setUserState={setUserState} /> : <AuthenticationForm user={user} setUserState={setUserState} />}
+          {user !== null ? <DashboardShell user={user} isAdmin={isAdmin} setIsAdmin={setIsAdmin} setUserState={setUserState} /> : <AuthenticationForm user={user} isAdmin={isAdmin} setIsAdmin={setIsAdmin} setUserState={setUserState} />}
         </NotificationsProvider>
       </MantineProvider>
     </ColorSchemeProvider>

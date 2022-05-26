@@ -10,7 +10,8 @@ import {
   Button,
   Container,
   Center,
-  useMantineColorScheme
+  useMantineColorScheme,
+  Switch
 } from '@mantine/core';
 import { Check, ExclamationMark } from 'tabler-icons-react';
 import { Logo } from '../modules/dashboard/_logo';
@@ -21,6 +22,8 @@ import { showNotification, updateNotification } from '@mantine/notifications';
 interface AuthFormProps {
   user: any,
   setUserState: any,
+  isAdmin: any,
+  setIsAdmin: any,
 }
 
 const useStyles = createStyles((theme) => ({
@@ -34,7 +37,7 @@ const useStyles = createStyles((theme) => ({
   }
 }));
 
-export function AuthenticationForm({ user, setUserState }: AuthFormProps) {
+export function AuthenticationForm({ user, setUserState, isAdmin, setIsAdmin }: AuthFormProps) {
   
   const { colorScheme } = useMantineColorScheme();
   const { classes } = useStyles();
@@ -77,7 +80,10 @@ export function AuthenticationForm({ user, setUserState }: AuthFormProps) {
           }, 600);
     } else {
       const user = response.data;
-      console.log(user.data)
+
+      // temporary admin switch
+      // console.log("Admin? ", isAdmin);
+      // console.log(user.data)
       setTimeout(() => {
               updateNotification({
                 id: 'load-data',
@@ -127,9 +133,15 @@ export function AuthenticationForm({ user, setUserState }: AuthFormProps) {
                 />
               </Group>
               <Group position="apart" mt="xl">
-            <Button onClick={handleAuth} type="submit">Login</Button>
+              <Button onClick={handleAuth} type="submit">Login</Button>
+              <Switch
+                checked={isAdmin}
+                onChange={(event) => setIsAdmin(event.currentTarget.checked)}
+                label="Admin"
+              />
               </Group>
-            </form>
+          </form>
+          
           </Paper>
     </Container>
     </Center>
