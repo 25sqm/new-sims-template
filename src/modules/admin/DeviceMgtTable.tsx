@@ -9,12 +9,11 @@ import {
   Center,
   TextInput,
   ActionIcon,
-  Anchor,
   Button,
   SimpleGrid
 } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
-import { Selector, ChevronDown, ChevronUp, Search, Refresh, Edit, TrashX } from 'tabler-icons-react';
+import { Selector, ChevronDown, ChevronUp, Search, Edit, TrashX, Printer } from 'tabler-icons-react';
 import { useModals } from '@mantine/modals';
 
 
@@ -23,12 +22,11 @@ const useStyles = createStyles((theme) => ({
     padding: '0 !important',
   },
   
-  td: {
-      overflow: 'hidden',
-      textOverflow: 'ellipsis',
-      whiteSpace: 'nowrap',
-  },
-
+    td: {
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+    },
 
   control: {
     width: '100%',
@@ -47,15 +45,14 @@ const useStyles = createStyles((theme) => ({
 }));
 
 interface RowData {
-    name: string;
-    birthday: string;
-    sex: string;
-    username: string;
-    emailAddress: string;
-    mobileNumber: string;
-    landline: string;
-    address: string;
-    organization: string;
+    deviceType: string,
+      deviceCode: string,
+      area: string,
+      level: string,
+      dateDeployed: string,
+      timeDeployed: string,
+      dateRemoved: string,
+      frequency: string
 }
 
 interface TableSortProps {
@@ -75,12 +72,12 @@ function Th({ children, reversed, sorted, onSort }: ThProps) {
   return (
     <th className={classes.th}>
       <UnstyledButton onClick={onSort} className={classes.control}>
-        <Group position="apart" noWrap>
-          <Text weight={500} size="xs" style={{whiteSpace: 'nowrap'}}>
+        <Group position="apart">
+          <Text weight={500} size="sm">
             {children}
           </Text>
           <Center className={classes.icon}>
-            <Icon size={12} />
+            <Icon size={14} />
           </Center>
         </Group>
       </UnstyledButton>
@@ -114,12 +111,12 @@ function sortData(
   );
 }
 
-export function UserMgtTable({ data }: TableSortProps) {
+export function DeviceMgtTable({ data }: TableSortProps) {
   const { classes } = useStyles();
   const modals = useModals();
   const [search, setSearch] = useState('');
   const [sortedData, setSortedData] = useState(data);
-  const [sortBy, setSortBy] = useState<keyof RowData>("name");
+  const [sortBy, setSortBy] = useState<keyof RowData>("deviceType");
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
 
   const setSorting = (field: keyof RowData) => {
@@ -143,36 +140,34 @@ export function UserMgtTable({ data }: TableSortProps) {
       children: (
         <form onSubmit={(event) => event.preventDefault()}>
           <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
-            <TextInput label="Name" placeholder="Name" data-autofocus />
-            <TextInput label="Birthday" placeholder="Birthday" />
+            <TextInput label="Device Type" placeholder="Device Type" data-autofocus />
+            <TextInput label="Device Code" placeholder="Device Code" />
           </SimpleGrid>
           <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
-            <TextInput label="Sex" placeholder="Sex" />
-            <TextInput label="Username" placeholder="Username" />
-          </SimpleGrid>
-          
-          <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
-            <TextInput label="Email Address" placeholder="Email Address" />
-            <TextInput label="Mobile Number" placeholder="Mobile Number" />
+            <TextInput label="Site" placeholder="Site" />
+            <TextInput label="Area" placeholder="Area" />
           </SimpleGrid>
           <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
-            <TextInput label="Landline" placeholder="Landline" />
-            <TextInput label="Address" placeholder="Address" />
+            <TextInput label="Date Deployed" placeholder="Date Deployed" />
+            <TextInput label="Time Deployed" placeholder="Time Deployed" />
           </SimpleGrid>
-          <TextInput label="Organization" placeholder="Organization" />
+          <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
+            <TextInput label="Date Removed" placeholder="Date Removed" />
+            <TextInput label="Frequency" placeholder="Frequency" />
+          </SimpleGrid>
           <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
             <Button variant='outline' onClick={() => modals.closeModal(addID)} mt="md">
               Cancel
             </Button>
-            <Button onClick={() => {
-              modals.closeModal(addID)
-              showNotification({
-                title: 'Successfully added a new user',
-                message: 'This is a future functionality',
-                autoClose: 3000,
-                color: 'green',
-              })
-            }} mt="md">
+                  <Button onClick={() => {
+                      modals.closeModal(addID)
+                      showNotification({
+                        title: 'Successfully added device',
+                        message: 'This is a future functionality',
+                        autoClose: 3000,
+                        color: 'green',
+                      })
+                  }} mt="md">
               Submit
             </Button>
           </SimpleGrid>
@@ -187,36 +182,35 @@ export function UserMgtTable({ data }: TableSortProps) {
       title: 'Edit',
       children: (
         <form onSubmit={(event) => event.preventDefault()}>
+          
+        <TextInput label="Device Type" placeholder={row.deviceType} data-autofocus />
+         <TextInput label="Device Code" placeholder={row.deviceCode} />
+          
           <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
-            <TextInput label="Name" placeholder={row.name} data-autofocus />
-            <TextInput label="Birthday" placeholder={row.birthday} />
+            <TextInput label="Site" placeholder="Site" />
+            <TextInput label="Area" placeholder="Area" />
           </SimpleGrid>
           <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
-            <TextInput label="Sex" placeholder={row.sex} />
-            <TextInput label="Username" placeholder={row.username} />
+            <TextInput label="Date Deployed" placeholder={row.dateDeployed} />
+            <TextInput label="Time Deployed" placeholder={row.timeDeployed} />
           </SimpleGrid>
           <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
-            <TextInput label="Email Address" placeholder={row.emailAddress} />
-            <TextInput label="Mobile Number" placeholder={row.mobileNumber} />
+            <TextInput label="Date Removed" placeholder={row.dateRemoved} />
+            <TextInput label="Frequency" placeholder={row.frequency} />
           </SimpleGrid>
-          <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
-            <TextInput label="Landline" placeholder={row.landline} />
-            <TextInput label="Address" placeholder={row.address} />
-          </SimpleGrid>
-          <TextInput label="Organization" placeholder={row.organization} />
           <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
             <Button variant='outline' onClick={() => modals.closeModal(editID)} mt="md">
               Cancel
             </Button>
-            <Button onClick={() => {
-              modals.closeModal(editID)
-              showNotification({
-                title: 'Edit success!',
-                message: 'This is a future functionality',
-                autoClose: 3000,
-                color: 'green',
-              })
-            }} mt="md">
+                  <Button onClick={() => {
+                      modals.closeModal(editID)
+                      showNotification({
+                        title: 'Edit success!',
+                        message: 'This is a future functionality',
+                        autoClose: 3000,
+                        color: 'green',
+                      })
+                  }} mt="md">
               Submit
             </Button>
           </SimpleGrid>
@@ -227,43 +221,26 @@ export function UserMgtTable({ data }: TableSortProps) {
   };
 
 
-  const openResetModal = ({ row }: any) => {
-    const resetID = modals.openModal({
-      title: 'Reset Password',
-      children: (
-          <>
-          <Text>Are you sure you want to reset the password for {row.name}?</Text>
-          <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
-            <Button variant='outline' onClick={() => modals.closeModal(resetID)} mt="md">
-              Cancel
-            </Button>
-            <Button color="red" onClick={() => {
-              modals.closeModal(resetID);
-              showNotification({
-                title: 'Reset Email Sent',
-                message: 'This is a future functionality',
-                autoClose: 3000,
-              })
-            }} mt="md">
-              Confirm
-            </Button>
-          </SimpleGrid>
-          </>
-      ),
-    });
-  };
 
   const openDeleteModal = ({ row }: any) => {
     const deleteID = modals.openModal({
-      title: 'Delete User',
+      title: 'Delete Device',
       children: (
           <>
-          <Text>Are you sure you want to delete {row.name} from SIMS?</Text>
+          <Text>Are you sure you want to delete {row.deviceType} from SIMS?</Text>
           <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
             <Button variant='outline' onClick={() => modals.closeModal(deleteID)} mt="md">
               Cancel
             </Button>
-            <Button color="red" onClick={() => modals.closeModal(deleteID)} mt="md">
+                  <Button color="red" onClick={() => {
+                      modals.closeModal(deleteID)
+                      showNotification({
+                        title: 'Successfully deleted device',
+                        message: 'This is a future functionality',
+                        autoClose: 3000,
+                        color: 'red',
+                      })
+                  }} mt="md">
               Confirm
             </Button>
           </SimpleGrid>
@@ -276,26 +253,21 @@ export function UserMgtTable({ data }: TableSortProps) {
   // End Modals for Crud
 
   const rows = sortedData.map((row) => (
-    <tr key={row.name}>
-      <td>
-      <Anchor sx={(theme) => ({fontSize: 12})} href="#">Access</Anchor> | <Anchor sx={(theme) => ({fontSize: 12})} href="#">Sites</Anchor>
-      </td>
+    <tr key={row.deviceCode}>
       <td>
         <Group spacing="xs" noWrap={true}>
-          <ActionIcon onClick={() => openResetModal({row})}  size="sm" variant="light"><Refresh size={15} /></ActionIcon>
           <ActionIcon onClick={() => openEditModal({row})} size="sm" variant="light"><Edit size={15} /></ActionIcon>
           <ActionIcon onClick={() => openDeleteModal({row})} size="sm" variant="light"><TrashX size={15} /></ActionIcon>
         </Group>
       </td>
-      <td className={classes.td} >{row.name}</td>
-      <td className={classes.td} >{row.birthday}</td>
-      <td className={classes.td} >{row.sex}</td>
-      <td className={classes.td} >{row.username}</td>
-      <td className={classes.td} >{row.emailAddress}</td>
-      <td className={classes.td} >{row.mobileNumber}</td>
-      <td className={classes.td} >{row.landline}</td>
-      <td className={classes.td} >{row.address}</td>
-      <td className={classes.td} >{row.organization}</td>
+      <td className={classes.td} >{row.deviceType}</td>
+      <td className={classes.td} >{row.deviceCode}</td>
+      <td className={classes.td} >{row.area}</td>
+      <td className={classes.td} >{row.level}</td>
+      <td className={classes.td} >{row.dateDeployed}</td>
+      <td className={classes.td} >{row.timeDeployed}</td>
+      <td className={classes.td} >{row.dateRemoved}</td>
+      <td className={classes.td} >{row.frequency}</td>
     </tr>
   )); 
   return (
@@ -307,7 +279,9 @@ export function UserMgtTable({ data }: TableSortProps) {
         value={search}
         onChange={handleSearchChange}
         />
-        <Button onClick={() => {openAddModal()}}>Add</Button>
+              <Button onClick={() => { openAddModal() }}>Add</Button>
+              <Button leftIcon={<Printer size={14} />} onClick={() => alert('Future Functionality')} >QR Codes</Button>
+              <Button variant="gradient" gradient={{ from: 'teal', to: 'blue', deg: 60 }} leftIcon={<Printer size={14} />} onClick={() => alert('Future Functionality')} >Print List</Button>
     </Group>
     <ScrollArea sx={{ height: '70vh' }}>
         <Table
@@ -316,78 +290,68 @@ export function UserMgtTable({ data }: TableSortProps) {
               verticalSpacing="xs"
               striped
               highlightOnHover
-        sx={{ tableLayout: 'fixed', minWidth: 700 }}
+        sx={{ tableLayout: 'auto', minWidth: 700 }}
       >
         <thead>
             <tr>
               <th>
-
-              </th>
-              <th>
                 Action
               </th>
             <Th
-              sorted={sortBy === 'name'}
+              sorted={sortBy === 'deviceType'}
               reversed={reverseSortDirection}
-              onSort={() => setSorting('name')}
+              onSort={() => setSorting('deviceType')}
             >
-              Name
+              Device Type
             </Th>
             <Th
-              sorted={sortBy === 'birthday'}
+              sorted={sortBy === 'deviceCode'}
               reversed={reverseSortDirection}
-              onSort={() => setSorting('birthday')}
+              onSort={() => setSorting('deviceCode')}
             >
-              Birthday
+              Device Code
             </Th>
             <Th
-              sorted={sortBy === 'sex'}
+              sorted={sortBy === 'area'}
               reversed={reverseSortDirection}
-              onSort={() => setSorting('sex')}
+              onSort={() => setSorting('area')}
             >
-              Sex
+              Area
             </Th>
             <Th
-              sorted={sortBy === 'username'}
+              sorted={sortBy === 'level'}
               reversed={reverseSortDirection}
-              onSort={() => setSorting('username')}
+              onSort={() => setSorting('level')}
             >
-              Username
+              Level
             </Th>
             <Th
-              sorted={sortBy === 'emailAddress'}
+              sorted={sortBy === 'dateDeployed'}
               reversed={reverseSortDirection}
-              onSort={() => setSorting('emailAddress')}
+              onSort={() => setSorting('dateDeployed')}
             >
-              Email Address
+              Date Deployed
             </Th>
             <Th
-              sorted={sortBy === 'mobileNumber'}
+              sorted={sortBy === 'timeDeployed'}
               reversed={reverseSortDirection}
-              onSort={() => setSorting('mobileNumber')}
+              onSort={() => setSorting('timeDeployed')}
             >
-              Mobile Number
+              Time Deployed
             </Th>
             <Th
-              sorted={sortBy === 'landline'}
+              sorted={sortBy === 'dateRemoved'}
               reversed={reverseSortDirection}
-              onSort={() => setSorting('landline')}
+              onSort={() => setSorting('dateRemoved')}
             >
-              Landline
+              Date Removed
             </Th>
             <Th
-              sorted={sortBy === 'address'}
+              sorted={sortBy === 'frequency'}
               reversed={reverseSortDirection}
-              onSort={() => setSorting('address')}
+              onSort={() => setSorting('frequency')}
             >
-              Address
-            </Th>
-            <Th
-              sorted={sortBy === 'organization'}
-              reversed={reverseSortDirection}
-              onSort={() => setSorting('organization')}
-            >
-              Organization
+              Frequency
             </Th>
           </tr>
         </thead>

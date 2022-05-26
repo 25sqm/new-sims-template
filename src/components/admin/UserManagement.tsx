@@ -1,7 +1,6 @@
 import React from 'react'
 
-import { Title, Text, Paper, Divider, Group, MultiSelect } from '@mantine/core';
-import { DateRangePicker } from '@mantine/dates';
+import { Text, Paper, Divider } from '@mantine/core';
 import { UserMgtTable } from '../../modules/admin/UserMgtTable';
 const UserManagement = () => {
     const data = [
@@ -103,6 +102,28 @@ const UserManagement = () => {
             "landline": "",
             "address": "",
         "organization": "Mead Johnson Nutrition Incorporated - Philippines",
+      },
+      {
+        "name": "Reynaldo Sillo Jr.",
+        "birthday": "",
+        "sex": "M",
+        "username": "Reynaldo",
+        "emailAddress": "reynaldo.sillo@sterix.net",
+        "mobileNumber": "",
+            "landline": "",
+            "address": "",
+        "organization": "Dole Philippines - Dole UVO",
+      },
+      {
+        "name": "Reynaldo Lacebal",
+        "birthday": "",
+        "sex": "M",
+        "username": "RLACEBAL",
+        "emailAddress": "nutriasiamarilaosims@gmail.com",
+        "mobileNumber": "",
+            "landline": "",
+            "address": "",
+        "organization": "Nutri Asia Incorporated - Marilao Plant",
       },
     ]
 
