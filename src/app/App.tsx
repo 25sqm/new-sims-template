@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { AuthenticationForm } from '../components/AuthenticationForm';
 import { MantineProvider, ColorSchemeProvider, ColorScheme } from '@mantine/core';
+import { ModalsProvider } from '@mantine/modals';
 import { NotificationsProvider } from '@mantine/notifications';
-import { useHotkeys, useLocalStorage } from '@mantine/hooks';
+import { useLocalStorage } from '@mantine/hooks';
 
 import './App.css';
 
@@ -18,13 +19,16 @@ function App() {
   
   // temporary auth state management
   const [user, setUserState] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   return (
     <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
       <MantineProvider theme={{ colorScheme }}>
-        <NotificationsProvider>
-          {user !== null ? <DashboardShell user={user} setUserState={setUserState} /> : <AuthenticationForm user={user} setUserState={setUserState} />}
+        <ModalsProvider>
+          <NotificationsProvider>
+            {user !== null ? <DashboardShell user={user} isAdmin={isAdmin} setIsAdmin={setIsAdmin} setUserState={setUserState} /> : <AuthenticationForm user={user} isAdmin={isAdmin} setIsAdmin={setIsAdmin} setUserState={setUserState} />}
           </NotificationsProvider>
+        </ModalsProvider>
       </MantineProvider>
     </ColorSchemeProvider>
   );

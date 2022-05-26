@@ -17,13 +17,18 @@ import { Feedback } from './Feedback';
 import { ChangePasswordForm } from './ChangePasswordForm';
 import Reports from './Reports';
 import BaitStationMonitoring from './BaitStationMonitoring';
+import ServiceManagement from './admin/ServiceManagement'
+import DeviceManagement from './admin/DeviceManagement'
+import UserManagement from './admin/UserManagement'
 
 interface AuthFormProps {
   user: any,
   setUserState: any,
+  isAdmin: any, 
+  setIsAdmin: any,
 }
 
-const DashboardShell = ({user, setUserState}: AuthFormProps) => {
+const DashboardShell = ({user, setUserState, isAdmin, setIsAdmin}: AuthFormProps) => {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const [opened, setOpened] = useState(false);
   const theme = useMantineTheme();
@@ -35,7 +40,7 @@ const DashboardShell = ({user, setUserState}: AuthFormProps) => {
       fixed
       navbar={<Navbar width={{ sm: 300, lg: 350 }}  p="md" hiddenBreakpoint="sm" hidden={!opened}>
         <Navbar.Section grow mt="xs">
-          <MainLinks />
+          <MainLinks isAdmin={isAdmin} setIsAdmin={setIsAdmin} />
         </Navbar.Section>
         <Navbar.Section>
           <User user={user} setUserState={setUserState} />
@@ -67,15 +72,25 @@ const DashboardShell = ({user, setUserState}: AuthFormProps) => {
     >
       <Badge>Sterix Incorporated - Unit 701</Badge>
       <Routes>
-        <Route index element={<DashboardContents />} />
-        <Route path='/threshold-breach' element={<ThresholdBreaches />} />
-        <Route path='/findings' element={<Findings />} />
-        <Route path='/realtime' element={<RealtimeMonitoring />} />
-        <Route path='/service-orders' element={<ServiceOrders />} />
-        <Route path='/reports' element={<Reports />} />
-        <Route path='/feedback' element={<Feedback />} />
-        <Route path='/bait-monitoring' element={<BaitStationMonitoring />} />
-        <Route path='/change-password' element={<ChangePasswordForm />} />
+        {isAdmin ? (
+          <>
+            <Route index element={<ServiceManagement />} />
+            <Route path='/user-management' element={<UserManagement />} />
+            <Route path='/device-management' element={<DeviceManagement />} />
+          </>
+        ) : (
+            <>
+          <Route index element={<DashboardContents />} />
+          <Route path='/threshold-breach' element={<ThresholdBreaches />} />
+          <Route path='/findings' element={<Findings />} />
+          <Route path='/realtime' element={<RealtimeMonitoring />} />
+          <Route path='/service-orders' element={<ServiceOrders />} />
+          <Route path='/reports' element={<Reports />} />
+          <Route path='/feedback' element={<Feedback />} />
+          <Route path='/bait-monitoring' element={<BaitStationMonitoring />} />
+          <Route path='/change-password' element={<ChangePasswordForm />} />
+            </>
+        )}
       </Routes>
       
     </AppShell>
