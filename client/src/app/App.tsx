@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AuthenticationForm } from '../components/AuthenticationForm';
-import { MantineProvider, ColorSchemeProvider, ColorScheme } from '@mantine/core';
+import { MantineProvider, ColorSchemeProvider, ColorScheme, LoadingOverlay } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
 import { useHotkeys, useLocalStorage } from '@mantine/hooks';
 
@@ -23,8 +23,8 @@ function App() {
     <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
       <MantineProvider theme={{ colorScheme }}>
         <NotificationsProvider>
-          {user !== null ? <DashboardShell user={user} setUserState={setUserState} /> : <AuthenticationForm user={user} setUserState={setUserState} />}
-          </NotificationsProvider>
+            {user !== null ? <DashboardShell user={user} setUserState={setUserState} /> : <AuthenticationForm user={user} setUserState={setUserState} />}
+        </NotificationsProvider>
       </MantineProvider>
     </ColorSchemeProvider>
   );

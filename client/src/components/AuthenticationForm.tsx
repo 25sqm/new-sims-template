@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useForm } from '@mantine/hooks';
-import axios from 'axios';
 import {
   createStyles,
   TextInput,
@@ -26,7 +25,9 @@ interface AuthFormProps {
 
 const useStyles = createStyles((theme) => ({
   container: {
-    backgroundColor: `${theme.colorScheme === 'dark' ? theme.colors.dark[8]: theme.white}`
+    backgroundColor: `${theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.white}`,
+    width: '100vw',
+    height: '100vh'
   },
   containerCard: {
     width: '32vw',
@@ -73,7 +74,7 @@ export function AuthenticationForm({ user, setUserState }: AuthFormProps) {
               icon: <ExclamationMark />,
               autoClose: 2000,
             });
-          }, 1000);
+          }, 600);
     } else {
       const user = response.data;
       console.log(user.data)
@@ -86,14 +87,14 @@ export function AuthenticationForm({ user, setUserState }: AuthFormProps) {
                 icon: <Check />,
                 autoClose: 2000,
               });
-            }, 1000);
+            }, 600);
       setUserState(user.data);
     }
     
   }
 
   return (
-    <Center style={{ width: '100vw', height: '100vh' }} className={classes.container}>
+    <Center className={classes.container}>
     <Container size="xs" px="xs" className={classes.containerCard}>
       <Paper radius="md" p="xl" withBorder>
         <Center py="sm">
@@ -125,7 +126,6 @@ export function AuthenticationForm({ user, setUserState }: AuthFormProps) {
                   error={form.errors.password && 'Password should include at least 6 characters'}
                 />
               </Group>
-
               <Group position="apart" mt="xl">
             <Button onClick={handleAuth} type="submit">Login</Button>
               </Group>
