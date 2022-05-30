@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AuthenticationForm } from '../components/AuthenticationForm';
 import { MantineProvider, ColorSchemeProvider, ColorScheme } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals';
@@ -18,8 +18,18 @@ function App() {
   
   
   // temporary auth state management
-  const [user, setUserState] = useState(null);
+  const [user, setUserState] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    const token = sessionStorage.getItem('token');
+    console.log(token)
+    if (token !== null) {
+      const username = sessionStorage.getItem('user');
+      console.log(username)
+      setUserState(username);
+    }
+  }, [ user ]) 
 
   return (
     <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
