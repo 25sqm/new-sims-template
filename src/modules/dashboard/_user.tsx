@@ -5,9 +5,11 @@ import { UnstyledButton, Group, Avatar, Text, Box, useMantineTheme, Menu  } from
 interface AuthFormProps {
   user: any,
   setUserState: any,
+  isAdmin: any,
+  setIsAdmin: any,
 }
 
-export function User({ user, setUserState }: AuthFormProps) {
+export function User({ user, setUserState, isAdmin, setIsAdmin }: AuthFormProps) {
   const theme = useMantineTheme();
   useEffect(() => {
     console.log(user)
@@ -64,7 +66,7 @@ export function User({ user, setUserState }: AuthFormProps) {
       <Menu.Item component={Link} to="/change-password" icon={<ArrowsLeftRight size={14} />}>Change Password</Menu.Item>
       <Menu.Item onClick={() => {
         sessionStorage.clear()
-        setUserState(null)
+        setUserState(null);
       }} component="a" href="/" color="red" icon={<Logout size={14} />}>Log Out</Menu.Item>
     </Menu>
   );

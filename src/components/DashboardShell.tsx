@@ -43,7 +43,7 @@ const DashboardShell = ({user, setUserState, isAdmin, setIsAdmin}: AuthFormProps
           <MainLinks isAdmin={isAdmin} setIsAdmin={setIsAdmin} />
         </Navbar.Section>
         <Navbar.Section>
-          <User user={user} setUserState={setUserState} />
+          <User isAdmin={isAdmin} setIsAdmin={setIsAdmin} user={user} setUserState={setUserState} />
         </Navbar.Section>
       </Navbar>}
       header={<Header height={70} p="md">
