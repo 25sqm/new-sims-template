@@ -43,7 +43,7 @@ export function User({ user, setUserState }: AuthFormProps) {
           />
           <Box sx={{ flex: 1 }}>
             <Text size="sm" weight={500}>
-              {user.name}
+              {user}
             </Text>
             <Text color="dimmed" size="xs">
               Supervisor
@@ -62,7 +62,10 @@ export function User({ user, setUserState }: AuthFormProps) {
     })} control={userBtn}>
       <Menu.Label>User Control</Menu.Label>
       <Menu.Item component={Link} to="/change-password" icon={<ArrowsLeftRight size={14} />}>Change Password</Menu.Item>
-      <Menu.Item onClick={() => {setUserState({})}}component="a" href="/" color="red" icon={<Logout size={14} />}>Log Out</Menu.Item>
+      <Menu.Item onClick={() => {
+        sessionStorage.clear()
+        setUserState(null)
+      }} component="a" href="/" color="red" icon={<Logout size={14} />}>Log Out</Menu.Item>
     </Menu>
   );
 }

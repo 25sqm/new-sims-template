@@ -1,5 +1,6 @@
 import React from 'react';
 import { useForm } from '@mantine/hooks';
+import { encodeToken } from '../api/utils'
 import {
   createStyles,
   TextInput,
@@ -83,6 +84,8 @@ export function AuthenticationForm({ user, setUserState, isAdmin, setIsAdmin }: 
 
       // temporary admin switch
       // console.log("Admin? ", isAdmin);
+      sessionStorage.setItem('token', encodeToken(user.data.token))
+      sessionStorage.setItem('user', user.data.name)
       // console.log(user.data)
       setTimeout(() => {
               updateNotification({
