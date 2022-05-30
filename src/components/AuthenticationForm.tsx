@@ -83,9 +83,9 @@ export function AuthenticationForm({ user, setUserState, isAdmin, setIsAdmin }: 
       const user = response.data;
 
       // temporary admin switch
-      // console.log("Admin? ", isAdmin);
       sessionStorage.setItem('token', encodeToken(user.data.token))
       sessionStorage.setItem('user', user.data.name)
+      sessionStorage.setItem('isAdmin', JSON.stringify(isAdmin));
       // console.log(user.data)
       setTimeout(() => {
               updateNotification({

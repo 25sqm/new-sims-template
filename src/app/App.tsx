@@ -19,17 +19,17 @@ function App() {
   
   // temporary auth state management
   const [user, setUserState] = useState<string | null>(null);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
   useEffect(() => {
     const token = sessionStorage.getItem('token');
-    console.log(token)
     if (token !== null) {
       const username = sessionStorage.getItem('user');
-      console.log(username)
+      const adminToken = (sessionStorage.getItem('isAdmin') === 'true') ? true : false;
+      setIsAdmin(adminToken);
       setUserState(username);
     }
-  }, [ user ]) 
+  }, [user]) 
 
   return (
     <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
