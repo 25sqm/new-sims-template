@@ -1,7 +1,4 @@
 const axios = require("axios");
-const FormData = require("form-data");
-
-const authToken = sessionStorage.getItem("token");
 
 // Initial Config of API Route URLs
 const http = axios.create({

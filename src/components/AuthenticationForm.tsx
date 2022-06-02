@@ -96,8 +96,8 @@ export function AuthenticationForm({ user, setUserState, isAdmin, setIsAdmin }: 
                 icon: <Check />,
                 autoClose: 2000,
               });
-            }, 600);
-      setUserState(user.data);
+      }, 600);
+      setUserState(user.data.name);
     }
     
   }
