@@ -45,6 +45,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 interface RowData {
+    deviceID: string,
     deviceType: string,
       deviceCode: string,
       area: string,
@@ -111,11 +112,12 @@ function sortData(
   );
 }
 
-export function DeviceMgtTable({ data }: TableSortProps) {
+export function DeviceMgtTable({ data } : TableSortProps) {
   const { classes } = useStyles();
   const modals = useModals();
   const [search, setSearch] = useState('');
-  const [sortedData, setSortedData] = useState(data);
+  const [sortedData, setSortedData] = useState<RowData[]>(data);
+
   const [sortBy, setSortBy] = useState<keyof RowData>("deviceType");
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
 
@@ -251,9 +253,8 @@ export function DeviceMgtTable({ data }: TableSortProps) {
 
 
   // End Modals for Crud
-
   const rows = sortedData.map((row) => (
-    <tr key={row.deviceCode}>
+    <tr key={row.deviceID}>
       <td>
         <Group spacing="xs" noWrap={true}>
           <ActionIcon onClick={() => openEditModal({row})} size="sm" variant="light"><Edit size={15} /></ActionIcon>
@@ -269,7 +270,8 @@ export function DeviceMgtTable({ data }: TableSortProps) {
       <td className={classes.td} >{row.dateRemoved}</td>
       <td className={classes.td} >{row.frequency}</td>
     </tr>
-  )); 
+  ));
+
   return (
     <>
       <Group mb="md">
