@@ -11,7 +11,8 @@ import {
   ActionIcon,
   Button,
   SimpleGrid,
-  Pagination
+  Pagination,
+  Skeleton
 } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { Selector, ChevronDown, ChevronUp, Search, Edit, TrashX, Printer } from 'tabler-icons-react';
@@ -98,6 +99,7 @@ function sortData(
   data: RowData[],
   payload: { sortBy: keyof RowData; reversed: boolean; search: string }
 ) {
+  console.log('In func sortData: ', data)
   if (!payload.sortBy) {
     return filterData(data, payload.search);
   }
@@ -114,12 +116,14 @@ function sortData(
   );
 }
 
-export function DeviceMgtTable({ data }: TableSortProps) {
+export function DeviceMgtTable() {
   const { classes } = useStyles();
   const modals = useModals();
   const [search, setSearch] = useState('');
-  const [sortedData, setSortedData] = useState(data);
-
+  const [queryData, setQueryData] = useState({ data: [] });
+  const [sortedData, setSortedData] = useState<RowData[]>(queryData.data);
+  const [loading, setLoading] = useState(true);
+  const [activePage, setPage] = useState(1);
   const [sortBy, setSortBy] = useState<keyof RowData>("deviceType");
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
 
@@ -127,13 +131,15 @@ export function DeviceMgtTable({ data }: TableSortProps) {
     const reversed = field === sortBy ? !reverseSortDirection : false;
     setReverseSortDirection(reversed);
     setSortBy(field);
-    setSortedData(sortData(data, { sortBy: field, reversed, search }));
+    console.log('In fun setSorting: ', queryData.data)
+    setSortedData(sortData(queryData.data, { sortBy: field, reversed, search }));
   };
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.currentTarget;
     setSearch(value);
-    setSortedData(sortData(data, { sortBy, reversed: reverseSortDirection, search: value }));
+    setSortedData(sortData(queryData.data, { sortBy, reversed: reverseSortDirection, search: value }));
+
   };
   
    // Modals for CRUD
@@ -274,22 +280,99 @@ export function DeviceMgtTable({ data }: TableSortProps) {
     </tr>
   ));
 
-//   // 
-//   useEffect(() => {
-//     (async () => {
-//       try {
-//         const response: TableSortProps = await getDevices(1);
-//         setQueryData(response.data);
-//         setSortedData(queryData);
-//         console.log(queryData)
-//       } catch (err) {
-//         console.error(err);
-//       }
-//     })();
-//   }, [])
-// // 
+
+  
+  useEffect(() => {
+    (async () => {
+      const NewQueryData = await getDevices(1);
+      console.log(NewQueryData.data)
+      
+      const newTableData = encodeData(NewQueryData.data.data)
+      console.log('New Table Data: ', newTableData)
+
+      
+      setSortedData(newTableData.data);
+      setQueryData(NewQueryData.data);
+      setLoading(false);
+      console.log(queryData);
+  })();
+}, [])
+  
+  const getData = async () => {
+    const response = await getDevices(1);
+    return response.data;
+  }
+
+  const encodeData = (data : Object[]) => {
+    let tableData : RowData[] = [];
+    data.forEach((element : any) => {
+      let freqString = "";
+      if (element.f_m !== 0) {
+        freqString.concat("M");
+      }
+
+      if (element.f_t !== 0) {
+        freqString.concat(", ", "T");
+      }
+
+      if (element.f_w !== 0) {
+        freqString.concat(", ", "W");
+      }
+
+      if (element.f_th !== 0) {
+        freqString.concat(", ", "Th");
+      }
+
+      if (element.f_f !== 0) {
+        freqString.concat(", ", "F");
+      }
+
+      if (element.f_sat !== 0) {
+        freqString.concat(", ", "Sa");
+      }
+
+      if (element.f_sun !== 0) {
+        freqString.concat(", ", "Sun");
+      }
+
+      const dateDeployed = new Date(element.date_deployed).toLocaleDateString();
+      const timeDeployed = new Date(element.time_deployed).toLocaleTimeString();
+      const dateRemoved = new Date(element.date_removed).toLocaleDateString();
+      const level = element.level === null ? "" : element.level.toString();
+      const area = element.client_location_ID.toString();
+
+      const tableObject = {
+        deviceID: element.device_ID.toString(),
+        deviceType: element.device_type_name,
+        deviceCode: element.device_code,
+        area: area,
+        level: level,
+        dateDeployed: dateDeployed,
+        timeDeployed: timeDeployed,
+        dateRemoved: dateRemoved,
+        frequency: freqString,
+      };
+      tableData.push(tableObject);
+    });
+    const tableProps : TableSortProps = {
+      data: tableData,
+    };
+
+    return tableProps;
+  }
+
+  const reloadData = async (page: number) => {
+    setLoading(true);
+    const NewQueryData = await getDevices(page);
+    const newTableData = encodeData(NewQueryData.data.data)
+    setSortedData(newTableData.data);
+    setQueryData(NewQueryData.data);
+    setLoading(false);
+  }
+
   return (
     <>
+      
       <Group mb="md">
       <TextInput
         placeholder="Search by any field"
@@ -301,6 +384,7 @@ export function DeviceMgtTable({ data }: TableSortProps) {
       <Button leftIcon={<Printer size={14} />} onClick={() => alert('Future Functionality')} >QR Codes</Button>
       <Button variant="gradient" gradient={{ from: 'teal', to: 'blue', deg: 60 }} leftIcon={<Printer size={14} />} onClick={() => alert('Future Functionality')} >Print List</Button>
     </Group>
+      <Skeleton visible={loading}>
     <ScrollArea sx={{ height: 'auto' }}>
         <Table
           fontSize={12}
@@ -388,6 +472,12 @@ export function DeviceMgtTable({ data }: TableSortProps) {
         </tbody>
       </Table>
       </ScrollArea>
+        
+      </Skeleton>
+      <Pagination my='sm' page={activePage} onChange={(page) => {
+          reloadData(page);
+          setPage(page)
+        }} total={1261} />
       </>
   );
 }
