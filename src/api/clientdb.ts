@@ -1,26 +1,30 @@
 const axios = require("axios");
 
-const authToken = sessionStorage.getItem("token");
+// let authToken = sessionStorage.getItem("token");
 
 // Initial Config of API Route URLs
 const http = axios.create({
   baseURL: "http://18.141.0.46",
   headers: {
-    "X-Requested-With": "XMLHttpRequest",
-    Authorization: `Bearer ${authToken}`,
+    "X-Requested-With": "XMLHttpRequest"
   },
   withCredentials: true,
 });
 
 
 export async function getData() {
+    console.log('Getting Cookie...')
     const csrf = await http.get("/sanctum/csrf-cookie");
-    const breachCount = await http.get("/api/client/breach-incidents-count");
-    const findingsCount = await http.get("/api/client/findings-for-acknowledgement");
-    const acknowledgeCount = await http.get("/api/client/for-acknowledgement");
-    const nextVisit = await http.get("/api/client/next-visit");
-    const dailyPestCount = await http.get("/api/client/daily-pest-count");
-    const pieChartFindings = await http.get("/api/client/pie-chart-findings");
+
+    const authToken = sessionStorage.getItem("token");
+    const headers = { headers: { 'Authorization': `Bearer ${authToken}` } }
+    
+    const breachCount = await http.get("/api/client/breach-incidents-count", headers);
+    const findingsCount = await http.get("/api/client/findings-for-acknowledgement", headers);
+    const acknowledgeCount = await http.get("/api/client/for-acknowledgement", headers);
+    const nextVisit = await http.get("/api/client/next-visit", headers);
+    const dailyPestCount = await http.get("/api/client/daily-pest-count", headers);
+    const pieChartFindings = await http.get("/api/client/pie-chart-findings", headers);
     console.log('piechart findings: ', pieChartFindings)
     let datasets : any = [];
     dailyPestCount.data.forEach((dataset : any) => {

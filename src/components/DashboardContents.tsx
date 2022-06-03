@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {  Grid , Paper, ThemeIcon, Group, ActionIcon, Text, Center, SimpleGrid, ScrollArea, Title, Table, Avatar, Divider } from '@mantine/core';
+import {  Grid , Paper, ThemeIcon, Group, ActionIcon, Text, Center, SimpleGrid, ScrollArea, Title, Table, Avatar, Divider, LoadingOverlay } from '@mantine/core';
 import {CalendarEvent, ChevronRight, Stack2, Search, AlertTriangle, ExclamationMark } from 'tabler-icons-react'
 import DataTable from '../modules/dashboard/dataTable';
 import { getData } from '../api/clientdb';
@@ -369,9 +369,9 @@ const DeviceHealth = (props: { deviceHealth: IPMDeviceHealth[] }) => {
     <tr key={element.device_type_name}>
       <td style={{fontWeight: '500'}}>{element.device_type_name}</td>
       <td style={{color: 'green'}}>{element.good}</td>
-      <td style={element.damaged > 0 ? {color: 'yellow'} : {color: 'unset'}}>{element.damaged}</td>
-      <td style={element.for_repair > 0 ? {color: 'yellow'} : {color: 'unset'}}>{element.for_repair}</td>
-      <td style={element.blocked > 0 ? {color: 'yellow'} : {color: 'unset'}}>{element.blocked}</td>
+      <td style={element.damaged > 0 ? {color: 'red'} : {color: 'unset'}}>{element.damaged}</td>
+      <td style={element.for_repair > 0 ? {color: 'red'} : {color: 'unset'}}>{element.for_repair}</td>
+      <td style={element.blocked > 0 ? {color: 'red'} : {color: 'unset'}}>{element.blocked}</td>
     </tr>
   ));
 
@@ -397,7 +397,7 @@ const DeviceHealth = (props: { deviceHealth: IPMDeviceHealth[] }) => {
   return (
     <Paper shadow="md" p="md">
       <Title order={2}>IPM Device Health</Title>
-      <Text>Analysis: <span style={{color: 'green'}}>{percentage.toFixed(0)}%</span> of the devices are in good working condition</Text>
+      <Text mb='md'>Analysis: <span style={{color: 'green'}}>{percentage.toFixed(0)}%</span> of the devices are in good working condition</Text>
       <ScrollArea>
         <Table>
         <thead>
@@ -478,7 +478,7 @@ const CriticalFindings = (props: { criticalFindings: CriticalFinding[] }) => {
   return (
     <Paper shadow="md" p="md">
       <Title order={2} pb='md'>Critical Findings</Title>
-      <ScrollArea style={{ height: 250 }}>
+      <ScrollArea style={{ height: 250 }} offsetScrollbars>
         {criticalFindings.map((finding) => (
           <div key={finding.reference_no} style={{ margin: '0 0 10px 0', padding: '0 0 20px 0' }}>
           <Group align='top'>
@@ -488,16 +488,14 @@ const CriticalFindings = (props: { criticalFindings: CriticalFinding[] }) => {
             <div style={{ flexGrow: '1' }}>
               <Text weight={500}>{finding.findings}</Text>
               <Text size="xs" color="dimmed">
-                  SO: {finding.service_order_id} • {(new Date(finding.Timestamp)).toLocaleDateString('en-us', {weekday: 'short', year: 'numeric', day: '2-digit', month: 'short'})} • Ref:{finding.reference_no}
+                  SO: {finding.service_order_id} • {(new Date(finding.Timestamp)).toLocaleDateString('en-us', {weekday: 'short', year: 'numeric', day: '2-digit', month: 'short'})} • Ref: {finding.reference_no}
                 </Text>
-                {/* <Title order={4}>Proposed Action</Title> */}
                 <Divider my="xs" label="Proposed Action" />
                 <Text size="sm">
                   {finding.proposed_action}
                 </Text>
             </div>
           </Group>
-          
         </div>
         ))}
       </ScrollArea>
@@ -509,10 +507,11 @@ const CriticalFindings = (props: { criticalFindings: CriticalFinding[] }) => {
 
 const DashboardContents = () => {
   const [data, setData] = useState<DashboardData>({ 'breachCount': '', 'findingsCount': '', 'acknowledgeCount': '', 'nextVisit': '', 'dailyPestData': { 'labels': [''], 'datasets': [{ 'label': '', 'data': [], 'backgroundColor': '', 'borderColor': '' }] }, 'findingsData': { 'labels': [], 'datasets': [] } })
-
+  const [isLoading, setIsLoading] = useState(true);
   const load = () => [
     getData().then(payload => {
       setData(payload);
+      setIsLoading(false);
     }).catch(function (error) {
       console.log(error);
     })
@@ -522,7 +521,9 @@ const DashboardContents = () => {
     load();
   }, [])
   return (
-      <ScrollArea style={{height: 'auto'}}>
+      // <ScrollArea style={{height: 'auto'}}>
+    <>
+      <LoadingOverlay overlayOpacity={1} style={{ position: 'fixed'}} visible={isLoading} />
           <Grid py="md">
               <Grid.Col md={6} lg={3}>
                   <Paper shadow="md" p="md">
@@ -620,7 +621,8 @@ const DashboardContents = () => {
           <CriticalFindings criticalFindings={criticalFindings} />
         </div>
       </SimpleGrid> 
-      </ScrollArea>
+      </>
+      // </ScrollArea>
   )
 }
 
