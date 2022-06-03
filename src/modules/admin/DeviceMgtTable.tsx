@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   createStyles,
   Table,
@@ -10,11 +10,13 @@ import {
   TextInput,
   ActionIcon,
   Button,
-  SimpleGrid
+  SimpleGrid,
+  Pagination
 } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { Selector, ChevronDown, ChevronUp, Search, Edit, TrashX, Printer } from 'tabler-icons-react';
 import { useModals } from '@mantine/modals';
+import { getDevices } from '../../api/devices';
 
 
 const useStyles = createStyles((theme) => ({
@@ -22,11 +24,11 @@ const useStyles = createStyles((theme) => ({
     padding: '0 !important',
   },
   
-    td: {
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
-    },
+  td: {
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  },
 
   control: {
     width: '100%',
@@ -45,15 +47,15 @@ const useStyles = createStyles((theme) => ({
 }));
 
 interface RowData {
-    deviceID: string,
-    deviceType: string,
-      deviceCode: string,
-      area: string,
-      level: string,
-      dateDeployed: string,
-      timeDeployed: string,
-      dateRemoved: string,
-      frequency: string
+  deviceID: string,
+  deviceType: string,
+  deviceCode: string,
+  area: string,
+  level: string,
+  dateDeployed: string,
+  timeDeployed: string,
+  dateRemoved: string,
+  frequency: string
 }
 
 interface TableSortProps {
@@ -112,11 +114,11 @@ function sortData(
   );
 }
 
-export function DeviceMgtTable({ data } : TableSortProps) {
+export function DeviceMgtTable({ data }: TableSortProps) {
   const { classes } = useStyles();
   const modals = useModals();
   const [search, setSearch] = useState('');
-  const [sortedData, setSortedData] = useState<RowData[]>(data);
+  const [sortedData, setSortedData] = useState(data);
 
   const [sortBy, setSortBy] = useState<keyof RowData>("deviceType");
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
@@ -133,7 +135,7 @@ export function DeviceMgtTable({ data } : TableSortProps) {
     setSearch(value);
     setSortedData(sortData(data, { sortBy, reversed: reverseSortDirection, search: value }));
   };
-
+  
    // Modals for CRUD
   
    const openAddModal = ( ) => {
@@ -272,6 +274,20 @@ export function DeviceMgtTable({ data } : TableSortProps) {
     </tr>
   ));
 
+//   // 
+//   useEffect(() => {
+//     (async () => {
+//       try {
+//         const response: TableSortProps = await getDevices(1);
+//         setQueryData(response.data);
+//         setSortedData(queryData);
+//         console.log(queryData)
+//       } catch (err) {
+//         console.error(err);
+//       }
+//     })();
+//   }, [])
+// // 
   return (
     <>
       <Group mb="md">
@@ -281,11 +297,11 @@ export function DeviceMgtTable({ data } : TableSortProps) {
         value={search}
         onChange={handleSearchChange}
         />
-              <Button onClick={() => { openAddModal() }}>Add</Button>
-              <Button leftIcon={<Printer size={14} />} onClick={() => alert('Future Functionality')} >QR Codes</Button>
-              <Button variant="gradient" gradient={{ from: 'teal', to: 'blue', deg: 60 }} leftIcon={<Printer size={14} />} onClick={() => alert('Future Functionality')} >Print List</Button>
+      <Button onClick={() => { openAddModal() }}>Add</Button>
+      <Button leftIcon={<Printer size={14} />} onClick={() => alert('Future Functionality')} >QR Codes</Button>
+      <Button variant="gradient" gradient={{ from: 'teal', to: 'blue', deg: 60 }} leftIcon={<Printer size={14} />} onClick={() => alert('Future Functionality')} >Print List</Button>
     </Group>
-    <ScrollArea sx={{ height: '70vh' }}>
+    <ScrollArea sx={{ height: 'auto' }}>
         <Table
           fontSize={12}
         horizontalSpacing="md"
@@ -362,7 +378,7 @@ export function DeviceMgtTable({ data } : TableSortProps) {
             rows
           ) : (
             <tr>
-              <td colSpan={Object.keys(data).length}>
+              <td colSpan={9}>
                 <Text weight={500} align="center">
                   Nothing found
                 </Text>
