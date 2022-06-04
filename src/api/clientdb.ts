@@ -25,7 +25,10 @@ export async function getData() {
     const nextVisit = await http.get("/api/client/next-visit", headers);
     const dailyPestCount = await http.get("/api/client/daily-pest-count", headers);
     const pieChartFindings = await http.get("/api/client/pie-chart-findings", headers);
-    console.log('piechart findings: ', pieChartFindings)
+    const devicesData = await http.get("/api/v1/device/status", headers);
+    const criticalFindings = await http.get("/api/v1/findings/type/critical", headers);
+    const pestCountMetrics = await http.get("/api/v1/pest_found/total", headers);
+
     let datasets : any = [];
     dailyPestCount.data.forEach((dataset : any) => {
         const label = dataset.pestCode;
@@ -79,6 +82,9 @@ export async function getData() {
         'nextVisit': nextVisit.data.results,
         'dailyPestData': dailyPestTableData,
         'findingsData': findingsTableData,
+        'devicesData': devicesData.data,
+        'criticalFindings': criticalFindings.data,
+        'pestCountMetrics': pestCountMetrics.data
     }
     return dbData
     // console.log(dbData);

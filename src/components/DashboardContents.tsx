@@ -24,7 +24,10 @@ interface DashboardData {
   'findingsData': {
     'labels': string[],
     'datasets': Object[]
-  }
+  },
+  'devicesData': IPMDeviceHealth[],
+  'criticalFindings': CriticalFinding[],
+  'pestCountMetrics': PestCountMetric[]
 }
 
 interface IPMDeviceHealth {
@@ -95,277 +98,13 @@ const pestOptions = {
 
 // DATA
 
-const deviceHealth : IPMDeviceHealth[] = [
-  {
-     "device_type_name":"Cage Trap (Big)",
-     "good":1,
-     "damaged":"0",
-     "for_repair":"0", 
-     "blocked":"1",
-     "total":2
-  },
-  {
-     "device_type_name":"Glue Trap",
-     "good":2,
-     "damaged":"0",
-     "for_repair":"0",
-     "blocked":"0",
-     "total":2
-  },
-  {
-     "device_type_name":"Rodent Bait Station (Tamper Proof)",
-     "good":1,
-     "damaged":"0",
-     "for_repair":"0",
-     "blocked":"0",
-     "total":1
-  },
-  {
-     "device_type_name":"Insect Light Trap",
-     "good":1,
-     "damaged":"0",
-     "for_repair":"0",
-     "blocked":"0",
-     "total":1
-  }
-]
-
-const pestCountMetric : PestCountMetric[] = [
-  {
-     "pest_type_name":"Flying Insects",
-     "today":"0",
-     "yesterday":"0",
-     "this_week":"0",
-     "last_week":"0"
-  },
-  {
-     "pest_type_name":"Roaches",
-     "today":"0",
-     "yesterday":"0",
-     "this_week":"0",
-     "last_week":"0"
-  },
-  {
-     "pest_type_name":"Wildlife",
-     "today":"0",
-     "yesterday":"0",
-     "this_week":"0",
-     "last_week":"0"
-  },
-  {
-     "pest_type_name":"Rodent",
-     "today":"0",
-     "yesterday":"0",
-     "this_week":"0",
-     "last_week":"0"
-  },
-  {
-     "pest_type_name":"Stray Animals",
-     "today":"0",
-     "yesterday":"0",
-     "this_week":"0",
-     "last_week":"0"
-  },
-  {
-     "pest_type_name":"Occasional Invaders \/ Nuisance Pest",
-     "today":"0",
-     "yesterday":"0",
-     "this_week":"0",
-     "last_week":"0"
-  },
-  {
-     "pest_type_name":"Stored Product Pest",
-     "today":"0",
-     "yesterday":"0",
-     "this_week":"0",
-     "last_week":"0"
-  },
-  {
-     "pest_type_name":"Wood Destroying Organism",
-     "today":"0",
-     "yesterday":"0",
-     "this_week":"0",
-     "last_week":"0"
-  },
-  {
-     "pest_type_name":"Ants",
-     "today":"1",
-     "yesterday":"0",
-     "this_week":"1",
-     "last_week":"0"
-  },
-  {
-     "pest_type_name":"Mold Feeding Organisms",
-     "today":"0",
-     "yesterday":"0",
-     "this_week":"0",
-     "last_week":"0"
-  }
-]
-
-const criticalFindings : CriticalFinding[] = [
-  {
-     "reference_no":702,
-     "service_order_id":872,
-     "Timestamp":"2022-02-19",
-     "findings":"DRAINAGES AND SEWERS - Unsanitary condition of internal parts of drains and floor drains.  ",
-     "proposed_action":"Floor",
-     "area":"Training Room",
-     "status":"Open",
-     "action_taken":"",
-     "actiontaken_by_client":"",
-     "person_in_charge":"",
-     "risk_assessment":"Critical",
-     "client_location_name":"R3hvSVJBeUNRQjJBcVFIbWdVL1QwQTNZdFNlK0QzTlUyVHBxTHZIcXVlZz0="
-  },
-  {
-     "reference_no":538,
-     "service_order_id":751,
-     "Timestamp":"2021-11-08",
-     "findings":"Test3",
-     "proposed_action":"Test3",
-     "area":"Pantry Area",
-     "status":"Open",
-     "action_taken":"Test3",
-     "actiontaken_by_client":"",
-     "person_in_charge":"Ivan",
-     "risk_assessment":"Critical",
-     "client_location_name":"R3hvSVJBeUNRQjJBcVFIbWdVL1QwQTNZdFNlK0QzTlUyVHBxTHZIcXVlZz0="
-  },
-  {
-     "reference_no":460,
-     "service_order_id":717,
-     "Timestamp":"2021-10-13",
-     "findings":"Food residue",
-     "proposed_action":"For cleaning",
-     "area":"I.T. Office",
-     "status":"Open",
-     "action_taken":"Reported. ",
-     "actiontaken_by_client":"Cleaned",
-     "person_in_charge":"Sanitation",
-     "risk_assessment":"Critical",
-     "client_location_name":"R3hvSVJBeUNRQjJBcVFIbWdVL1QwQTNZdFNlK0QzTlUyVHBxTHZIcXVlZz0="
-  },
-  {
-     "reference_no":516,
-     "service_order_id":732,
-     "Timestamp":"2021-10-23",
-     "findings":"Food residue",
-     "proposed_action":"For cleaning",
-     "area":"I.T. Office",
-     "status":"Open",
-     "action_taken":"Reported",
-     "actiontaken_by_client":"",
-     "person_in_charge":"Sanitation",
-     "risk_assessment":"Critical",
-     "client_location_name":"R3hvSVJBeUNRQjJBcVFIbWdVL1QwQTNZdFNlK0QzTlUyVHBxTHZIcXVlZz0="
-  },
-  {
-     "reference_no":524,
-     "service_order_id":737,
-     "Timestamp":"2021-11-01",
-     "findings":"Food residue",
-     "proposed_action":"For cleaning",
-     "area":"I.T. Office",
-     "status":"Open",
-     "action_taken":"Reported",
-     "actiontaken_by_client":"",
-     "person_in_charge":"Sanitation",
-     "risk_assessment":"Critical",
-     "client_location_name":"R3hvSVJBeUNRQjJBcVFIbWdVL1QwQTNZdFNlK0QzTlUyVHBxTHZIcXVlZz0="
-  },
-  {
-     "reference_no":535,
-     "service_order_id":812,
-     "Timestamp":"2021-11-05",
-     "findings":"Food residue",
-     "proposed_action":"For cleaning",
-     "area":"I.T. Office",
-     "status":"Open",
-     "action_taken":"Reported",
-     "actiontaken_by_client":"",
-     "person_in_charge":"Sanitation",
-     "risk_assessment":"Critical",
-     "client_location_name":"R3hvSVJBeUNRQjJBcVFIbWdVL1QwQTNZdFNlK0QzTlUyVHBxTHZIcXVlZz0="
-  },
-  {
-     "reference_no":573,
-     "service_order_id":835,
-     "Timestamp":"2021-11-17",
-     "findings":"Findings Dummy Data 2021.11.17",
-     "proposed_action":"Action data",
-     "area":"I.T. Office",
-     "status":"Open",
-     "action_taken":"Reported to",
-     "actiontaken_by_client":"",
-     "person_in_charge":"Client",
-     "risk_assessment":"Critical",
-     "client_location_name":"R3hvSVJBeUNRQjJBcVFIbWdVL1QwQTNZdFNlK0QzTlUyVHBxTHZIcXVlZz0="
-  },
-  {
-     "reference_no":553,
-     "service_order_id":813,
-     "Timestamp":"2021-11-19",
-     "findings":"Food residue.",
-     "proposed_action":"For cleaning",
-     "area":"I.T. Office",
-     "status":"Open",
-     "action_taken":"Reported",
-     "actiontaken_by_client":"",
-     "person_in_charge":"Sanitation",
-     "risk_assessment":"Critical",
-     "client_location_name":"R3hvSVJBeUNRQjJBcVFIbWdVL1QwQTNZdFNlK0QzTlUyVHBxTHZIcXVlZz0="
-  },
-  {
-     "reference_no":574,
-     "service_order_id":813,
-     "Timestamp":"2021-11-19",
-     "findings":"Dusty floor",
-     "proposed_action":"For cleaning",
-     "area":"I.T. Office",
-     "status":"Open",
-     "action_taken":"Reported to client",
-     "actiontaken_by_client":"",
-     "person_in_charge":"Sanitation",
-     "risk_assessment":"Critical",
-     "client_location_name":"R3hvSVJBeUNRQjJBcVFIbWdVL1QwQTNZdFNlK0QzTlUyVHBxTHZIcXVlZz0="
-  },
-  {
-     "reference_no":575,
-     "service_order_id":813,
-     "Timestamp":"2021-11-19",
-     "findings":"Garbage",
-     "proposed_action":"For disposal",
-     "area":"I.T. Office",
-     "status":"Open",
-     "action_taken":"Reported to client",
-     "actiontaken_by_client":"Cleaned",
-     "person_in_charge":"Sanitation",
-     "risk_assessment":"Critical",
-     "client_location_name":"R3hvSVJBeUNRQjJBcVFIbWdVL1QwQTNZdFNlK0QzTlUyVHBxTHZIcXVlZz0="
-  },
-  {
-     "reference_no":576,
-     "service_order_id":836,
-     "Timestamp":"2021-11-20",
-     "findings":"Food clutters",
-     "proposed_action":"Immediate cleaning ",
-     "area":"I.T. Office",
-     "status":"Open",
-     "action_taken":"Discuss to contact person",
-     "actiontaken_by_client":"",
-     "person_in_charge":"",
-     "risk_assessment":"Critical",
-     "client_location_name":"R3hvSVJBeUNRQjJBcVFIbWdVL1QwQTNZdFNlK0QzTlUyVHBxTHZIcXVlZz0="
-  }
-]
 
 // DATA END
 
 // MODULES
 
-const DeviceHealth = (props: { deviceHealth: IPMDeviceHealth[] }) => {
-  const rows = deviceHealth.map((element: any) => (
+const DeviceHealth = ( { devicesData }: DashboardData ) => {
+  const rows = devicesData.map((element: any) => (
     <tr key={element.device_type_name}>
       <td style={{fontWeight: '500'}}>{element.device_type_name}</td>
       <td style={{color: 'green'}}>{element.good}</td>
@@ -377,7 +116,7 @@ const DeviceHealth = (props: { deviceHealth: IPMDeviceHealth[] }) => {
 
   let totalGood = 0;
   let totalCount = 0
-  deviceHealth.forEach((element) => {
+  devicesData.forEach((element) => {
     totalGood += element.total
     if ((Number(element.blocked) !== 0)) {
       totalCount += Number(element.blocked)
@@ -416,7 +155,7 @@ const DeviceHealth = (props: { deviceHealth: IPMDeviceHealth[] }) => {
   )
 }
 
-const PestCountMetrics = (props: { pestCountMetric: PestCountMetric[] }) => {
+const PestCountMetrics = ({ pestCountMetrics }: DashboardData) => {
 
   const percentChange = (today: string, yesterday: string) => {
     const todayValue = Number(today);
@@ -435,7 +174,7 @@ const PestCountMetrics = (props: { pestCountMetric: PestCountMetric[] }) => {
 }
 
 
-  const rows = pestCountMetric.map((element: any) => (
+  const rows = pestCountMetrics.map((element: any) => (
     <tr key={element.pest_type_name}>
       <td>{element.pest_type_name}</td>
       {(Number(element.today) !== 0) ?
@@ -474,7 +213,7 @@ const PestCountMetrics = (props: { pestCountMetric: PestCountMetric[] }) => {
   )
 }
 
-const CriticalFindings = (props: { criticalFindings: CriticalFinding[] }) => {
+const CriticalFindings = ({ criticalFindings } : DashboardData) => {
   return (
     <Paper shadow="md" p="md">
       <Title order={2} pb='md'>Critical Findings</Title>
@@ -506,7 +245,7 @@ const CriticalFindings = (props: { criticalFindings: CriticalFinding[] }) => {
 // MODULES END
 
 const DashboardContents = () => {
-  const [data, setData] = useState<DashboardData>({ 'breachCount': '', 'findingsCount': '', 'acknowledgeCount': '', 'nextVisit': '', 'dailyPestData': { 'labels': [''], 'datasets': [{ 'label': '', 'data': [], 'backgroundColor': '', 'borderColor': '' }] }, 'findingsData': { 'labels': [], 'datasets': [] } })
+  const [data, setData] = useState<DashboardData>({ 'breachCount': '', 'findingsCount': '', 'acknowledgeCount': '', 'nextVisit': '', 'dailyPestData': { 'labels': [''], 'datasets': [{ 'label': '', 'data': [], 'backgroundColor': '', 'borderColor': '' }] }, 'findingsData': { 'labels': [], 'datasets': [] }, 'devicesData': [], 'criticalFindings': [], 'pestCountMetrics': [] })
   const [isLoading, setIsLoading] = useState(true);
   const load = () => [
     getData().then(payload => {
@@ -612,13 +351,13 @@ const DashboardContents = () => {
           </Paper>
         </div>
         <div>
-          <DeviceHealth deviceHealth={deviceHealth}/>
+          <DeviceHealth {...data}/>
         </div>
         <div>
-          <PestCountMetrics pestCountMetric={pestCountMetric} />
+          <PestCountMetrics {...data} />
         </div>
         <div>
-          <CriticalFindings criticalFindings={criticalFindings} />
+          <CriticalFindings {...data} />
         </div>
       </SimpleGrid> 
       </>
