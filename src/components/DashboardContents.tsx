@@ -95,12 +95,6 @@ const pestOptions = {
 
 // Chart Options END
 
-
-// DATA
-
-
-// DATA END
-
 // MODULES
 
 const DeviceHealth = ( { devicesData }: DashboardData ) => {

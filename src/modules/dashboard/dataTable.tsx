@@ -1,4 +1,5 @@
 import React from 'react'
+import Chart from "react-apexcharts";
 import { Line, Pie, Bar } from 'react-chartjs-2';
 import {
     Chart as ChartJS,
@@ -32,9 +33,30 @@ interface dataTableProps  {
     chartType: String,
 }
 
+
+
 const DataTable = ({ options, data, chartType }: dataTableProps) => {
+    let newSeries: { name: string, data: number[] }[] = [];
+    const labels = data.labels;
+
+    data.datasets.forEach((element: { label: string, data: number[] }) => {
+        newSeries.push({ name: element.label, data: element.data })
+    }) 
+    
+    const lineOptions = {
+        xaxis: {categories: labels}
+    }
+
     if (chartType === 'line') {
-        return <><Line options={options} data={data} /></>
+        return <>
+            <Line options={options} data={data} />
+            {/* <Chart
+              options={lineOptions}
+              series={newSeries}
+              type="bar"
+              width="auto"
+            /> */}
+        </>
     } else if (chartType === 'pie') {
         return <>
         <Pie width={500} height={360} data={data} options={options} />
