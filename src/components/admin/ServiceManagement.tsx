@@ -26,6 +26,7 @@ const ServiceManagement = () => {
 						'Status',
 						'Action',
 					]}
+					filterableHeadings={['location', 'service_type']}
 				/>
 			</Paper>
 		</>

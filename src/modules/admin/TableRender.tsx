@@ -45,13 +45,27 @@ interface Props {
 	idColumn: string;
 	ignoreColumn?: string;
 	columnHeadings?: Array<string>;
+	filterableHeadings?: Array<string>;
 }
+
+// const filterData = (data: Array<Object>, filterQuery: string) => {
+// 	const keys = Object.keys(data[0]);
+// 	const query = filterQuery.toLowerCase().trim();
+// 	return data.filter((item: any) =>
+// 		keys.some(
+// 			(key: any) =>
+// 				typeof item[key] === 'string' &&
+// 				item[key].toLowerCase().includes(query),
+// 		),
+// 	);
+// };
 
 const TableRender = ({
 	data,
 	idColumn,
 	ignoreColumn,
 	columnHeadings,
+	filterableHeadings,
 }: Props) => {
 	const { classes } = useStyles();
 	const [loading, setLoading] = useState<boolean>(true);
@@ -75,10 +89,38 @@ const TableRender = ({
 		);
 	});
 
+	const filters = filterableHeadings ? (
+		filterableHeadings.map((filter) => {
+			const arrayValues: string[] = ['All'];
+			data.forEach((el: any) => {
+				if (arrayValues.includes(el[filter]) !== true) {
+					arrayValues.push(el[filter]);
+					console.log('Pushed');
+				}
+			});
+
+			console.log(arrayValues);
+			return (
+				<NativeSelect
+					data={arrayValues}
+					onChange={(event) => {
+						// if (event.currentTarget.value !== 'All') {
+						// 	changeFilter(event.currentTarget.value);
+						// } else reloadData(1);
+					}}
+					placeholder={filter}
+					label={`Filter ${filter}`}
+				/>
+			);
+		})
+	) : (
+		<></>
+	);
+
 	useEffect(() => {
-		console.log(data);
-		console.log(idColumn);
-		setLoading(false);
+		setTimeout(function () {
+			setLoading(false);
+		}, 300);
 	}, []);
 
 	const reloadData = (page: number) => {
@@ -89,9 +131,19 @@ const TableRender = ({
 		setLoading(false);
 	};
 
+	// const changeFilter = (query: string) => {
+	// 	setLoading(true);
+	// 	setDataRendered(filterData(data, query).slice(0, 9));
+	// 	setLoading(false);
+	// };
+
 	return (
 		<>
 			<Skeleton visible={loading}>
+				<Group>
+					<></>
+					{filterableHeadings ? <Group> {filters} </Group> : <></>}
+				</Group>
 				<ScrollArea sx={{ height: 'auto' }}>
 					<Table
 						fontSize={12}
@@ -122,19 +174,22 @@ const TableRender = ({
 			</Skeleton>
 			<Group>
 				<Text>
-					<Group>
+					{/* <Group>
 						Showing 1 to {currentLimit} of {data.length} rows{' '}
 						<NativeSelect
 							data={['10', '25', '50']}
-							placeholder={'10'}
+							value={currentLimit}
+							placeholder={currentLimit.toString()}
 							onChange={(event) => {
-								setPage(1);
 								setCurrentLimit(Number(event.currentTarget.value));
+								console.log(event);
+								console.log(currentLimit);
+								setPage(1);
 								reloadData(1);
 							}}
 						/>
 						rows per page
-					</Group>
+					</Group> */}
 				</Text>
 				<Pagination
 					my="sm"
@@ -143,7 +198,7 @@ const TableRender = ({
 						reloadData(page);
 						setPage(page);
 					}}
-					total={data.length / 10}
+					total={Math.floor(data.length / 10)}
 				/>
 			</Group>
 		</>
