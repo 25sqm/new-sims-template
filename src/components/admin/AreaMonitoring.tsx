@@ -1,36 +1,39 @@
 import React, { useEffect } from 'react';
 
 import { Title, Text, Paper, Divider } from '@mantine/core';
-import { serviceOrders } from './dummyData';
+import { areaMonitoring } from './dummyData';
 import TableRender from '../../modules/admin/TableRender';
 
-const ServiceManagement = () => {
+const AreaMonitoring = () => {
 	return (
 		<>
 			<Paper shadow="md" p="sm" my="md" sx={{ height: 'auto' }}>
-				<Text size="xl">Service Order</Text>
+				<Text size="xl">Area Monitoring</Text>
 				<Divider my="sm" />
 				<TableRender
-					data={serviceOrders}
+					data={areaMonitoring}
 					idColumn={'ref_no'}
 					ignoreColumn={'actionbtn'}
 					columnHeadings={[
-						'ID',
+						'',
+						'',
+						'Service Order',
 						'Ref No',
-						'Service Type',
-						'Location',
-						'Staff',
-						'Date',
-						'Time',
-						'End Time',
+						'Site',
+						'Area',
+						'Findings',
+						'Proposed Action',
+						'Action Taken',
+						'Person In Charge',
+						'Risk Assessment',
 						'Status',
-						'Action',
+						'Timestamp',
 					]}
-					filterableHeadings={['location', 'service_type']}
+					filterableHeadings={['area', 'status']}
 				/>
 			</Paper>
 		</>
 	);
 };
 
-export default ServiceManagement;
+export default AreaMonitoring;
