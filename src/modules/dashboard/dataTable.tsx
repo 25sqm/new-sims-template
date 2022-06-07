@@ -54,7 +54,7 @@ const DataTable = ({ options, data, chartType }: dataTableProps) => {
               options={lineOptions}
               series={newSeries}
               type="bar"
-              width="auto"
+              width="700"
             /> */}
         </>
     } else if (chartType === 'pie') {
