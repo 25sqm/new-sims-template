@@ -13,7 +13,6 @@ const http = axios.create({
 
 
 export async function getData() {
-    console.log('Getting Cookie...')
     const csrf = await http.get("/sanctum/csrf-cookie");
 
     const authToken = sessionStorage.getItem("token");
@@ -28,7 +27,6 @@ export async function getData() {
     const devicesData = await http.get("/api/v1/device/status", headers);
     const criticalFindings = await http.get("/api/v1/findings/type/critical", headers);
     const pestCountMetrics = await http.get("/api/v1/pest_found/total", headers);
-
     let datasets : any = [];
     dailyPestCount.data.forEach((dataset : any) => {
         const label = dataset.pestCode;
@@ -73,8 +71,6 @@ export async function getData() {
             }
         ]
     }
-
-
     const dbData = {
         'breachCount': breachCount.data[0].data,
         'findingsCount': findingsCount.data[0].findings_for_acknowledgement,

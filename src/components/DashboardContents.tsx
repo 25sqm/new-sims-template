@@ -95,12 +95,6 @@ const pestOptions = {
 
 // Chart Options END
 
-
-// DATA
-
-
-// DATA END
-
 // MODULES
 
 const DeviceHealth = ( { devicesData }: DashboardData ) => {
@@ -267,9 +261,9 @@ const DashboardContents = () => {
               <Grid.Col md={6} lg={3}>
                   <Paper shadow="md" p="md">
                       <Group spacing='xs'>
-                      <ThemeIcon variant="light" radius="xs" size={40}>
+                      {/* <ThemeIcon variant="light" radius="xs" size={40}>
                         <CalendarEvent size={20}/>
-                          </ThemeIcon>
+                          </ThemeIcon> */}
                           <Group grow direction='column' spacing={0}>
                               <h5 style={{ marginTop: 0, marginBottom: 0}}>{data.nextVisit.toString()}</h5>
                               <Text color="dimmed" size="sm" sx={{ marginTop: 0, marginBottom: 5 }}>Schedule of Next Visit</Text>
@@ -284,9 +278,9 @@ const DashboardContents = () => {
               <Grid.Col md={6} lg={3}>
                   <Paper shadow="md" p="md">
                   <Group spacing='xs'>
-                      <ThemeIcon color="red" variant="light" radius="xs" size={40}>
+                      {/* <ThemeIcon color="red" variant="light" radius="xs" size={40}>
                         <Stack2 size={20}/>
-                          </ThemeIcon>
+                          </ThemeIcon> */}
                           <Group grow direction='column' spacing={0}>
                               <h5 style={{ marginTop: 0, marginBottom: 0}}>{data.acknowledgeCount.toString()}</h5>
                               <Text color="dimmed" size="sm" sx={{ marginTop: 0, marginBottom: 5 }}>S.O. for Acknowledgement</Text>
@@ -301,9 +295,9 @@ const DashboardContents = () => {
               <Grid.Col md={6} lg={3}>
                   <Paper shadow="md" p="md">
                   <Group spacing='xs'>
-                      <ThemeIcon color="yellow" variant="light" radius="xs" size={40}>
+                      {/* <ThemeIcon color="yellow" variant="light" radius="xs" size={40}>
                         <Search size={20}/>
-                          </ThemeIcon>
+                          </ThemeIcon> */}
                           <Group grow direction='column' spacing={0}>
                               <h5 style={{ marginTop: 0, marginBottom: 0}}>{data.findingsCount.toString()}</h5>
                               <Text color="dimmed" size="sm" sx={{ marginTop: 0, marginBottom: 5 }}>Findings for Acknowledgement</Text>
@@ -318,9 +312,9 @@ const DashboardContents = () => {
               <Grid.Col md={6} lg={3}>
                   <Paper shadow="md" p="md">
                   <Group spacing='xs'>
-                      <ThemeIcon color="gray" variant="light" radius="xs" size={40}>
+                      {/* <ThemeIcon color="gray" variant="light" radius="xs" size={40}>
                         <AlertTriangle size={20}/>
-                          </ThemeIcon>
+                          </ThemeIcon> */}
                           <Group grow direction='column' spacing={0}>
                               <h5 style={{ marginTop: 0, marginBottom: 0}}>{data.breachCount}</h5>
                               <Text color="dimmed" size="sm" sx={{ marginTop: 0, marginBottom: 5 }}>Threshold Breach</Text>
