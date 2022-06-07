@@ -191,15 +191,19 @@ const TableRender = ({
 						rows per page
 					</Group> */}
 				</Text>
-				<Pagination
-					my="sm"
-					page={activePage}
-					onChange={(page) => {
-						reloadData(page);
-						setPage(page);
-					}}
-					total={Math.floor(data.length / 10)}
-				/>
+				{data.length >= 9 ? (
+					<Pagination
+						my="sm"
+						page={activePage}
+						onChange={(page) => {
+							reloadData(page);
+							setPage(page);
+						}}
+						total={Math.floor(data.length / 10)}
+					/>
+				) : (
+					<></>
+				)}
 			</Group>
 		</>
 	);
