@@ -70,6 +70,26 @@ interface ThProps {
   onSort(): void;
 }
 
+interface DeviceData {
+  'device_type_ID': number,
+  'device_code': string,
+  'client_location_area_ID': number,
+  'client_location_ID': number,
+  'date_deployed': string,
+  'time_deployed': string,
+  'date_removed': string,
+  'user_ID': number,
+  'f_m': number,
+  'f_t': number,
+  'f_w': number,
+  'f_th': number,
+  'f_f': number,
+  'f_sat': number,
+  'f_sun': number,
+  'top_pos': number,
+  'left_pos': number
+}
+
 function Th({ children, reversed, sorted, onSort }: ThProps) {
   const { classes } = useStyles();
   const Icon = sorted ? (reversed ? ChevronUp : ChevronDown) : Selector;
@@ -126,6 +146,7 @@ export function DeviceMgtTable() {
   const [activePage, setPage] = useState(1);
   const [sortBy, setSortBy] = useState<keyof RowData>("deviceType");
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
+  const [deviceToBeAdded, setDeviceToBeAdded] = useState<DeviceData>();
 
   const setSorting = (field: keyof RowData) => {
     const reversed = field === sortBy ? !reverseSortDirection : false;
@@ -141,6 +162,79 @@ export function DeviceMgtTable() {
     setSortedData(sortData(queryData.data, { sortBy, reversed: reverseSortDirection, search: value }));
 
   };
+
+    
+  const getData = async () => {
+    const response = await getDevices(1);
+    return response.data;
+  }
+
+  const encodeData = (data : Object[]) => {
+    let tableData : RowData[] = [];
+    data.forEach((element : any) => {
+      let freqString = "";
+      if (element.f_m !== 0) {
+        freqString.concat("M");
+      }
+
+      if (element.f_t !== 0) {
+        freqString.concat(", ", "T");
+      }
+
+      if (element.f_w !== 0) {
+        freqString.concat(", ", "W");
+      }
+
+      if (element.f_th !== 0) {
+        freqString.concat(", ", "Th");
+      }
+
+      if (element.f_f !== 0) {
+        freqString.concat(", ", "F");
+      }
+
+      if (element.f_sat !== 0) {
+        freqString.concat(", ", "Sa");
+      }
+
+      if (element.f_sun !== 0) {
+        freqString.concat(", ", "Sun");
+      }
+
+      const dateDeployed = new Date(element.date_deployed).toLocaleDateString();
+      const timeDeployed = new Date(element.time_deployed).toLocaleTimeString();
+      const dateRemoved = new Date(element.date_removed).toLocaleDateString();
+      const level = element.level === null ? "" : element.level.toString();
+      const area = element.client_location_ID.toString();
+
+      const tableObject = {
+        deviceID: element.device_ID.toString(),
+        deviceType: element.device_type_name,
+        deviceCode: element.device_code,
+        area: area,
+        level: level,
+        dateDeployed: dateDeployed,
+        timeDeployed: timeDeployed,
+        dateRemoved: dateRemoved,
+        frequency: freqString,
+      };
+      tableData.push(tableObject);
+    });
+    const tableProps : TableSortProps = {
+      data: tableData,
+    };
+
+    return tableProps;
+  }
+
+  const reloadData = async (page: number) => {
+    setLoading(true);
+    const NewQueryData = await getDevices(page);
+    const newTableData = encodeData(NewQueryData.data.data)
+    setSortedData(newTableData.data);
+    setQueryData(NewQueryData.data);
+    setLoading(false);
+  }
   
    // Modals for CRUD
   
@@ -230,8 +324,6 @@ export function DeviceMgtTable() {
     });
   };
 
-
-
   const openDeleteModal = ({ row }: any) => {
     const deleteID = modals.openModal({
       title: 'Delete Device',
@@ -281,7 +373,6 @@ export function DeviceMgtTable() {
   ));
 
 
-  
   useEffect(() => {
     (async () => {
       const NewQueryData = await getDevices(1);
@@ -297,78 +388,7 @@ export function DeviceMgtTable() {
       console.log(queryData);
   })();
 }, [])
-  
-  const getData = async () => {
-    const response = await getDevices(1);
-    return response.data;
-  }
 
-  const encodeData = (data : Object[]) => {
-    let tableData : RowData[] = [];
-    data.forEach((element : any) => {
-      let freqString = "";
-      if (element.f_m !== 0) {
-        freqString.concat("M");
-      }
-
-      if (element.f_t !== 0) {
-        freqString.concat(", ", "T");
-      }
-
-      if (element.f_w !== 0) {
-        freqString.concat(", ", "W");
-      }
-
-      if (element.f_th !== 0) {
-        freqString.concat(", ", "Th");
-      }
-
-      if (element.f_f !== 0) {
-        freqString.concat(", ", "F");
-      }
-
-      if (element.f_sat !== 0) {
-        freqString.concat(", ", "Sa");
-      }
-
-      if (element.f_sun !== 0) {
-        freqString.concat(", ", "Sun");
-      }
-
-      const dateDeployed = new Date(element.date_deployed).toLocaleDateString();
-      const timeDeployed = new Date(element.time_deployed).toLocaleTimeString();
-      const dateRemoved = new Date(element.date_removed).toLocaleDateString();
-      const level = element.level === null ? "" : element.level.toString();
-      const area = element.client_location_ID.toString();
-
-      const tableObject = {
-        deviceID: element.device_ID.toString(),
-        deviceType: element.device_type_name,
-        deviceCode: element.device_code,
-        area: area,
-        level: level,
-        dateDeployed: dateDeployed,
-        timeDeployed: timeDeployed,
-        dateRemoved: dateRemoved,
-        frequency: freqString,
-      };
-      tableData.push(tableObject);
-    });
-    const tableProps : TableSortProps = {
-      data: tableData,
-    };
-
-    return tableProps;
-  }
-
-  const reloadData = async (page: number) => {
-    setLoading(true);
-    const NewQueryData = await getDevices(page);
-    const newTableData = encodeData(NewQueryData.data.data)
-    setSortedData(newTableData.data);
-    setQueryData(NewQueryData.data);
-    setLoading(false);
-  }
 
   return (
     <>
