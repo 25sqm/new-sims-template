@@ -22,6 +22,7 @@ const ClientManagement = () => {
 						'Permanent Address',
 						'Action',
 					]}
+					filterableHeadings={['name', 'description']}
 				/>
 			</Paper>
 		</>
