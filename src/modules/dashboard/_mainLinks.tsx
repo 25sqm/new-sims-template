@@ -127,8 +127,8 @@ const adminNav = [
 	{
 		icon: <ChartArea size={16} />,
 		color: 'blue',
-		label: 'Area Monitoring',
-		link: '/area-monitoring',
+		label: 'Area Management',
+		link: '/area-management',
 	},
 	{
 		icon: <Users size={16} />,

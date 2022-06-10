@@ -125,7 +125,7 @@ const DashboardShell = ({
 						<Route index element={<ServiceManagement />} />
 						<Route path="/user-management" element={<UserManagement />} />
 						<Route path="/device-management" element={<DeviceManagement />} />
-						<Route path="/area-monitoring" element={<AreaMonitoring />} />
+						<Route path="/area-management" element={<AreaMonitoring />} />
 						<Route path="/client-management" element={<ClientManagement />} />
 					</>
 				) : (

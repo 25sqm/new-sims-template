@@ -15,6 +15,7 @@ import {
 	Divider,
 	LoadingOverlay,
 	Box,
+	RingProgress,
 } from '@mantine/core';
 import {
 	CalendarEvent,
@@ -323,6 +324,79 @@ const CriticalFindings = ({ criticalFindings }: DashboardData) => {
 	);
 };
 
+const IPMDeviceHealth = () => {
+	const dummy = [
+		{
+			timeframe: 'Current Status (Today)',
+			inspectionPercent: 75,
+			treatmentPercent: 20,
+		},
+		{
+			timeframe: 'Weekly',
+			inspectionPercent: 75,
+			treatmentPercent: 20,
+		},
+		{
+			timeframe: 'Monthly',
+			inspectionPercent: 75,
+			treatmentPercent: 20,
+		},
+	];
+
+	const rows = dummy.map((element, id) => (
+		<tr key={id}>
+			<td>
+				<Text weight={500} size="md">
+					{element.timeframe}
+				</Text>
+			</td>
+			<td>
+				<RingProgress
+					size={65}
+					thickness={5}
+					roundCaps
+					sections={[{ value: element.inspectionPercent, color: 'blue' }]}
+					label={
+						<Text color="blue" weight={400} align="center" size="md">
+							{element.inspectionPercent}
+						</Text>
+					}
+				/>
+			</td>
+			<td>
+				<RingProgress
+					size={65}
+					thickness={5}
+					roundCaps
+					sections={[{ value: element.treatmentPercent, color: 'blue' }]}
+					label={
+						<Text color="blue" weight={400} align="center" size="md">
+							{element.treatmentPercent}
+						</Text>
+					}
+				/>
+			</td>
+		</tr>
+	));
+	return (
+		<Paper shadow="md" p="md">
+			<Title order={2} pb="md">
+				IPM Device Health
+			</Title>
+			<Table>
+				<thead>
+					<tr>
+						<th> </th>
+						<th>GPC Inspection</th>
+						<th>GPC Treatment</th>
+					</tr>
+				</thead>
+				<tbody>{rows}</tbody>
+			</Table>
+		</Paper>
+	);
+};
+
 // MODULES END
 
 const DashboardContents = () => {
@@ -471,9 +545,12 @@ const DashboardContents = () => {
 				]}
 			>
 				<div>
+					<IPMDeviceHealth />
+				</div>
+				<div>
 					<Paper shadow="md" p="md">
 						<DataTable
-							chartType={'line'}
+							chartType={'bar'}
 							options={pestOptions}
 							data={data.dailyPestData}
 						/>

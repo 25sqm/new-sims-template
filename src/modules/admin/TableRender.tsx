@@ -78,12 +78,18 @@ const TableRender = ({
 		: Object.keys(data[0]);
 	const columns = columnStrings.map((heading) => <th>{heading}</th>);
 
-	const rows = dataRendered.map((row: any) => {
-		const unique = row[idColumn];
+	const rows = dataRendered.map((row: any, index) => {
+		const unique = index;
 		return (
 			<tr key={unique}>
 				{Object.keys(row).map((rowdata) => {
-					return <td>{row[rowdata].length >= 100 ? '' : row[rowdata]}</td>;
+					return (
+						<td>
+							{row[rowdata].toString().match(/<[^>]*>/) !== null
+								? ''
+								: row[rowdata]}
+						</td>
+					);
 				})}
 			</tr>
 		);
@@ -94,8 +100,8 @@ const TableRender = ({
 			const arrayValues: string[] = ['All'];
 			data.forEach((el: any) => {
 				if (arrayValues.includes(el[filter]) !== true) {
+					console.log(el[filter]);
 					arrayValues.push(el[filter]);
-					console.log('Pushed');
 				}
 			});
 
@@ -103,11 +109,11 @@ const TableRender = ({
 			return (
 				<NativeSelect
 					data={arrayValues}
-					onChange={(event) => {
-						// if (event.currentTarget.value !== 'All') {
-						// 	changeFilter(event.currentTarget.value);
-						// } else reloadData(1);
-					}}
+					// onChange={(event) => {
+					// 	// if (event.currentTarget.value !== 'All') {
+					// 	// 	changeFilter(event.currentTarget.value);
+					// 	// } else reloadData(1);
+					// }}
 					placeholder={filter}
 					label={`Filter ${filter}`}
 				/>
@@ -125,8 +131,9 @@ const TableRender = ({
 
 	const reloadData = (page: number) => {
 		setLoading(true);
-		const lowerBound = page * currentLimit - currentLimit;
-		const upperBound = page * currentLimit - 1;
+		console.log('Current limit: ', currentLimit);
+		const lowerBound = page * 10 - 10;
+		const upperBound = page * 10 - 1;
 		setDataRendered(data.slice(lowerBound, upperBound));
 		setLoading(false);
 	};
