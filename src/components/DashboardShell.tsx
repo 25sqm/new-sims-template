@@ -31,6 +31,7 @@ import UserManagement from './admin/UserManagement';
 import { getAssignedLocation } from '../api/user';
 import AreaMonitoring from './admin/AreaMonitoring';
 import ClientManagement from './admin/ClientManagement';
+import TrendsAndReports from './admin/TrendsAndReports';
 
 interface AuthFormProps {
 	user: any;
@@ -127,6 +128,11 @@ const DashboardShell = ({
 						<Route path="/device-management" element={<DeviceManagement />} />
 						<Route path="/area-management" element={<AreaMonitoring />} />
 						<Route path="/client-management" element={<ClientManagement />} />
+						<Route path="/trends-reports" element={<TrendsAndReports />} />
+						<Route
+							path="/bait-monitoring"
+							element={<BaitStationMonitoring />}
+						/>
 					</>
 				) : (
 					<>

@@ -11,6 +11,7 @@ import {
 	TriangleSquareCircle,
 	ChartArea,
 	Users,
+	AntennaBars5,
 } from 'tabler-icons-react';
 import { ThemeIcon, UnstyledButton, Group, Text } from '@mantine/core';
 import { Link } from 'react-router-dom';
@@ -135,6 +136,18 @@ const adminNav = [
 		color: 'blue',
 		label: 'Client Management',
 		link: '/client-management',
+	},
+	{
+		icon: <AntennaBars5 size={16} />,
+		color: 'blue',
+		label: 'Trends and Reports',
+		link: '/trends-reports',
+	},
+	{
+		icon: <TriangleSquareCircle size={16} />,
+		color: 'blue',
+		label: 'Bait Station Monitoring',
+		link: '/bait-monitoring',
 	},
 ];
 
