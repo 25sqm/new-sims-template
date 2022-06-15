@@ -1,5 +1,4 @@
 import React from 'react';
-import Chart from 'react-apexcharts';
 import { Line, Pie, Bar } from 'react-chartjs-2';
 import {
 	Chart as ChartJS,
@@ -62,6 +61,8 @@ const DataTable = ({ options, data, chartType }: dataTableProps) => {
 				<Pie width={500} height={360} data={data} options={options} />
 			</>
 		);
+	} else if (chartType === 'newBar') {
+		return <></>;
 	} else {
 		return (
 			<>

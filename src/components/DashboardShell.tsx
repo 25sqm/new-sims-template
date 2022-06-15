@@ -133,6 +133,7 @@ const DashboardShell = ({
 							path="/bait-monitoring"
 							element={<BaitStationMonitoring />}
 						/>
+						<Route path="/change-password" element={<ChangePasswordForm />} />
 					</>
 				) : (
 					<>

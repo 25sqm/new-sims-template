@@ -381,8 +381,9 @@ const IPMDeviceHealth = () => {
 	return (
 		<Paper shadow="md" p="md">
 			<Title order={2} pb="md">
-				IPM Device Health
+				IPM Service Updates
 			</Title>
+			<Text color="dimmed">Mock data for now</Text>
 			<Table>
 				<thead>
 					<tr>
