@@ -62,7 +62,7 @@ const DataTable = ({ options, data, chartType }: dataTableProps) => {
 			</>
 		);
 	} else if (chartType === 'newBar') {
-		return <></>;
+		return <Bar options={options} data={data} />;
 	} else {
 		return (
 			<>

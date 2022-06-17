@@ -11,6 +11,7 @@ import {
 } from '@mantine/core';
 import { DatePicker, DateRangePicker } from '@mantine/dates';
 import React, { useState } from 'react';
+import DataTable from '../../modules/dashboard/dataTable';
 
 const useStyles = createStyles((theme) => ({
 	button: {
@@ -31,6 +32,84 @@ const useStyles = createStyles((theme) => ({
 		},
 	},
 }));
+
+// MOCK DATA AND OPTIONS
+const pestOptions = {
+	responsive: true,
+	plugins: {
+		legend: {
+			position: 'top' as const,
+		},
+		title: {
+			display: true,
+			text: 'Pest Count',
+		},
+	},
+};
+
+const mockPestData = {
+	labels: [
+		'01',
+		'02',
+		'03',
+		'04',
+		'05',
+		'06',
+		'07',
+		'08',
+		'09',
+		'10',
+		'11',
+		'12',
+		'13',
+		'14',
+		'15',
+		'16',
+		'17',
+		'18',
+		'19',
+		'20',
+		'21',
+		'22',
+		'23',
+		'24',
+		'25',
+		'26',
+		'27',
+		'28',
+		'29',
+		'30',
+	],
+	datasets: [
+		{
+			label: 'AR',
+			data: [
+				0, 0, 0, 0, 0, 0, 2, 3, 3, 0, 0, 0, 0, 0, 0, 0, 2, 3, 3, 0, 0, 0, 0, 0,
+				0, 0, 2, 3, 3, 0,
+			],
+			backgroundColor: '#1e74c6',
+			borderColor: '#1e74c6',
+		},
+		{
+			label: 'GR',
+			data: [
+				0, 0, 0, 0, 0, 0, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0,
+				0, 0, 1, 1, 0, 0,
+			],
+			backgroundColor: '#9eb1f8',
+			borderColor: '#9eb1f8',
+		},
+		{
+			label: 'GA',
+			data: [
+				0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0,
+			],
+			backgroundColor: '#c2b64e',
+			borderColor: '#c2b64e',
+		},
+	],
+};
 
 const TrendsAndReports = () => {
 	const [dateValue, setDateValue] = useState<[Date | null, Date | null]>();
@@ -75,6 +154,14 @@ const TrendsAndReports = () => {
 								</Button>
 							</Group>
 						</Group>
+						<Text color="dimmed" mt={10}>
+							Mock Data for now
+						</Text>
+						<DataTable
+							chartType={'bar'}
+							options={pestOptions}
+							data={mockPestData}
+						/>
 					</Tabs.Tab>
 					<Tabs.Tab label="Pest Trends and Thresholds">
 						<Group>
@@ -110,6 +197,14 @@ const TrendsAndReports = () => {
 								</Button>
 							</Group>
 						</Group>
+						<Text color="dimmed" mt={10}>
+							Mock Data for now
+						</Text>
+						<DataTable
+							chartType={'bar'}
+							options={pestOptions}
+							data={mockPestData}
+						/>
 					</Tabs.Tab>
 					<Tabs.Tab label="Summary of Pest Count">
 						<Paper shadow="md" p="sm" my="md" sx={{ height: 'auto' }}>
