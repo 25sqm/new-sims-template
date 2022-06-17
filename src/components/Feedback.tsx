@@ -103,7 +103,7 @@ export function Feedback() {
 
 	const sendEmail = (e: any) => {
 		emailjs
-			.sendForm('service_imtjfmg', 'template_bx0l769', e, 'OSfbZloCDjfdktmeM')
+			.sendForm('service_erbggal', 'template_bx0l769', e, 'OSfbZloCDjfdktmeM')
 			.then((res) => {
 				console.log(res);
 			})

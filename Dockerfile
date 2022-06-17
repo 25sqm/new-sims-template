@@ -2,9 +2,9 @@
 FROM node:lts-alpine as build-stage
 WORKDIR /app
 COPY package*.json ./
-RUN npm install --legacy-peer-deps
+RUN yarn --legacy-peer-deps
 COPY . .
-RUN npm run build 
+RUN yarn build 
 
 # production stage
 FROM nginx:stable-alpine as production-stage
