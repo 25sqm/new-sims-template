@@ -24,7 +24,9 @@ import {
   Printer,
 } from "tabler-icons-react";
 import { useModals } from "@mantine/modals";
-import { getDevices } from "../../api/devices";
+import { getDevices, addDevice } from "../../api/devices";
+import { useForm } from "@mantine/form";
+import { DatePicker, TimeInput } from "@mantine/dates";
 
 const useStyles = createStyles((theme) => ({
   th: {
@@ -84,9 +86,9 @@ interface DeviceData {
   device_code: string;
   client_location_area_ID: number;
   client_location_ID: number;
-  date_deployed: string;
-  time_deployed: string;
-  date_removed: string;
+  date_deployed: Date;
+  time_deployed: Date;
+  date_removed: Date;
   user_ID: number;
   f_m: number;
   f_t: number;
@@ -156,7 +158,28 @@ export function DeviceMgtTable() {
   const [activePage, setPage] = useState(1);
   const [sortBy, setSortBy] = useState<keyof RowData>("deviceType");
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
-  //   const [deviceToBeAdded, setDeviceToBeAdded] = useState<DeviceData>();
+  const [deviceToBeAdded, setDeviceToBeAdded] = useState<DeviceData>();
+  const deviceForm = useForm({
+    initialValues: {
+      device_type_ID: 0,
+      device_code: "",
+      client_location_area_ID: 0,
+      client_location_ID: 0,
+      date_deployed: new Date(),
+      time_deployed: new Date(),
+      date_removed: new Date(),
+      user_ID: 0,
+      f_m: 0,
+      f_t: 0,
+      f_w: 0,
+      f_th: 0,
+      f_f: 0,
+      f_sat: 0,
+      f_sun: 0,
+      top_pos: 0,
+      left_pos: 0,
+    },
+  });
 
   const setSorting = (field: keyof RowData) => {
     const reversed = field === sortBy ? !reverseSortDirection : false;
@@ -260,23 +283,79 @@ export function DeviceMgtTable() {
         <form onSubmit={(event) => event.preventDefault()}>
           <SimpleGrid cols={2} breakpoints={[{ maxWidth: "sm", cols: 1 }]}>
             <TextInput
+              onChange={(e) => {
+                deviceForm.setFieldValue(
+                  "device_type_ID",
+                  Number(e.currentTarget.value)
+                );
+              }}
               label="Device Type"
               placeholder="Device Type"
               data-autofocus
             />
-            <TextInput label="Device Code" placeholder="Device Code" />
+            <TextInput
+              onChange={(e) => {
+                deviceForm.setFieldValue("device_code", e.currentTarget.value);
+              }}
+              label="Device Code"
+              placeholder="Device Code"
+              required
+            />
           </SimpleGrid>
           <SimpleGrid cols={2} breakpoints={[{ maxWidth: "sm", cols: 1 }]}>
-            <TextInput label="Site" placeholder="Site" />
-            <TextInput label="Area" placeholder="Area" />
+            <TextInput
+              onChange={(e) => {
+                deviceForm.setFieldValue(
+                  "client_location_ID",
+                  Number(e.currentTarget.value)
+                );
+              }}
+              label="Site"
+              placeholder="Site"
+            />
+            <TextInput
+              onChange={(e) => {
+                deviceForm.setFieldValue(
+                  "client_location_area_ID",
+                  Number(e.currentTarget.value)
+                );
+              }}
+              label="Area"
+              placeholder="Area"
+            />
           </SimpleGrid>
           <SimpleGrid cols={2} breakpoints={[{ maxWidth: "sm", cols: 1 }]}>
-            <TextInput label="Date Deployed" placeholder="Date Deployed" />
-            <TextInput label="Time Deployed" placeholder="Time Deployed" />
+            {/* <TextInput label="Date Deployed" placeholder="Date Deployed" /> */}
+            <DatePicker
+              label="Date Deployed"
+              placeholder="Pick date"
+              onChange={(e: Date) => {
+                deviceForm.setFieldValue("date_deployed", e);
+              }}
+              defaultValue={new Date()}
+            />
+            <TimeInput
+              label="Time Deployed"
+              placeholder="Pick time"
+              onChange={(e: Date) => {
+                deviceForm.setFieldValue("time_deployed", e);
+              }}
+              format="12"
+              defaultValue={new Date()}
+            />
+            {/* <TextInput label="Time Deployed" placeholder="Time Deployed" /> */}
           </SimpleGrid>
           <SimpleGrid cols={2} breakpoints={[{ maxWidth: "sm", cols: 1 }]}>
-            <TextInput label="Date Removed" placeholder="Date Removed" />
-            <TextInput label="Frequency" placeholder="Frequency" />
+            {/* <TextInput label="Date Removed" placeholder="Date Removed" /> */}
+            <DatePicker
+              label="Date Removed"
+              placeholder="Pick date"
+              onChange={(e: Date) => {
+                deviceForm.setFieldValue("date_removed", e);
+              }}
+              defaultValue={new Date()}
+            />
+            {/* <TextInput label="Frequency" placeholder="Frequency" /> */}
           </SimpleGrid>
           <SimpleGrid cols={2} breakpoints={[{ maxWidth: "sm", cols: 1 }]}>
             <Button
@@ -288,13 +367,25 @@ export function DeviceMgtTable() {
             </Button>
             <Button
               onClick={() => {
-                modals.closeModal(addID);
-                showNotification({
-                  title: "Successfully added device",
-                  message: "This is a future functionality",
-                  autoClose: 3000,
-                  color: "green",
-                });
+                // console.log(typeof deviceForm.values);
+                // setDeviceToBeAdded(deviceForm.values);
+                try {
+                  addDevice(deviceForm.values);
+                  modals.closeModal(addID);
+                  showNotification({
+                    title: "Successfully added device",
+                    message: "This is a future functionality",
+                    autoClose: 3000,
+                    color: "green",
+                  });
+                } catch (err) {
+                  showNotification({
+                    title: "Something went wrong",
+                    message: `${err}`,
+                    autoClose: 3000,
+                    color: "red",
+                  });
+                }
               }}
               mt="md"
             >

@@ -1,160 +1,176 @@
-import React from 'react';
+import React from "react";
 import {
-	Paper,
-	Text,
-	TextInput,
-	Textarea,
-	Button,
-	Group,
-	createStyles,
-} from '@mantine/core';
-import emailjs, { sendForm } from '@emailjs/browser';
-import { format } from 'path';
-import { useForm } from '@mantine/form';
+  Paper,
+  Text,
+  TextInput,
+  Textarea,
+  Button,
+  Group,
+  createStyles,
+} from "@mantine/core";
+import emailjs, { sendForm } from "@emailjs/browser";
+import { format } from "path";
+import { useForm } from "@mantine/form";
+
+const SERVICE_ID = process.env.REACT_APP_EMAILJS_SERVICE_ID
+  ? process.env.REACT_APP_EMAILJS_SERVICE_ID
+  : "";
+const TEMPLATE_ID = process.env.REACT_APP_EMAILJS_TEMPLATE_ID
+  ? process.env.REACT_APP_EMAILJS_TEMPLATE_ID
+  : "";
+const PERSONAL_ID = process.env.REACT_APP_EMAILJS_ID
+  ? process.env.REACT_APP_EMAILJS_ID
+  : "";
 
 const useStyles = createStyles((theme) => {
-	const BREAKPOINT = theme.fn.smallerThan('sm');
-	return {
-		wrapper: {
-			display: 'flex',
-			backgroundColor:
-				theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.white,
-			borderRadius: theme.radius.lg,
-			padding: 4,
-			border: `1px solid ${
-				theme.colorScheme === 'dark'
-					? theme.colors.dark[8]
-					: theme.colors.gray[2]
-			}`,
+  const BREAKPOINT = theme.fn.smallerThan("sm");
+  return {
+    wrapper: {
+      display: "flex",
+      backgroundColor:
+        theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.white,
+      borderRadius: theme.radius.lg,
+      padding: 4,
+      border: `1px solid ${
+        theme.colorScheme === "dark"
+          ? theme.colors.dark[8]
+          : theme.colors.gray[2]
+      }`,
 
-			[BREAKPOINT]: {
-				flexDirection: 'column',
-			},
-		},
+      [BREAKPOINT]: {
+        flexDirection: "column",
+      },
+    },
 
-		form: {
-			boxSizing: 'border-box',
-			flex: 1,
-			padding: theme.spacing.xl,
-			paddingLeft: theme.spacing.xl * 2,
-			borderLeft: 0,
+    form: {
+      boxSizing: "border-box",
+      flex: 1,
+      padding: theme.spacing.xl,
+      paddingLeft: theme.spacing.xl * 2,
+      borderLeft: 0,
 
-			[BREAKPOINT]: {
-				padding: theme.spacing.md,
-				paddingLeft: theme.spacing.md,
-			},
-		},
+      [BREAKPOINT]: {
+        padding: theme.spacing.md,
+        paddingLeft: theme.spacing.md,
+      },
+    },
 
-		fields: {
-			marginTop: -12,
-		},
+    fields: {
+      marginTop: -12,
+    },
 
-		fieldInput: {
-			flex: 1,
+    fieldInput: {
+      flex: 1,
 
-			'& + &': {
-				marginLeft: theme.spacing.md,
+      "& + &": {
+        marginLeft: theme.spacing.md,
 
-				[BREAKPOINT]: {
-					marginLeft: 0,
-					marginTop: theme.spacing.md,
-				},
-			},
-		},
+        [BREAKPOINT]: {
+          marginLeft: 0,
+          marginTop: theme.spacing.md,
+        },
+      },
+    },
 
-		fieldsGroup: {
-			display: 'flex',
+    fieldsGroup: {
+      display: "flex",
 
-			[BREAKPOINT]: {
-				flexDirection: 'column',
-			},
-		},
+      [BREAKPOINT]: {
+        flexDirection: "column",
+      },
+    },
 
-		title: {
-			marginBottom: theme.spacing.xl * 1.5,
-			fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+    title: {
+      marginBottom: theme.spacing.xl * 1.5,
+      fontFamily: `Greycliff CF, ${theme.fontFamily}`,
 
-			[BREAKPOINT]: {
-				marginBottom: theme.spacing.xl,
-			},
-		},
+      [BREAKPOINT]: {
+        marginBottom: theme.spacing.xl,
+      },
+    },
 
-		control: {
-			[BREAKPOINT]: {
-				flex: 1,
-			},
-		},
-	};
+    control: {
+      [BREAKPOINT]: {
+        flex: 1,
+      },
+    },
+  };
 });
 
 export function Feedback() {
-	const { classes } = useStyles();
+  const { classes } = useStyles();
 
-	const form = useForm({
-		initialValues: {
-			name: '',
-			email: '',
-			message: '',
-		},
-		validate: {
-			email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
-		},
-	});
+  const form = useForm({
+    initialValues: {
+      name: "",
+      email: "",
+      message: "",
+    },
+    validate: {
+      email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
+    },
+  });
 
-	const sendEmail = (e: any) => {
-		emailjs
-			.sendForm('service_erbggal', 'template_bx0l769', e, 'OSfbZloCDjfdktmeM')
-			.then((res) => {
-				console.log(res);
-			})
-			.catch((err) => {
-				console.error(err);
-			});
-		// console.log(e.target);
+  const sendEmail = (e: any) => {
+    emailjs
+      .sendForm(SERVICE_ID, TEMPLATE_ID, e, PERSONAL_ID)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+    // console.log(e.target);
 
-		// for testing now, have to put into an env variable
-	};
+    // for testing now, have to put into an env variable
+  };
 
-	return (
-		<Paper shadow="md" radius="lg" my="md">
-			<div className={classes.wrapper}>
-				<form className={classes.form} onSubmit={(e) => sendEmail(e.target)}>
-					<Text size="lg" weight={700} className={classes.title}>
-						How may we help you?
-					</Text>
-					<div className={classes.fields}>
-						<TextInput
-							mt="md"
-							name="user_name"
-							label="Name"
-							placeholder="Name"
-							required
-							{...form.getInputProps('name')}
-						/>
-						<TextInput
-							mt="md"
-							name="from_email"
-							label="Email"
-							placeholder="your@email.com"
-							required
-							{...form.getInputProps('email')}
-						/>
-						<Textarea
-							mt="md"
-							label="Inquiry"
-							name="message"
-							placeholder="Please include all relevant information"
-							minRows={3}
-							{...form.getInputProps('message')}
-						/>
-						<Group position="right" mt="md">
-							<Button type="submit" className={classes.control}>
-								Submit
-							</Button>
-						</Group>
-					</div>
-				</form>
-			</div>
-		</Paper>
-	);
+  return (
+    <Paper shadow="md" radius="lg" my="md">
+      <div className={classes.wrapper}>
+        <form
+          className={classes.form}
+          onSubmit={(e) => {
+            e.preventDefault();
+            sendEmail(e.target);
+          }}
+        >
+          <Text size="lg" weight={700} className={classes.title}>
+            How may we help you?
+          </Text>
+          <div className={classes.fields}>
+            <TextInput
+              mt="md"
+              name="user_name"
+              label="Name"
+              placeholder="Name"
+              required
+              {...form.getInputProps("name")}
+            />
+            <TextInput
+              mt="md"
+              name="from_email"
+              label="Email"
+              placeholder="your@email.com"
+              required
+              {...form.getInputProps("email")}
+            />
+            <Textarea
+              mt="md"
+              label="Inquiry"
+              name="message"
+              placeholder="Please include all relevant information"
+              minRows={3}
+              {...form.getInputProps("message")}
+            />
+            <Group position="right" mt="md">
+              <Button type="submit" className={classes.control}>
+                Submit
+              </Button>
+            </Group>
+          </div>
+        </form>
+      </div>
+    </Paper>
+  );
 }
