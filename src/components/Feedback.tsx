@@ -11,6 +11,8 @@ import {
 import emailjs, { sendForm } from "@emailjs/browser";
 import { format } from "path";
 import { useForm } from "@mantine/form";
+import { showNotification } from "@mantine/notifications";
+import { useNavigate } from "react-router-dom";
 
 const SERVICE_ID = process.env.REACT_APP_EMAILJS_SERVICE_ID
   ? process.env.REACT_APP_EMAILJS_SERVICE_ID
@@ -99,6 +101,7 @@ const useStyles = createStyles((theme) => {
 
 export function Feedback() {
   const { classes } = useStyles();
+  let navigate = useNavigate();
 
   const form = useForm({
     initialValues: {
@@ -116,9 +119,25 @@ export function Feedback() {
       .sendForm(SERVICE_ID, TEMPLATE_ID, e, PERSONAL_ID)
       .then((res) => {
         console.log(res);
+        if (res.status === 200) {
+          showNotification({
+            title: "Success!",
+            message: "Thank you for your feedback! We'll make sure to note it.",
+            autoClose: 3000,
+            color: "green",
+          });
+          navigate("/");
+        }
       })
       .catch((err) => {
         console.error(err);
+        showNotification({
+          title: "Something went wrong.",
+          message: `${err}`,
+          autoClose: 3000,
+          color: "red",
+        });
+        throw err;
       });
     // console.log(e.target);
 
