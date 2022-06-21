@@ -31,6 +31,9 @@ import { DatePicker, TimeInput } from "@mantine/dates";
 const useStyles = createStyles((theme) => ({
   th: {
     padding: "0 !important",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
   },
 
   td: {
