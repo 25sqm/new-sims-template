@@ -9,6 +9,7 @@ import {
   Skeleton,
   NativeSelect,
 } from "@mantine/core";
+import { StringLiteralLike } from "typescript";
 
 const useStyles = createStyles((theme) => ({
   th: {
@@ -44,8 +45,9 @@ const useStyles = createStyles((theme) => ({
 
 interface Props {
   data: Array<Object>;
+  description?: string;
   idColumn: string;
-  ignoreColumn?: string;
+  ignoreColumn?: Array<string>;
   columnHeadings?: Array<string>;
   filterableHeadings?: Array<string>;
 }
@@ -64,6 +66,7 @@ interface Props {
 
 const TableRender = ({
   data,
+  description,
   idColumn,
   ignoreColumn,
   columnHeadings,
@@ -86,15 +89,22 @@ const TableRender = ({
     const unique = index;
     return (
       <tr key={unique}>
-        {Object.keys(row).map((rowdata) => {
-          return (
-            <td className={classes.td}>
-              {row[rowdata].toString().match(/<[^>]*>/) !== null
-                ? ""
-                : row[rowdata]}
-            </td>
-          );
-        })}
+        {Object.keys(row)
+          .filter((element) => {
+            if (ignoreColumn === undefined) return element;
+            if (!ignoreColumn.includes(element)) {
+              return element;
+            }
+          })
+          .map((rowdata) => {
+            return (
+              <td className={classes.td}>
+                {row[rowdata].toString().match(/<[^>]*>/) !== null
+                  ? ""
+                  : row[rowdata]}
+              </td>
+            );
+          })}
       </tr>
     );
   });
@@ -104,12 +114,10 @@ const TableRender = ({
       const arrayValues: string[] = ["All"];
       data.forEach((el: any) => {
         if (arrayValues.includes(el[filter]) !== true) {
-          console.log(el[filter]);
           arrayValues.push(el[filter]);
         }
       });
 
-      console.log(arrayValues);
       return (
         <NativeSelect
           data={arrayValues}
@@ -135,7 +143,6 @@ const TableRender = ({
 
   const reloadData = (page: number) => {
     setLoading(true);
-    console.log("Current limit: ", currentLimit);
     const lowerBound = page * 10 - 10;
     const upperBound = page * 10 - 1;
     setDataRendered(data.slice(lowerBound, upperBound));
@@ -151,10 +158,14 @@ const TableRender = ({
   return (
     <>
       <Skeleton visible={loading}>
-        <Group>
+        {description ? (
+          <Text size="xl" color="dimmed">
+            {description}
+          </Text>
+        ) : (
           <></>
-          {filterableHeadings ? <Group> {filters} </Group> : <></>}
-        </Group>
+        )}
+        <Group>{filterableHeadings ? <Group> {filters} </Group> : <></>}</Group>
         <ScrollArea sx={{ height: "auto" }}>
           <Table
             fontSize={12}

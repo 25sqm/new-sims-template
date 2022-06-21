@@ -1,75 +1,75 @@
-import React from 'react';
-import { Line, Pie, Bar } from 'react-chartjs-2';
+import React from "react";
+import { Line, Pie, Bar } from "react-chartjs-2";
 import {
-	Chart as ChartJS,
-	CategoryScale,
-	LinearScale,
-	PointElement,
-	LineElement,
-	Title,
-	Tooltip,
-	Legend,
-	ArcElement,
-	BarElement,
-} from 'chart.js';
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement,
+  BarElement,
+} from "chart.js";
 
 ChartJS.register(
-	CategoryScale,
-	LinearScale,
-	PointElement,
-	LineElement,
-	Title,
-	Tooltip,
-	Legend,
-	ArcElement,
-	BarElement,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement,
+  BarElement
 );
 
 interface dataTableProps {
-	options: Object;
-	data: any;
-	chartType: String;
+  options: Object;
+  data: any;
+  chartType: String;
 }
 
 const DataTable = ({ options, data, chartType }: dataTableProps) => {
-	let newSeries: { name: string; data: number[] }[] = [];
-	const labels = data.labels;
+  let newSeries: { name: string; data: number[] }[] = [];
+  const labels = data.labels;
 
-	data.datasets.forEach((element: { label: string; data: number[] }) => {
-		newSeries.push({ name: element.label, data: element.data });
-	});
+  data.datasets.forEach((element: { label: string; data: number[] }) => {
+    newSeries.push({ name: element.label, data: element.data });
+  });
 
-	const lineOptions = {
-		xaxis: { categories: labels },
-	};
+  const lineOptions = {
+    xaxis: { categories: labels },
+  };
 
-	if (chartType === 'line') {
-		return (
-			<>
-				<Line options={options} data={data} />
-				{/* <Chart
+  if (chartType === "line") {
+    return (
+      <>
+        <Line options={options} data={data} />
+        {/* <Chart
 					options={lineOptions}
 					series={newSeries}
 					type="bar"
 					width="700"
 				/> */}
-			</>
-		);
-	} else if (chartType === 'pie') {
-		return (
-			<>
-				<Pie width={500} height={360} data={data} options={options} />
-			</>
-		);
-	} else if (chartType === 'newBar') {
-		return <Bar options={options} data={data} />;
-	} else {
-		return (
-			<>
-				<Bar options={options} data={data} />
-			</>
-		);
-	}
+      </>
+    );
+  } else if (chartType === "pie") {
+    return (
+      <>
+        <Pie width={500} height={360} data={data} options={options} />
+      </>
+    );
+  } else if (chartType === "newBar") {
+    return <Bar options={options} data={data} />;
+  } else {
+    return (
+      <>
+        <Bar options={options} data={data} />
+      </>
+    );
+  }
 };
 
 export default DataTable;

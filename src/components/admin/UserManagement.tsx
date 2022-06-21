@@ -1,7 +1,9 @@
 import React from "react";
 
-import { Text, Paper, Divider } from "@mantine/core";
+import { Text, Paper, Divider, Tabs } from "@mantine/core";
 import { UserMgtTable } from "../../modules/admin/UserMgtTable";
+import TableRender from "../../modules/admin/TableRender";
+import { userRoles } from "./dummyData";
 const UserManagement = () => {
   const data = [
     {
@@ -132,7 +134,34 @@ const UserManagement = () => {
       <Paper shadow="md" p="sm" my="md" sx={{ height: "auto" }}>
         <Text size="xl">User Management</Text>
         <Divider my="sm" />
-        <UserMgtTable data={data} />
+        {/* <UserMgtTable data={data} /> */}
+        <Tabs>
+          <Tabs.Tab label="User Management">
+            <TableRender
+              data={data}
+              idColumn={"name"}
+              ignoreColumn={["birthday", "sex", "address"]}
+              columnHeadings={[
+                "Name",
+                "Username",
+                "Email Address",
+                "Mobile Number",
+                "Landline",
+                "Organization",
+              ]}
+              filterableHeadings={["organization"]}
+            />
+          </Tabs.Tab>
+          <Tabs.Tab label="User Roles">
+            <TableRender
+              data={userRoles}
+              idColumn={"ID"}
+              ignoreColumn={["Permissions", "actionbtn", "ID"]}
+              columnHeadings={["Role Name", "Description", "Type"]}
+              filterableHeadings={["Type"]}
+            />
+          </Tabs.Tab>
+        </Tabs>
       </Paper>
     </>
   );
