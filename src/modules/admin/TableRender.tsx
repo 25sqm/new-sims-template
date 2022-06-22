@@ -8,6 +8,7 @@ import {
   Pagination,
   Skeleton,
   NativeSelect,
+  Button,
 } from "@mantine/core";
 import { StringLiteralLike } from "typescript";
 
@@ -43,6 +44,10 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
+interface ActionButton {
+  content: string;
+}
+
 interface Props {
   data: Array<Object>;
   description?: string;
@@ -50,6 +55,7 @@ interface Props {
   ignoreColumn?: Array<string>;
   columnHeadings?: Array<string>;
   filterableHeadings?: Array<string>;
+  actionButtons?: Array<ActionButton>;
 }
 
 // const filterData = (data: Array<Object>, filterQuery: string) => {
@@ -69,6 +75,7 @@ const TableRender = ({
   description,
   idColumn,
   ignoreColumn,
+  actionButtons,
   columnHeadings,
   filterableHeadings,
 }: Props) => {
@@ -95,6 +102,7 @@ const TableRender = ({
             if (!ignoreColumn.includes(element)) {
               return element;
             }
+            // This filter function ultimately removes the indicated columns to ignore using the ignoreColumn props
           })
           .map((rowdata) => {
             return (
@@ -103,11 +111,28 @@ const TableRender = ({
                   ? ""
                   : row[rowdata]}
               </td>
+              // We loop through the remaining elements of row data to create
+              // table rows
             );
           })}
+        {/* {actionButtons?.map((element: ActionButton) => (
+          <td>
+            <Button>{element.content}</Button>
+          </td>
+        ))} */}
+
+        <td>
+          <Button>Edit</Button>
+        </td>
       </tr>
     );
   });
+
+  // NEW FUNCTIONALITY
+
+  console.log(rows);
+
+  // END NEW FUNCTIONALITY
 
   const filters = filterableHeadings ? (
     filterableHeadings.map((filter) => {

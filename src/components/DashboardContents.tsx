@@ -17,7 +17,7 @@ import {
   RingProgress,
 } from "@mantine/core";
 import { ChevronRight, ExclamationMark } from "tabler-icons-react";
-import DataTable from "../modules/dashboard/dataTable";
+import DataTable from "../modules/admin/dataTable";
 import { getData } from "../api/clientdb";
 
 // Interfaces
