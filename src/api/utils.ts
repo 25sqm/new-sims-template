@@ -1,3 +1,3 @@
-export function encodeToken(token : any) {
+export function encodeToken(token: any) {
   return token.split("|").pop();
 }

@@ -10,7 +10,7 @@ const http = axios.create({
 });
 
 // Function for logging in user
-export async function logIn(username : string, password : string) {
+export async function logIn(username: string, password: string) {
   try {
     const csrf = await http.get("/sanctum/csrf-cookie");
     const response = await http.post("/api/login", {
@@ -18,7 +18,7 @@ export async function logIn(username : string, password : string) {
       password: password,
     });
     return response;
-  } catch (err : any) {
+  } catch (err: any) {
     console.log(err.response);
     return null;
   }
@@ -29,10 +29,10 @@ export async function getAssignedLocation() {
     const csrf = await http.get("/sanctum/csrf-cookie");
     const authToken = sessionStorage.getItem("token");
     const headers = { headers: { Authorization: `Bearer ${authToken}` } };
-    
+
     const response = await http.get("/api/v1/client-locations", headers);
     return response;
-  } catch (err : any) {
+  } catch (err: any) {
     console.log(err.response);
     return null;
   }
