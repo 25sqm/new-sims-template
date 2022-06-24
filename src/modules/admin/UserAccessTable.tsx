@@ -9,8 +9,10 @@ import {
   Skeleton,
   NativeSelect,
   Button,
+  ActionIcon,
 } from "@mantine/core";
-import { StringLiteralLike } from "typescript";
+
+import { Edit, TrashX, CirclePlus } from "tabler-icons-react";
 
 const useStyles = createStyles((theme) => ({
   th: {
@@ -43,52 +45,90 @@ const useStyles = createStyles((theme) => ({
     borderRadius: 21,
   },
 }));
-
-interface ActionButton {
-  content: string;
-  buttonNode: React.ReactNode;
-}
+// const data = [
+//   {
+//     name: "Vivay Supervisor Test",
+//   },
+//   {
+//     name: "Vivay Salazar",
+//   },
+//   {
+//     name: "URC Dionelle Panopio",
+//   },
+//   {
+//     name: "System Administrator",
+//   },
+//   {
+//     name: "Sterix Client",
+//   },
+//   {
+//     name: "Stella Marie Batalla",
+//   },
+//   {
+//     name: "SB Tech",
+//   },
+//   {
+//     name: "Ronald Abrera",
+//   },
+//   {
+//     name: "Rolando Tolentino",
+//   },
+//   {
+//     name: "Reynaldo Sillo Jr.",
+//   },
+//   {
+//     name: "Reynaldo Lacebal",
+//   },
+// ];
 
 interface Props {
-  data: Array<Object>;
+  data: Array<{
+    userID: string;
+    name: string;
+    roles: Array<{ roleName: string; id: string }>;
+  }>;
   description?: string;
   idColumn: string;
   ignoreColumn?: Array<string>;
   columnHeadings?: Array<string>;
-  filterableHeadings?: Array<string>;
-  actionButtons?: React.ReactNode;
+  testLog?: (message: any) => void;
 }
 
-// const filterData = (data: Array<Object>, filterQuery: string) => {
-// 	const keys = Object.keys(data[0]);
-// 	const query = filterQuery.toLowerCase().trim();
-// 	return data.filter((item: any) =>
-// 		keys.some(
-// 			(key: any) =>
-// 				typeof item[key] === 'string' &&
-// 				item[key].toLowerCase().includes(query),
-// 		),
-// 	);
-// };
-
-const TableRender = (
-  {
-    data,
-    description,
-    idColumn,
-    ignoreColumn,
-    actionButtons,
-    columnHeadings,
-    filterableHeadings,
-  }: Props,
-  { testEdit, testDelete }: any
-) => {
+const UserAccessTable = ({
+  data,
+  description,
+  idColumn,
+  ignoreColumn,
+  columnHeadings,
+}: Props) => {
   const { classes } = useStyles();
   const [loading, setLoading] = useState<boolean>(true);
+  const [user, setUser] = useState(data[0].name);
   const [activePage, setPage] = useState<number>(1);
   const [currentLimit, setCurrentLimit] = useState<number>(10);
-  const [dataRendered, setDataRendered] = useState(data.slice(0, 9));
+  const [dataRendered, setDataRendered] = useState(data[0].roles);
 
+  useEffect(() => {
+    setTimeout(function () {
+      setLoading(false);
+    }, 300);
+  }, []);
+  // const reloadData = (page: number) => {
+  //   setLoading(true);
+  //   const lowerBound = page * 10 - 10;
+  //   const upperBound = page * 10 - 1;
+  //   setDataRendered(data.slice(lowerBound, upperBound));
+  //   setLoading(false);
+  // };
+
+  const reloadData = () => {
+    setLoading(true);
+    const current = data.find((o) => o.name === user);
+    if (current !== undefined) {
+      setDataRendered(current.roles);
+    } else setDataRendered([]);
+    setLoading(false);
+  };
   const columnStrings: string[] = columnHeadings
     ? columnHeadings
     : Object.keys(data[0]);
@@ -119,55 +159,24 @@ const TableRender = (
               // table rows
             );
           })}
+        <td>
+          <Group>
+            <ActionIcon>
+              <Edit size={15} />
+            </ActionIcon>
+            <ActionIcon>
+              <TrashX size={15} />
+            </ActionIcon>
+          </Group>
+        </td>
       </tr>
     );
   });
 
-  const filters = filterableHeadings ? (
-    filterableHeadings.map((filter) => {
-      const arrayValues: string[] = ["All"];
-      data.forEach((el: any) => {
-        if (arrayValues.includes(el[filter]) !== true) {
-          arrayValues.push(el[filter]);
-        }
-      });
-
-      return (
-        <NativeSelect
-          data={arrayValues}
-          // onChange={(event) => {
-          // 	// if (event.currentTarget.value !== 'All') {
-          // 	// 	changeFilter(event.currentTarget.value);
-          // 	// } else reloadData(1);
-          // }}
-          placeholder={filter}
-          label={`Filter ${filter}`}
-        />
-      );
-    })
-  ) : (
-    <></>
-  );
-
-  useEffect(() => {
-    setTimeout(function () {
-      setLoading(false);
-    }, 300);
-  }, []);
-
-  const reloadData = (page: number) => {
-    setLoading(true);
-    const lowerBound = page * 10 - 10;
-    const upperBound = page * 10 - 1;
-    setDataRendered(data.slice(lowerBound, upperBound));
-    setLoading(false);
-  };
-
-  // const changeFilter = (query: string) => {
-  // 	setLoading(true);
-  // 	setDataRendered(filterData(data, query).slice(0, 9));
-  // 	setLoading(false);
-  // };
+  const users: Array<string> = [];
+  data.forEach((user: any) => {
+    users.push(user.name);
+  });
 
   return (
     <>
@@ -179,7 +188,17 @@ const TableRender = (
         ) : (
           <></>
         )}
-        <Group>{filterableHeadings ? <Group> {filters} </Group> : <></>}</Group>
+        <Group align="flex-end">
+          <NativeSelect
+            label="Select user"
+            data={users}
+            onChange={(e) => {
+              setUser(e.currentTarget.value);
+              reloadData();
+            }}
+          />
+          <Button leftIcon={<CirclePlus />}>Add</Button>
+        </Group>
         <ScrollArea sx={{ height: "auto" }}>
           <Table
             fontSize={12}
@@ -209,30 +228,13 @@ const TableRender = (
         </ScrollArea>
       </Skeleton>
       <Group>
-        <Text>
-          {/* <Group>
-						Showing 1 to {currentLimit} of {data.length} rows{' '}
-						<NativeSelect
-							data={['10', '25', '50']}
-							value={currentLimit}
-							placeholder={currentLimit.toString()}
-							onChange={(event) => {
-								setCurrentLimit(Number(event.currentTarget.value));
-								console.log(event);
-								console.log(currentLimit);
-								setPage(1);
-								reloadData(1);
-							}}
-						/>
-						rows per page
-					</Group> */}
-        </Text>
+        <Text></Text>
         {data.length >= 9 ? (
           <Pagination
             my="sm"
             page={activePage}
             onChange={(page) => {
-              reloadData(page);
+              // reloadData(page);
               setPage(page);
             }}
             total={Math.floor(data.length / 10)}
@@ -245,4 +247,4 @@ const TableRender = (
   );
 };
 
-export default TableRender;
+export default UserAccessTable;

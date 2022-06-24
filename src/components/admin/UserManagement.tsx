@@ -3,7 +3,8 @@ import React from "react";
 import { Text, Paper, Divider, Tabs } from "@mantine/core";
 import { UserMgtTable } from "../../modules/admin/UserMgtTable";
 import TableRender from "../../modules/admin/TableRender";
-import { userRoles } from "./dummyData";
+import { userRoles, userAccess, userSites } from "./dummyData";
+import UserAccessTable from "../../modules/admin/UserAccessTable";
 const UserManagement = () => {
   const data = [
     {
@@ -161,6 +162,30 @@ const UserManagement = () => {
               filterableHeadings={["Type"]}
             />
           </Tabs.Tab>
+          <Tabs.Tab label="User Access">
+            <UserAccessTable
+              data={userAccess}
+              idColumn={"userID"}
+              ignoreColumn={["roles", "id"]}
+              columnHeadings={["Roles", "Action"]}
+            />
+          </Tabs.Tab>
+          <Tabs.Tab label="Sites">
+            <UserAccessTable
+              data={userSites}
+              idColumn={"userID"}
+              ignoreColumn={["roles", "id"]}
+              columnHeadings={["Sites", "Action"]}
+            />
+          </Tabs.Tab>
+          {/* <Tabs.Tab label="Permissions">
+            <TableRender
+              data={userRoles}
+              idColumn={"ID"}
+              ignoreColumn={["Permissions", "actionbtn", "ID"]}
+              columnHeadings={["Role Name", "Description", "Type"]}
+            />
+          </Tabs.Tab> */}
         </Tabs>
       </Paper>
     </>

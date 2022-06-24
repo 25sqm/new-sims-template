@@ -39977,3 +39977,77 @@ export const userRoles = [
       "<button class='edit_btn btn btn-xs btn-success' data-id='7' data-name='Office Staff' data-description='Office assistant' data-type='1' data-toggle='modal' data-target='#modalEditBtn'><span class='glyphicon glyphicon-pencil'></span></button> <button class='delete_btn btn btn-xs btn-danger' data-id='7' data-toggle='modal' data-target='#modaldeleteBtn'><span class='glyphicon glyphicon-trash'></span></button>",
   },
 ];
+
+export const userAccess = [
+  {
+    userID: "1",
+    name: "Sterix Administrator",
+    roles: [
+      { roleName: "Sterix Supervisor", id: "1" },
+      { roleName: "Client Company Administrator", id: "2" },
+    ],
+  },
+  {
+    userID: "2",
+    name: "Vivay Supervisor Test",
+    roles: [
+      { roleName: "Sterix Supervisor", id: "1" },
+      { roleName: "Client Company Administrator", id: "2" },
+      { roleName: "Sterix Administrator", id: "3" },
+    ],
+  },
+  {
+    userID: "3",
+    name: "Vivay Salazar",
+    roles: [{ roleName: "Sterix Supervisor", id: "1" }],
+  },
+  {
+    userID: "4",
+    name: "System Administrator",
+    roles: [
+      { roleName: "Sterix Supervisor", id: "1" },
+      { roleName: "Client Company Administrator", id: "2" },
+      { roleName: "Sterix Administrator", id: "3" },
+    ],
+  },
+];
+
+export const userSites = [
+  {
+    userID: "1",
+    name: "Sterix Administrator",
+    roles: [
+      { roleName: "Nutri Asia Incorporated - Marilao Plant", id: "1" },
+      { roleName: "Sterix Incorporated", id: "2" },
+    ],
+  },
+  {
+    userID: "2",
+    name: "Vivay Supervisor Test",
+    roles: [
+      { roleName: "Nutri Asia Incorporated - Marilao Plant", id: "1" },
+      { roleName: "Sterix Incorporated", id: "2" },
+      {
+        roleName: "Mead Johnson Nutrition Incorporated - Philippines",
+        id: "3",
+      },
+    ],
+  },
+  {
+    userID: "3",
+    name: "Vivay Salazar",
+    roles: [{ roleName: "Nutri Asia Incorporated - Marilao Plant", id: "1" }],
+  },
+  {
+    userID: "4",
+    name: "System Administrator",
+    roles: [
+      { roleName: "Nutri Asia Incorporated - Marilao Plant", id: "1" },
+      { roleName: "Sterix Incorporated", id: "2" },
+      {
+        roleName: "Mead Johnson Nutrition Incorporated - Philippines",
+        id: "3",
+      },
+    ],
+  },
+];

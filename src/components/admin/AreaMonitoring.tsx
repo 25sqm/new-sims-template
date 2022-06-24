@@ -22,19 +22,17 @@ import {
 } from "./dummyData";
 import TableRender from "../../modules/admin/TableRender";
 
-interface ButtonProps {
-  content: string;
-  function: () => void;
-}
-
 const AreaMonitoring = () => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const testCallback = () => {
-    console.log("Logging from Parent Component");
+  const functions = {
+    testEdit: () => {
+      console.log("Logging from Parent Component: Edit Function");
+    },
+    testDelete: () => {
+      console.log("Logging from Parent Component: Edit Function");
+    },
   };
-
-  const btnProps = [{ content: "Log" }];
 
   return (
     <>
@@ -44,11 +42,11 @@ const AreaMonitoring = () => {
         <Tabs>
           <Tabs.Tab label="Area Monitoring">
             <TableRender
+              {...functions}
               data={areaMonitoring}
               idColumn={"area_monitoring_ID"}
               description="Mock data for now"
               ignoreColumn={["actionbtn", "id", "report"]}
-              actionButtons={btnProps}
               columnHeadings={[
                 "Service Order",
                 "Ref No",
