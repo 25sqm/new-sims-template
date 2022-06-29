@@ -1,16 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { Sun, MoonStars } from "tabler-icons-react";
+import { Sun, MoonStars, Bell, ArrowNarrowRight } from "tabler-icons-react";
 import {
   Badge,
   AppShell,
   Navbar,
   Header,
   Group,
+  Text,
   ActionIcon,
   useMantineColorScheme,
   MediaQuery,
   Burger,
+  Indicator,
+  Popover,
   useMantineTheme,
+  ScrollArea,
+  Paper,
+  Tooltip,
+  Center,
 } from "@mantine/core";
 import { MainLinks } from "../modules/dashboard/_mainLinks";
 import { User } from "../modules/dashboard/_user";
@@ -32,6 +39,7 @@ import { getAssignedLocation } from "../api/user";
 import AreaMonitoring from "./admin/AreaMonitoring";
 import ClientManagement from "./admin/ClientManagement";
 import TrendsAndReports from "./admin/TrendsAndReports";
+import { notifData } from "../components/admin/dummyData";
 
 interface AuthFormProps {
   user: any;
@@ -49,7 +57,15 @@ const DashboardShell = ({
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const [opened, setOpened] = useState(false);
   const [userSite, setUserSite] = useState("");
+  const [notifOpened, setNotifOpened] = useState(false);
+  const [notifications, setNotifications] = useState(notifData);
+  const [toolTips, setToolTips] = useState(false);
   const theme = useMantineTheme();
+
+  const handleDeleteNotif = (id: number) => {
+    const arr = notifications.filter((notif) => notif.id !== id);
+    setNotifications(arr);
+  };
 
   useEffect(() => {
     getAssignedLocation().then((site) => {
@@ -95,17 +111,90 @@ const DashboardShell = ({
           <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
             <Group sx={{ height: "100%" }} px={20} position="apart">
               <Logo colorScheme={colorScheme} />
-              <ActionIcon
-                variant="default"
-                onClick={() => toggleColorScheme()}
-                size={30}
-              >
-                {colorScheme === "dark" ? (
-                  <Sun size={16} />
-                ) : (
-                  <MoonStars size={16} />
-                )}
-              </ActionIcon>
+              <Group direction="row">
+                <Popover
+                  opened={notifOpened}
+                  onClose={() => setNotifOpened(false)}
+                  target={
+                    <Indicator
+                      disabled={notifications.length > 0 ? false : true}
+                      inline
+                      size={10}
+                      color="red"
+                      withBorder
+                    >
+                      <ActionIcon
+                        onClick={() => setNotifOpened((o) => !o)}
+                        variant="default"
+                        size={30}
+                      >
+                        <Bell size={16} />
+                      </ActionIcon>
+                    </Indicator>
+                  }
+                  width={300}
+                  position="bottom"
+                  placement="end"
+                  withArrow
+                >
+                  <ScrollArea
+                    sx={(theme) => ({
+                      height: "200px",
+                    })}
+                  >
+                    {notifications.length > 0 ? (
+                      notifications.map((notif) => {
+                        return (
+                          <Paper>
+                            <Group direction="column" p={10} mb={5}>
+                              <Text size="sm">
+                                Detected <strong>{notif.pest_name}</strong> in{" "}
+                                <strong>
+                                  {notif.client_location_area_name}
+                                </strong>
+                              </Text>
+                              <Group position="apart" align="end">
+                                <Text size="xs" color="dimmed">
+                                  <strong>{notif.incident_datetime}</strong>
+                                </Text>
+
+                                <ActionIcon
+                                  size={20}
+                                  onClick={() => handleDeleteNotif(notif.id)}
+                                >
+                                  <Tooltip
+                                    label="Mark as Read"
+                                    position="bottom"
+                                    placement="end"
+                                  >
+                                    <ArrowNarrowRight size={12} />
+                                  </Tooltip>
+                                </ActionIcon>
+                              </Group>
+                            </Group>
+                          </Paper>
+                        );
+                      })
+                    ) : (
+                      <Center>
+                        <Text color="dimmed">✔️ You're all caught up!</Text>
+                      </Center>
+                    )}
+                  </ScrollArea>
+                </Popover>
+
+                <ActionIcon
+                  variant="default"
+                  onClick={() => toggleColorScheme()}
+                  size={30}
+                >
+                  {colorScheme === "dark" ? (
+                    <Sun size={16} />
+                  ) : (
+                    <MoonStars size={16} />
+                  )}
+                </ActionIcon>
+              </Group>
             </Group>
           </MediaQuery>
         </Header>

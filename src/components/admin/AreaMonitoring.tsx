@@ -37,8 +37,6 @@ const AreaMonitoring = () => {
   return (
     <>
       <Paper shadow="md" p="sm" my="md" sx={{ height: "auto" }}>
-        <Text size="xl">Area Management</Text>
-        <Divider my="sm" />
         <Tabs>
           <Tabs.Tab label="Area Monitoring">
             <TableRender

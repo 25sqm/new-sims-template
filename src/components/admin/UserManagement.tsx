@@ -133,8 +133,6 @@ const UserManagement = () => {
   return (
     <>
       <Paper shadow="md" p="sm" my="md" sx={{ height: "auto" }}>
-        <Text size="xl">User Management</Text>
-        <Divider my="sm" />
         {/* <UserMgtTable data={data} /> */}
         <Tabs>
           <Tabs.Tab label="User Management">

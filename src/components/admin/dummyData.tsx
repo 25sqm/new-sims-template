@@ -40051,3 +40051,63 @@ export const userSites = [
     ],
   },
 ];
+
+export const clientSites = [
+  {
+    clientID: "1",
+    name: "Universal Robina Corporation",
+    sites: [
+      { siteName: "	Universal Robina Corporation - Binan Plant", id: "1" },
+    ],
+  },
+  {
+    clientID: "2",
+    name: "Sterix Incorporated",
+    sites: [
+      { siteName: "Sterix Incorporated - Unit 808", id: "1" },
+      { siteName: "Sterix Incorporated - Unit 701", id: "2" },
+      { siteName: "Sterix Incorporated - Unit 1201", id: "3" },
+    ],
+  },
+  {
+    clientID: "3",
+    name: "Starbucks Philippines",
+    sites: [{ siteName: "Starbucks Madrigal Avenue", id: "1" }],
+  },
+  {
+    clientID: "4",
+    name: "Nutri Asia Incorporated",
+    sites: [{ siteName: "Nutri Asia Incorporated - Marilao Plant", id: "1" }],
+  },
+];
+
+export const notifData = [
+  {
+    id: 252,
+    status: "New",
+    pest_name: "German Roach",
+    client_location_area_name: "Lobby",
+    incident_datetime: "Jan 27 2022 6:35",
+  },
+  {
+    id: 253,
+    status: "New",
+    pest_name: "Ghost Ant",
+    client_location_area_name: "Pantry Area",
+    incident_datetime: "Jan 27 2022 6:35",
+  },
+  {
+    id: 254,
+    status: "New",
+    pest_name: "Other Flying Insects",
+    client_location_area_name: "Lobby",
+    incident_datetime: "Jan 27 2022 6:35",
+  },
+  {
+    id: 255,
+    status: "New",
+    pest_name: "Drain Fly",
+    client_location_area_name: "Lobby",
+    incident_datetime: "Jan 27 2022 6:35",
+  },
+];

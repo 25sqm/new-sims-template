@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import { getDevices } from "../../api/devices";
-import { Text, Paper, Divider, Button, Pagination } from "@mantine/core";
+import { Text, Paper, Divider, Tabs } from "@mantine/core";
 import { DeviceMgtTable } from "../../modules/admin/DeviceMgtTable";
 
 interface RowData {
@@ -27,9 +27,20 @@ const DeviceManagement = () => {
   return (
     <>
       <Paper shadow="md" p="sm" my="md" sx={{ height: "auto" }}>
-        <Text size="xl">Device Identification</Text>
-        <Divider my="sm" />
-        <DeviceMgtTable />
+        <Tabs>
+          <Tabs.Tab label="Device Information">
+            <DeviceMgtTable />
+          </Tabs.Tab>
+          <Tabs.Tab label="Device Monitoring">
+            <DeviceMgtTable />
+          </Tabs.Tab>
+          <Tabs.Tab label="Real-Time Device Monitoring">
+            <DeviceMgtTable />
+          </Tabs.Tab>
+          <Tabs.Tab label="Device Threshold">
+            <DeviceMgtTable />
+          </Tabs.Tab>
+        </Tabs>
       </Paper>
     </>
   );
