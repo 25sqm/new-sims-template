@@ -7,9 +7,10 @@ import {
   Text,
   Pagination,
   Skeleton,
-  NativeSelect,
+  Select,
   Button,
   ActionIcon,
+  NativeSelect,
 } from "@mantine/core";
 
 import { Edit, TrashX, CirclePlus } from "tabler-icons-react";
@@ -45,41 +46,6 @@ const useStyles = createStyles((theme) => ({
     borderRadius: 21,
   },
 }));
-// const data = [
-//   {
-//     name: "Vivay Supervisor Test",
-//   },
-//   {
-//     name: "Vivay Salazar",
-//   },
-//   {
-//     name: "URC Dionelle Panopio",
-//   },
-//   {
-//     name: "System Administrator",
-//   },
-//   {
-//     name: "Sterix Client",
-//   },
-//   {
-//     name: "Stella Marie Batalla",
-//   },
-//   {
-//     name: "SB Tech",
-//   },
-//   {
-//     name: "Ronald Abrera",
-//   },
-//   {
-//     name: "Rolando Tolentino",
-//   },
-//   {
-//     name: "Reynaldo Sillo Jr.",
-//   },
-//   {
-//     name: "Reynaldo Lacebal",
-//   },
-// ];
 
 interface Props {
   data: Array<{
@@ -121,15 +87,15 @@ const ClientSitesTable = ({
   //   setLoading(false);
   // };
 
-  const reloadData = () => {
+  const handleFilter = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setLoading(true);
-    const current = data.find((o) => o.name === user);
-    console.log(current);
-    if (current !== undefined) {
-      setDataRendered(current.sites);
-    } else setDataRendered([]);
+    const user = event.target.value;
+    setUser(user);
+    const filteredData = data.filter((item) => item.name === user);
+    setDataRendered(filteredData[0].sites);
     setLoading(false);
   };
+
   const columnStrings: string[] = columnHeadings
     ? columnHeadings
     : Object.keys(data[0]);
@@ -192,12 +158,10 @@ const ClientSitesTable = ({
         <Group align="flex-end">
           <NativeSelect
             label="Select Client"
-            data={users}
             value={user}
+            data={users}
             onChange={(e) => {
-              setUser(e.currentTarget.value);
-              console.log("set user to: " + user);
-              reloadData();
+              handleFilter(e);
             }}
           />
           <Button leftIcon={<CirclePlus />}>Add</Button>

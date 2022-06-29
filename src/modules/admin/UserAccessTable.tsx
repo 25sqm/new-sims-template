@@ -121,14 +121,15 @@ const UserAccessTable = ({
   //   setLoading(false);
   // };
 
-  const reloadData = () => {
+  const handleFilter = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setLoading(true);
-    const current = data.find((o) => o.name === user);
-    if (current !== undefined) {
-      setDataRendered(current.roles);
-    } else setDataRendered([]);
+    const user = event.target.value;
+    setUser(user);
+    const filteredData = data.filter((item) => item.name === user);
+    setDataRendered(filteredData[0].roles);
     setLoading(false);
   };
+
   const columnStrings: string[] = columnHeadings
     ? columnHeadings
     : Object.keys(data[0]);
@@ -193,8 +194,7 @@ const UserAccessTable = ({
             label="Select user"
             data={users}
             onChange={(e) => {
-              setUser(e.currentTarget.value);
-              reloadData();
+              handleFilter(e);
             }}
           />
           <Button leftIcon={<CirclePlus />}>Add</Button>

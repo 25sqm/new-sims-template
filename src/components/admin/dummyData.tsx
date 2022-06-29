@@ -40055,14 +40055,14 @@ export const userSites = [
 export const clientSites = [
   {
     clientID: "1",
-    name: "Universal Robina Corporation",
+    'name': "Universal Robina Corporation",
     sites: [
       { siteName: "	Universal Robina Corporation - Binan Plant", id: "1" },
     ],
   },
   {
     clientID: "2",
-    name: "Sterix Incorporated",
+    'name': "Sterix Incorporated",
     sites: [
       { siteName: "Sterix Incorporated - Unit 808", id: "1" },
       { siteName: "Sterix Incorporated - Unit 701", id: "2" },
@@ -40071,12 +40071,12 @@ export const clientSites = [
   },
   {
     clientID: "3",
-    name: "Starbucks Philippines",
+    'name': "Starbucks Philippines",
     sites: [{ siteName: "Starbucks Madrigal Avenue", id: "1" }],
   },
   {
     clientID: "4",
-    name: "Nutri Asia Incorporated",
+    'name': "Nutri Asia Incorporated",
     sites: [{ siteName: "Nutri Asia Incorporated - Marilao Plant", id: "1" }],
   },
 ];
