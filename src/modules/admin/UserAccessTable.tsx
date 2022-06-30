@@ -102,7 +102,7 @@ const UserAccessTable = ({
       children: (
         <NativeSelect
           value={addModalRole}
-          onChange={(e) => setAddModalRole((prev) => e.target.value)}
+          onChange={(e) => setAddModalRole(e.target.value)}
           data={possibleAccessRoles}
           label="Role"
         />
