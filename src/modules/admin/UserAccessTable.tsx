@@ -45,41 +45,6 @@ const useStyles = createStyles((theme) => ({
     borderRadius: 21,
   },
 }));
-// const data = [
-//   {
-//     name: "Vivay Supervisor Test",
-//   },
-//   {
-//     name: "Vivay Salazar",
-//   },
-//   {
-//     name: "URC Dionelle Panopio",
-//   },
-//   {
-//     name: "System Administrator",
-//   },
-//   {
-//     name: "Sterix Client",
-//   },
-//   {
-//     name: "Stella Marie Batalla",
-//   },
-//   {
-//     name: "SB Tech",
-//   },
-//   {
-//     name: "Ronald Abrera",
-//   },
-//   {
-//     name: "Rolando Tolentino",
-//   },
-//   {
-//     name: "Reynaldo Sillo Jr.",
-//   },
-//   {
-//     name: "Reynaldo Lacebal",
-//   },
-// ];
 
 interface Props {
   data: Array<{

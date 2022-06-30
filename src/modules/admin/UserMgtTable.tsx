@@ -97,11 +97,7 @@ const UserMgtTable = (
           <TextInput label="Organization" placeholder={row.organization} />
           <TextInput label="Address" placeholder={row.address} />
           <DatePicker label="Birthday" value={new Date(row.birthday)} />
-          <NativeSelect
-            data={["Male", "Female"]}
-            placeholder="Pick one"
-            label="Sex"
-          />
+          <NativeSelect data={["M", "F"]} placeholder={row.sex} label="Sex" />
           <TextInput label="Landline" placeholder={row.landline} />
           <TextInput label="Mobile Number" placeholder={row.mobileNumber} />
         </form>
@@ -188,7 +184,7 @@ const UserMgtTable = (
     return (
       <tr key={unique}>
         <td>
-          <Group>
+          <Group noWrap>
             <Button variant="subtle" size="xs">
               Access
             </Button>
@@ -217,7 +213,7 @@ const UserMgtTable = (
             );
           })}
         <td>
-          <Group>
+          <Group noWrap>
             <ActionIcon
               onClick={() => {
                 openEditModal({ row });
@@ -357,7 +353,7 @@ const UserMgtTable = (
 						rows per page
 					</Group> */}
         </Text>
-        {data.length >= 9 ? (
+        {dataRendered.length > 9 ? (
           <Pagination
             my="sm"
             page={activePage}
