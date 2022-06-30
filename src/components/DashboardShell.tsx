@@ -41,6 +41,7 @@ import ClientManagement from "./admin/ClientManagement";
 import TrendsAndReports from "./admin/TrendsAndReports";
 import { notifData } from "../components/admin/dummyData";
 import { NotFoundTitle } from "./Page404";
+import UserAccess from "./admin/UserAccess";
 
 interface AuthFormProps {
   user: any;
@@ -216,6 +217,10 @@ const DashboardShell = ({
             <Route path="*" element={<NotFoundTitle />} />
             <Route index element={<ServiceManagement />} />
             <Route path="/user-management" element={<UserManagement />} />
+            <Route
+              path="/user-management/access/:userName"
+              element={<UserAccess />}
+            />
             <Route path="/device-management" element={<DeviceManagement />} />
             <Route path="/area-management" element={<AreaMonitoring />} />
             <Route path="/client-management" element={<ClientManagement />} />

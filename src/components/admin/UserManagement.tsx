@@ -136,20 +136,6 @@ const UserManagement = () => {
         {/* <UserMgtTable data={data} /> */}
         <Tabs>
           <Tabs.Tab label="User Management">
-            {/* <TableRender
-              data={data}
-              idColumn={"name"}
-              ignoreColumn={["birthday", "sex", "address"]}
-              columnHeadings={[
-                "Name",
-                "Username",
-                "Email Address",
-                "Mobile Number",
-                "Landline",
-                "Organization",
-              ]}
-              filterableHeadings={["organization"]}
-            /> */}
             <UserMgtTable
               data={data}
               idColumn={"name"}
@@ -176,22 +162,22 @@ const UserManagement = () => {
               filterableHeadings={["Type"]}
             />
           </Tabs.Tab>
-          <Tabs.Tab label="User Access">
+          {/* <Tabs.Tab label="User Access">
             <UserAccessTable
               data={userAccess}
               idColumn={"userID"}
               ignoreColumn={["roles", "id"]}
               columnHeadings={["Roles", "Action"]}
             />
-          </Tabs.Tab>
-          <Tabs.Tab label="Sites">
+          </Tabs.Tab> */}
+          {/* <Tabs.Tab label="Sites">
             <UserAccessTable
               data={userSites}
               idColumn={"userID"}
               ignoreColumn={["roles", "id"]}
               columnHeadings={["Sites", "Action"]}
             />
-          </Tabs.Tab>
+          </Tabs.Tab> */}
           {/* <Tabs.Tab label="Permissions">
             <TableRender
               data={userRoles}

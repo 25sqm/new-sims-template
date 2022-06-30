@@ -10,9 +10,12 @@ import {
   NativeSelect,
   Button,
   ActionIcon,
+  TextInput,
 } from "@mantine/core";
+import { useModals } from "@mantine/modals";
 
-import { Edit, TrashX, CirclePlus } from "tabler-icons-react";
+import { Edit, TrashX, CirclePlus, Rollercoaster } from "tabler-icons-react";
+import { showNotification } from "@mantine/notifications";
 
 const useStyles = createStyles((theme) => ({
   th: {
@@ -47,17 +50,26 @@ const useStyles = createStyles((theme) => ({
 }));
 
 interface Props {
-  data: Array<{
-    userID: string;
+  data: {
     name: string;
     roles: Array<{ roleName: string; id: string }>;
-  }>;
+  };
   description?: string;
   idColumn: string;
   ignoreColumn?: Array<string>;
   columnHeadings?: Array<string>;
   testLog?: (message: any) => void;
 }
+
+const possibleAccessRoles = [
+  "Client Company Administrator",
+  "Data Encoder",
+  "Evaluators",
+  "Office Staff",
+  "Sterix Administrator",
+  "Sterix Supervisor",
+  "Sterix Technician",
+];
 
 const UserAccessTable = ({
   data,
@@ -68,42 +80,111 @@ const UserAccessTable = ({
 }: Props) => {
   const { classes } = useStyles();
   const [loading, setLoading] = useState<boolean>(true);
-  const [user, setUser] = useState(data[0].name);
+  const [user, setUser] = useState(data.name);
   const [activePage, setPage] = useState<number>(1);
   const [currentLimit, setCurrentLimit] = useState<number>(10);
-  const [dataRendered, setDataRendered] = useState(data[0].roles);
-
+  const [dataRendered, setDataRendered] = useState(data.roles);
+  const [addModalRole, setAddModalRole] = useState(data.roles[0].roleName);
+  const modals = useModals();
   useEffect(() => {
     setTimeout(function () {
+      console.log(dataRendered);
       setLoading(false);
     }, 300);
   }, []);
-  // const reloadData = (page: number) => {
-  //   setLoading(true);
-  //   const lowerBound = page * 10 - 10;
-  //   const upperBound = page * 10 - 1;
-  //   setDataRendered(data.slice(lowerBound, upperBound));
-  //   setLoading(false);
-  // };
 
-  const handleFilter = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setLoading(true);
-    const user = event.target.value;
-    setUser(user);
-    const filteredData = data.filter((item) => item.name === user);
-    setDataRendered(filteredData[0].roles);
-    setLoading(false);
+  // MODAL FUNCTIONS
+
+  const openAddRoleModal = () => {
+    console.log(dataRendered);
+    modals.openConfirmModal({
+      title: "Add Role",
+      children: (
+        <NativeSelect
+          value={addModalRole}
+          onChange={(e) => setAddModalRole((prev) => e.target.value)}
+          data={possibleAccessRoles}
+          label="Role"
+        />
+      ),
+      labels: { confirm: "Add Role", cancel: "Cancel" },
+      onCancel: () => console.log("You Cancelled"),
+      onConfirm: () => {
+        console.log(addModalRole);
+        setDataRendered([
+          ...dataRendered,
+          {
+            roleName: addModalRole,
+            id: String(data.roles.length + 1),
+          },
+        ]);
+        console.log("You confirmed");
+      },
+    });
   };
+
+  const openEditModal = ({ row }: any) => {
+    modals.openConfirmModal({
+      title: "Edit This User",
+      children: (
+        <form onSubmit={(event) => event.preventDefault()}>
+          <NativeSelect
+            placeholder={row.roleName}
+            data={possibleAccessRoles}
+            label="Role"
+          />
+        </form>
+      ),
+      labels: { confirm: "Submit", cancel: "Cancel" },
+      onCancel: () => console.log("You Cancelled"),
+      onConfirm: () => {
+        showNotification({
+          title: "Edit success!",
+          message: "This is a future functionality",
+          autoClose: 3000,
+          color: "green",
+        });
+        console.log("you submitted: ", row);
+      },
+    });
+  };
+
+  const openDeleteModal = ({ row }: any) => {
+    modals.openConfirmModal({
+      title: "Delete User",
+      children: (
+        <>
+          <Text>
+            Are you sure you want to delete "{row.roleName}" role from{" "}
+            {data.name}?
+          </Text>
+        </>
+      ),
+      labels: { confirm: "Delete", cancel: "Cancel" },
+      onCancel: () => console.log("You Cancelled"),
+      onConfirm: () => {
+        showNotification({
+          title: `You have successfully deleted ${row.roleName}`,
+          message: "This is a future functionality",
+          autoClose: 3000,
+          color: "green",
+        });
+        console.log("You tried to delete ", row.roleName);
+      },
+    });
+  };
+
+  // END MODAL FUNCTIONS
 
   const columnStrings: string[] = columnHeadings
     ? columnHeadings
-    : Object.keys(data[0]);
+    : Object.keys(data);
   const columns = columnStrings.map((heading) => (
     <th className={classes.th}>{heading}</th>
   ));
 
   const rows = dataRendered.map((row: any, index) => {
-    const unique = index;
+    const unique = row[idColumn];
     return (
       <tr key={unique}>
         {Object.keys(row)
@@ -127,21 +208,24 @@ const UserAccessTable = ({
           })}
         <td>
           <Group>
-            <ActionIcon>
+            <ActionIcon
+              onClick={() => {
+                openEditModal({ row });
+              }}
+            >
               <Edit size={15} />
             </ActionIcon>
-            <ActionIcon>
+            <ActionIcon
+              onClick={() => {
+                openDeleteModal({ row });
+              }}
+            >
               <TrashX size={15} />
             </ActionIcon>
           </Group>
         </td>
       </tr>
     );
-  });
-
-  const users: Array<string> = [];
-  data.forEach((user: any) => {
-    users.push(user.name);
   });
 
   return (
@@ -154,15 +238,19 @@ const UserAccessTable = ({
         ) : (
           <></>
         )}
-        <Group align="flex-end">
-          <NativeSelect
-            label="Select user"
-            data={users}
-            onChange={(e) => {
-              handleFilter(e);
+        <Group align="center">
+          <Text p={20} size="lg" color="dimmed">
+            User Access: {user}
+          </Text>
+          <Button
+            onClick={() => {
+              openAddRoleModal();
             }}
-          />
-          <Button leftIcon={<CirclePlus />}>Add</Button>
+            variant="outline"
+            leftIcon={<CirclePlus />}
+          >
+            Add Role
+          </Button>
         </Group>
         <ScrollArea sx={{ height: "auto" }}>
           <Table
@@ -194,7 +282,7 @@ const UserAccessTable = ({
       </Skeleton>
       <Group>
         <Text></Text>
-        {data.length >= 9 ? (
+        {data.roles.length >= 9 ? (
           <Pagination
             my="sm"
             page={activePage}
@@ -202,7 +290,7 @@ const UserAccessTable = ({
               // reloadData(page);
               setPage(page);
             }}
-            total={Math.floor(data.length / 10)}
+            total={Math.floor(data.roles.length / 10)}
           />
         ) : (
           <></>

@@ -17,6 +17,7 @@ import { Edit, TrashX, Refresh } from "tabler-icons-react";
 import { useModals } from "@mantine/modals";
 import { showNotification } from "@mantine/notifications";
 import { DatePicker } from "@mantine/dates";
+import { Link } from "react-router-dom";
 
 const useStyles = createStyles((theme) => ({
   th: {
@@ -49,11 +50,6 @@ const useStyles = createStyles((theme) => ({
     borderRadius: 21,
   },
 }));
-
-interface ActionButton {
-  content: string;
-  buttonNode: React.ReactNode;
-}
 
 interface Props {
   data: Array<Object>;
@@ -185,9 +181,14 @@ const UserMgtTable = (
       <tr key={unique}>
         <td>
           <Group noWrap>
-            <Button variant="subtle" size="xs">
-              Access
-            </Button>
+            <Link
+              state={{ data: row }}
+              to={`/user-management/access/${row.username}`}
+            >
+              <Button variant="subtle" size="xs">
+                Access
+              </Button>
+            </Link>
             <Button variant="subtle" size="xs">
               Sites
             </Button>
