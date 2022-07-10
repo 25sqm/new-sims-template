@@ -42,6 +42,7 @@ import TrendsAndReports from "./admin/TrendsAndReports";
 import { notifData } from "../components/admin/dummyData";
 import { NotFoundTitle } from "./Page404";
 import UserAccess from "./admin/UserAccess";
+import UserSites from "./admin/UserSites";
 
 interface AuthFormProps {
   user: any;
@@ -220,6 +221,10 @@ const DashboardShell = ({
             <Route
               path="/user-management/access/:userName"
               element={<UserAccess />}
+            />
+            <Route
+              path="/user-management/sites/:userName"
+              element={<UserSites />}
             />
             <Route path="/device-management" element={<DeviceManagement />} />
             <Route path="/area-management" element={<AreaMonitoring />} />

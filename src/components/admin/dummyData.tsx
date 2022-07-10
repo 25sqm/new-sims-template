@@ -40016,19 +40016,19 @@ export const userSites = [
   {
     userID: "1",
     name: "Sterix Administrator",
-    roles: [
-      { roleName: "Nutri Asia Incorporated - Marilao Plant", id: "1" },
-      { roleName: "Sterix Incorporated", id: "2" },
+    sites: [
+      { siteName: "Nutri Asia Incorporated - Marilao Plant", id: "1" },
+      { siteName: "Sterix Incorporated", id: "2" },
     ],
   },
   {
     userID: "2",
     name: "Vivay Supervisor Test",
-    roles: [
-      { roleName: "Nutri Asia Incorporated - Marilao Plant", id: "1" },
-      { roleName: "Sterix Incorporated", id: "2" },
+    sites: [
+      { siteName: "Nutri Asia Incorporated - Marilao Plant", id: "1" },
+      { siteName: "Sterix Incorporated", id: "2" },
       {
-        roleName: "Mead Johnson Nutrition Incorporated - Philippines",
+        siteName: "Mead Johnson Nutrition Incorporated - Philippines",
         id: "3",
       },
     ],
@@ -40036,16 +40036,16 @@ export const userSites = [
   {
     userID: "3",
     name: "Vivay Salazar",
-    roles: [{ roleName: "Nutri Asia Incorporated - Marilao Plant", id: "1" }],
+    sites: [{ siteName: "Nutri Asia Incorporated - Marilao Plant", id: "1" }],
   },
   {
     userID: "4",
     name: "System Administrator",
-    roles: [
-      { roleName: "Nutri Asia Incorporated - Marilao Plant", id: "1" },
-      { roleName: "Sterix Incorporated", id: "2" },
+    sites: [
+      { siteName: "Nutri Asia Incorporated - Marilao Plant", id: "1" },
+      { siteName: "Sterix Incorporated", id: "2" },
       {
-        roleName: "Mead Johnson Nutrition Incorporated - Philippines",
+        siteName: "Mead Johnson Nutrition Incorporated - Philippines",
         id: "3",
       },
     ],
@@ -40055,14 +40055,14 @@ export const userSites = [
 export const clientSites = [
   {
     clientID: "1",
-    'name': "Universal Robina Corporation",
+    name: "Universal Robina Corporation",
     sites: [
       { siteName: "	Universal Robina Corporation - Binan Plant", id: "1" },
     ],
   },
   {
     clientID: "2",
-    'name': "Sterix Incorporated",
+    name: "Sterix Incorporated",
     sites: [
       { siteName: "Sterix Incorporated - Unit 808", id: "1" },
       { siteName: "Sterix Incorporated - Unit 701", id: "2" },
@@ -40071,12 +40071,12 @@ export const clientSites = [
   },
   {
     clientID: "3",
-    'name': "Starbucks Philippines",
+    name: "Starbucks Philippines",
     sites: [{ siteName: "Starbucks Madrigal Avenue", id: "1" }],
   },
   {
     clientID: "4",
-    'name': "Nutri Asia Incorporated",
+    name: "Nutri Asia Incorporated",
     sites: [{ siteName: "Nutri Asia Incorporated - Marilao Plant", id: "1" }],
   },
 ];

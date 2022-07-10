@@ -189,9 +189,14 @@ const UserMgtTable = (
                 Access
               </Button>
             </Link>
-            <Button variant="subtle" size="xs">
-              Sites
-            </Button>
+            <Link
+              state={{ data: row }}
+              to={`/user-management/sites/${row.username}`}
+            >
+              <Button variant="subtle" size="xs">
+                Sites
+              </Button>
+            </Link>
           </Group>
         </td>
         {Object.keys(row)
