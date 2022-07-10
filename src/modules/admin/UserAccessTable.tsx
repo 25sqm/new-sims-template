@@ -10,7 +10,7 @@ import {
   NativeSelect,
   Button,
   ActionIcon,
-  TextInput,
+  Divider,
 } from "@mantine/core";
 import { useModals } from "@mantine/modals";
 
@@ -84,11 +84,10 @@ const UserAccessTable = ({
   const [activePage, setPage] = useState<number>(1);
   const [currentLimit, setCurrentLimit] = useState<number>(10);
   const [dataRendered, setDataRendered] = useState(data.roles);
-  const [addModalRole, setAddModalRole] = useState(data.roles[0].roleName);
+  // const [addModalRole, setAddModalRole] = useState(data.roles[0].roleName);
   const modals = useModals();
   useEffect(() => {
     setTimeout(function () {
-      console.log(dataRendered);
       setLoading(false);
     }, 300);
   }, []);
@@ -97,12 +96,15 @@ const UserAccessTable = ({
 
   const openAddRoleModal = () => {
     console.log(dataRendered);
+    let addModalRole = "";
     modals.openConfirmModal({
       title: "Add Role",
       children: (
         <NativeSelect
-          value={addModalRole}
-          onChange={(e) => setAddModalRole(e.target.value)}
+          onChange={(e) => {
+            addModalRole = e.currentTarget.value;
+            console.log(addModalRole);
+          }}
           data={possibleAccessRoles}
           label="Role"
         />
@@ -110,7 +112,6 @@ const UserAccessTable = ({
       labels: { confirm: "Add Role", cancel: "Cancel" },
       onCancel: () => console.log("You Cancelled"),
       onConfirm: () => {
-        console.log(addModalRole);
         setDataRendered([
           ...dataRendered,
           {
@@ -124,12 +125,16 @@ const UserAccessTable = ({
   };
 
   const openEditModal = ({ row }: any) => {
+    let editRoleName = row.roleName;
     modals.openConfirmModal({
       title: "Edit This User",
       children: (
         <form onSubmit={(event) => event.preventDefault()}>
           <NativeSelect
             placeholder={row.roleName}
+            onChange={(e) => {
+              editRoleName = e.currentTarget.value;
+            }}
             data={possibleAccessRoles}
             label="Role"
           />
@@ -138,6 +143,11 @@ const UserAccessTable = ({
       labels: { confirm: "Submit", cancel: "Cancel" },
       onCancel: () => console.log("You Cancelled"),
       onConfirm: () => {
+        setDataRendered([
+          ...dataRendered.map((item) =>
+            item.id === row.id ? { ...item, roleName: editRoleName } : item
+          ),
+        ]);
         showNotification({
           title: "Edit success!",
           message: "This is a future functionality",
@@ -163,6 +173,10 @@ const UserAccessTable = ({
       labels: { confirm: "Delete", cancel: "Cancel" },
       onCancel: () => console.log("You Cancelled"),
       onConfirm: () => {
+        const newDataRendered = dataRendered.filter((element) => {
+          return element.id !== row.id;
+        });
+        setDataRendered(newDataRendered);
         showNotification({
           title: `You have successfully deleted ${row.roleName}`,
           message: "This is a future functionality",
@@ -238,8 +252,9 @@ const UserAccessTable = ({
         ) : (
           <></>
         )}
-        <Group align="center">
-          <Text p={20} size="lg" color="dimmed">
+
+        <Group align="center" mb="md">
+          <Text p={10} size="lg">
             User Access: {user}
           </Text>
           <Button
@@ -252,6 +267,7 @@ const UserAccessTable = ({
             Add Role
           </Button>
         </Group>
+        <Divider />
         <ScrollArea sx={{ height: "auto" }}>
           <Table
             fontSize={12}
