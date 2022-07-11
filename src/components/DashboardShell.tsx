@@ -34,15 +34,16 @@ import Reports from "./Reports";
 import BaitStationMonitoring from "./BaitStationMonitoring";
 import ServiceManagement from "./admin/ServiceManagement";
 import DeviceManagement from "./admin/DeviceManagement";
-import UserManagement from "./admin/UserManagement";
+import UserManagement from "./admin/UserManagement/UserManagement";
 import { getAssignedLocation } from "../api/user";
 import AreaMonitoring from "./admin/AreaMonitoring";
 import ClientManagement from "./admin/ClientManagement";
 import TrendsAndReports from "./admin/TrendsAndReports";
 import { notifData } from "../components/admin/dummyData";
 import { NotFoundTitle } from "./Page404";
-import UserAccess from "./admin/UserAccess";
-import UserSites from "./admin/UserSites";
+import UserAccess from "./admin/UserManagement/UserAccess";
+import UserSites from "./admin/UserManagement/UserSites";
+import UserPermissions from "./admin/UserManagement/UserPermissions";
 
 interface AuthFormProps {
   user: any;
@@ -225,6 +226,10 @@ const DashboardShell = ({
             <Route
               path="/user-management/sites/:userName"
               element={<UserSites />}
+            />
+            <Route
+              path="/user-management/permissions/:Name"
+              element={<UserPermissions />}
             />
             <Route path="/device-management" element={<DeviceManagement />} />
             <Route path="/area-management" element={<AreaMonitoring />} />

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Paper } from "@mantine/core";
-import UserAccessTable from "../../modules/admin/UserAccessTable";
-import { userAccess } from "./dummyData";
+import UserAccessTable from "../../../modules/admin/UserManagement/UserAccessTable";
+import { userAccess } from "../dummyData";
 import { useLocation } from "react-router-dom";
 
 const UserAccess = () => {
