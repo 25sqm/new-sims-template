@@ -75,7 +75,7 @@ const UserRolesTable = ({
   const [loading, setLoading] = useState<boolean>(true);
   const [activePage, setPage] = useState<number>(1);
   const [currentLimit, setCurrentLimit] = useState<number>(10);
-  const [dataRendered, setDataRendered] = useState(data.slice(0, 9));
+  const [dataRendered, setDataRendered] = useState<any>([]);
 
   // MODAL FUNCTIONS
 
@@ -180,10 +180,9 @@ const UserRolesTable = ({
     <th className={classes.th}>{heading}</th>
   ));
 
-  const rows = dataRendered.map((row: any, index) => {
-    const unique = index;
+  const rows = dataRendered.map((row: any, index: any) => {
     return (
-      <tr key={unique}>
+      <tr>
         <td>
           <Group noWrap>
             <Link
@@ -204,9 +203,9 @@ const UserRolesTable = ({
             }
             // This filter function ultimately removes the indicated columns to ignore using the ignoreColumn props
           })
-          .map((rowdata) => {
+          .map((rowdata, index) => {
             return (
-              <td className={classes.td}>
+              <td className={classes.td} key={index}>
                 {row[rowdata].toString().match(/<[^>]*>/) !== null
                   ? ""
                   : row[rowdata]}
@@ -274,7 +273,9 @@ const UserRolesTable = ({
     setTimeout(function () {
       setLoading(false);
     }, 300);
-  }, []);
+    setDataRendered(data.slice(0, 9));
+    console.log("Here: ", data);
+  }, [data]);
 
   const reloadData = (page: number) => {
     setLoading(true);

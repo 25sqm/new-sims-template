@@ -18,6 +18,7 @@ import { useModals } from "@mantine/modals";
 import { showNotification } from "@mantine/notifications";
 import { DatePicker } from "@mantine/dates";
 import { Link } from "react-router-dom";
+import { getUsersInfo } from "../../../api/user";
 
 const useStyles = createStyles((theme) => ({
   th: {
@@ -78,7 +79,7 @@ const UserMgtTable = (
   const [loading, setLoading] = useState<boolean>(true);
   const [activePage, setPage] = useState<number>(1);
   const [currentLimit, setCurrentLimit] = useState<number>(10);
-  const [dataRendered, setDataRendered] = useState(data.slice(0, 9));
+  const [dataRendered, setDataRendered] = useState<any>([]);
 
   // MODAL FUNCTIONS
 
@@ -162,7 +163,7 @@ const UserMgtTable = (
     // console.log(filterBy);
     // console.log(data);
     const filteredData = data.filter(
-      (row: any) => row.organization === filterBy
+      (row: any) => row.Organization === filterBy
     );
     // console.log(filteredData);
     setDataRendered(filteredData.slice(0, 9));
@@ -175,7 +176,7 @@ const UserMgtTable = (
     <th className={classes.th}>{heading}</th>
   ));
 
-  const rows = dataRendered.map((row: any, index) => {
+  const rows = dataRendered.map((row: any, index: any) => {
     const unique = index;
     return (
       <tr key={unique}>
@@ -207,9 +208,9 @@ const UserMgtTable = (
             }
             // This filter function ultimately removes the indicated columns to ignore using the ignoreColumn props
           })
-          .map((rowdata) => {
+          .map((rowdata, index) => {
             return (
-              <td className={classes.td}>
+              <td className={classes.td} key={index}>
                 {row[rowdata].toString().match(/<[^>]*>/) !== null
                   ? ""
                   : row[rowdata]}
@@ -283,9 +284,10 @@ const UserMgtTable = (
 
   useEffect(() => {
     setTimeout(function () {
+      setDataRendered(data.slice(0, 9));
       setLoading(false);
     }, 300);
-  }, []);
+  }, [data]);
 
   const reloadData = (page: number) => {
     setLoading(true);

@@ -16,7 +16,6 @@ import { useModals } from "@mantine/modals";
 
 import { Edit, TrashX, CirclePlus, Rollercoaster } from "tabler-icons-react";
 import { showNotification } from "@mantine/notifications";
-import { StringLiteralLike } from "typescript";
 
 const useStyles = createStyles((theme) => ({
   th: {
@@ -65,16 +64,6 @@ interface Props {
   testLog?: (message: any) => void;
 }
 
-const possibleAccessRoles = [
-  "Client Company Administrator",
-  "Data Encoder",
-  "Evaluators",
-  "Office Staff",
-  "Sterix Administrator",
-  "Sterix Supervisor",
-  "Sterix Technician",
-];
-
 const UserPermissionsTable = ({
   role,
   data,
@@ -87,20 +76,27 @@ const UserPermissionsTable = ({
   const [loading, setLoading] = useState<boolean>(true);
   const [activePage, setPage] = useState<number>(1);
   const [currentLimit, setCurrentLimit] = useState<number>(10);
-  const [dataRendered, setDataRendered] = useState(data);
-  console.log(dataRendered);
+  const [dataRendered, setDataRendered] = useState<any>([]);
   // const [addModalRole, setAddModalRole] = useState(data.roles[0].roleName);
   const modals = useModals();
   useEffect(() => {
     setTimeout(function () {
       setLoading(false);
     }, 300);
-  }, []);
+    setDataRendered(data.slice(0, 9));
+  }, [data]);
+
+  const reloadData = (page: number) => {
+    setLoading(true);
+    const lowerBound = page * 10 - 10;
+    const upperBound = page * 10 - 1;
+    setDataRendered(data.slice(lowerBound, upperBound));
+    setLoading(false);
+  };
 
   // MODAL FUNCTIONS
 
   const openAddRoleModal = () => {
-    console.log(dataRendered);
     let addPermission = { pagetitle: "Dashboard", permission: "View Only" };
     modals.openConfirmModal({
       title: "Add Role",
@@ -308,7 +304,7 @@ const UserPermissionsTable = ({
             my="sm"
             page={activePage}
             onChange={(page) => {
-              // reloadData(page);
+              reloadData(page);
               setPage(page);
             }}
             total={Math.floor(data.length / 10)}

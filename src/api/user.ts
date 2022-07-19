@@ -20,6 +20,51 @@ export async function logIn(username: string, password: string) {
     return response;
   } catch (err: any) {
     console.log(err.response);
+    return err.response;
+  }
+}
+
+export async function getUserRoles() {
+  try {
+    const csrf = await http.get("/sanctum/csrf-cookie");
+    const authToken = sessionStorage.getItem("token");
+    const headers = { headers: { Authorization: `Bearer ${authToken}` } };
+    const response = await http.get("/api/admin/user/roles/search", headers);
+    return response;
+  } catch (err: any) {
+    console.error(err.response);
+    return null;
+  }
+}
+
+export async function getUsersInfo() {
+  try {
+    const csrf = await http.get("/sanctum/csrf-cookie");
+    const authToken = sessionStorage.getItem("token");
+    const headers = { headers: { Authorization: `Bearer ${authToken}` } };
+    const response = await http.get(
+      "/api/admin/user/information/search",
+      headers
+    );
+    return response;
+  } catch (err: any) {
+    console.error(err.response);
+    return null;
+  }
+}
+
+export async function getUserPermissions(id: number) {
+  try {
+    const csrf = await http.get("/sanctum/csrf-cookie");
+    const authToken = sessionStorage.getItem("token");
+    const headers = { headers: { Authorization: `Bearer ${authToken}` } };
+    const response = await http.get(
+      `/api/admin/user/roles/permissions/search?id=${id}`,
+      headers
+    );
+    return response;
+  } catch (err: any) {
+    console.error(err.response);
     return null;
   }
 }
