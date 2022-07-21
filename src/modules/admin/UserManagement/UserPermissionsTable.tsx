@@ -14,7 +14,7 @@ import {
 } from "@mantine/core";
 import { useModals } from "@mantine/modals";
 
-import { Edit, TrashX, CirclePlus, Rollercoaster } from "tabler-icons-react";
+import { Edit, TrashX, CirclePlus } from "tabler-icons-react";
 import { showNotification } from "@mantine/notifications";
 
 const useStyles = createStyles((theme) => ({
@@ -83,7 +83,9 @@ const UserPermissionsTable = ({
     setTimeout(function () {
       setLoading(false);
     }, 300);
-    setDataRendered(data.slice(0, 9));
+    if (data.length > 0) {
+      setDataRendered(data.slice(0, 9));
+    }
   }, [data]);
 
   const reloadData = (page: number) => {
@@ -287,7 +289,7 @@ const UserPermissionsTable = ({
               ) : (
                 <tr>
                   <td colSpan={9}>
-                    <Text weight={500} align="center">
+                    <Text color="dimmed" weight={500} align="center">
                       Nothing found
                     </Text>
                   </td>

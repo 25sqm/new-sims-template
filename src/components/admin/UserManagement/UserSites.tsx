@@ -21,8 +21,6 @@ const UserSites = () => {
   };
 
   useEffect(() => {
-    console.log(data);
-
     return () => {
       null;
     };

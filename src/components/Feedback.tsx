@@ -118,7 +118,6 @@ export function Feedback() {
     emailjs
       .sendForm(SERVICE_ID, TEMPLATE_ID, e, PERSONAL_ID)
       .then((res) => {
-        console.log(res);
         if (res.status === 200) {
           showNotification({
             title: "Success!",

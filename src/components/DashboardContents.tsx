@@ -286,7 +286,7 @@ const CriticalFindings = ({ criticalFindings }: DashboardData) => {
             </div>
           ))
         ) : (
-          <Text weight={500} align="center">
+          <Text color="dimmed" weight={500} align="center">
             <Box
               sx={(theme) => ({
                 backgroundColor:
@@ -415,7 +415,7 @@ const DashboardContents = () => {
         setIsLoading(false);
       })
       .catch(function (error) {
-        console.log(error);
+        alert(error);
       }),
   ];
 

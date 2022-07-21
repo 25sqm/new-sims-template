@@ -50,10 +50,8 @@ const useStyles = createStyles((theme) => ({
 }));
 
 interface Props {
-  data: {
-    name: string;
-    roles: Array<{ roleName: string; id: string }>;
-  };
+  name: string;
+  data: Array<{ role_id: number; roles: string; user_access_ID: number }>;
   description?: string;
   idColumn: string;
   ignoreColumn?: Array<string>;
@@ -72,6 +70,7 @@ const possibleAccessRoles = [
 ];
 
 const UserAccessTable = ({
+  name,
   data,
   description,
   idColumn,
@@ -80,17 +79,18 @@ const UserAccessTable = ({
 }: Props) => {
   const { classes } = useStyles();
   const [loading, setLoading] = useState<boolean>(true);
-  const [user, setUser] = useState(data.name);
+  const [user, setUser] = useState(name);
   const [activePage, setPage] = useState<number>(1);
   const [currentLimit, setCurrentLimit] = useState<number>(10);
-  const [dataRendered, setDataRendered] = useState(data.roles);
+  const [dataRendered, setDataRendered] = useState<any>([]);
   // const [addModalRole, setAddModalRole] = useState(data.roles[0].roleName);
   const modals = useModals();
   useEffect(() => {
+    setDataRendered(data);
     setTimeout(function () {
       setLoading(false);
     }, 300);
-  }, []);
+  }, [data]);
 
   // MODAL FUNCTIONS
 
@@ -115,8 +115,9 @@ const UserAccessTable = ({
         setDataRendered([
           ...dataRendered,
           {
-            roleName: addModalRole,
-            id: String(data.roles.length + 1),
+            role_id: dataRendered.length + 1,
+            roles: addModalRole,
+            user_access_ID: dataRendered.length + 1,
           },
         ]);
         console.log("You confirmed");
@@ -144,8 +145,8 @@ const UserAccessTable = ({
       onCancel: () => console.log("You Cancelled"),
       onConfirm: () => {
         setDataRendered([
-          ...dataRendered.map((item) =>
-            item.id === row.id ? { ...item, roleName: editRoleName } : item
+          ...dataRendered.map((item: any) =>
+            item.role_id === row.id ? { ...item, roles: editRoleName } : item
           ),
         ]);
         showNotification({
@@ -165,16 +166,15 @@ const UserAccessTable = ({
       children: (
         <>
           <Text>
-            Are you sure you want to delete "{row.roleName}" role from{" "}
-            {data.name}?
+            Are you sure you want to delete "{row.roles}" role from {name}?
           </Text>
         </>
       ),
       labels: { confirm: "Delete", cancel: "Cancel" },
       onCancel: () => console.log("You Cancelled"),
       onConfirm: () => {
-        const newDataRendered = dataRendered.filter((element) => {
-          return element.id !== row.id;
+        const newDataRendered = dataRendered.filter((element: any) => {
+          return element.role_id !== row.id;
         });
         setDataRendered(newDataRendered);
         showNotification({
@@ -197,7 +197,7 @@ const UserAccessTable = ({
     <th className={classes.th}>{heading}</th>
   ));
 
-  const rows = dataRendered.map((row: any, index) => {
+  const rows = dataRendered.map((row: any, index: number) => {
     const unique = row[idColumn];
     return (
       <tr key={unique}>
@@ -286,7 +286,7 @@ const UserAccessTable = ({
               ) : (
                 <tr>
                   <td colSpan={9}>
-                    <Text weight={500} align="center">
+                    <Text color="dimmed" weight={500} align="center">
                       Nothing found
                     </Text>
                   </td>
@@ -298,7 +298,7 @@ const UserAccessTable = ({
       </Skeleton>
       <Group>
         <Text></Text>
-        {data.roles.length >= 9 ? (
+        {data.length >= 9 ? (
           <Pagination
             my="sm"
             page={activePage}
@@ -306,7 +306,7 @@ const UserAccessTable = ({
               // reloadData(page);
               setPage(page);
             }}
-            total={Math.floor(data.roles.length / 10)}
+            total={Math.floor(data.length / 10)}
           />
         ) : (
           <></>

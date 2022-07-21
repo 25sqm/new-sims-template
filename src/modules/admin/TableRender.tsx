@@ -198,7 +198,7 @@ const TableRender = (
               ) : (
                 <tr>
                   <td colSpan={9}>
-                    <Text weight={500} align="center">
+                    <Text color="dimmed" weight={500} align="center">
                       Nothing found
                     </Text>
                   </td>

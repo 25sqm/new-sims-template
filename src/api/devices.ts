@@ -56,11 +56,9 @@ export async function getDevices(page: number) {
     };
 
     const response = await http.get("/api/di", headers);
-    console.log(response);
     return response;
     // return tableProps;
   } catch (err) {
-    console.log(err);
     return {};
   }
 }
@@ -74,8 +72,6 @@ export async function addDevice(deviceData: DeviceData) {
       params: deviceData,
       headers: { Accept: "*/*", Authorization: `Bearer ${authToken}` },
     };
-
-    console.log(config);
 
     const newData = {
       ...deviceData,
@@ -97,7 +93,6 @@ export async function addDevice(deviceData: DeviceData) {
     return response.data;
     // return tableProps;
   } catch (err) {
-    console.log(err);
     throw err;
   }
 }

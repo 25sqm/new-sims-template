@@ -1,13 +1,9 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Text, Paper, Divider, Tabs, Button } from "@mantine/core";
 import UserMgtTable from "../../../modules/admin/UserManagement/UserMgtTable";
-import TableRender from "../../../modules/admin/TableRender";
-import { userRoles, userAccess, userSites } from "../dummyData";
-import UserAccessTable from "../../../modules/admin/UserManagement/UserAccessTable";
 import UserRolesTable from "../../../modules/admin/UserManagement/UserRoles";
 import { getUserRoles, getUsersInfo } from "../../../api/user";
-import { SelectDropdown } from "@mantine/core/lib/components/Select/SelectDropdown/SelectDropdown";
 const UserManagement = () => {
   const [userInfo, setUserInfo] = useState([]);
   const [userRoles, setUserRoles] = useState([]);
@@ -42,6 +38,7 @@ const UserManagement = () => {
                 "birthday",
                 "landline_no",
                 "sex",
+                "org_id",
               ]}
               columnHeadings={[
                 "",

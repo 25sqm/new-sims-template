@@ -19,7 +19,6 @@ const UserPermissions = () => {
 
   useEffect(() => {
     fetchRolePermissions(data.ID);
-    console.log(userPermissions);
   }, []);
 
   return (
@@ -29,7 +28,7 @@ const UserPermissions = () => {
           role={data.Name}
           data={userPermissions}
           idColumn={"ID"}
-          ignoreColumn={["actionbtn", "ID"]}
+          ignoreColumn={["actionbtn", "ID", "permission_id", "page_id"]}
           columnHeadings={["Page", "Permission", "Action"]}
         />
       </Paper>
