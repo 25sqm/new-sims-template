@@ -11,14 +11,6 @@ const UserAccess = () => {
   const { data }: any = location.state;
   console.log(data);
   const nameProps = data.name;
-  const dummyData = {
-    name: nameProps,
-    roles: [
-      { roleName: "Sterix Supervisor", id: "1" },
-      { roleName: "Client Company Administrator", id: "2" },
-      { roleName: "Sterix Administrator", id: "3" },
-    ],
-  };
 
   const fetchUserAccess = async (id: number) => {
     const data = await getUserAccess(id);

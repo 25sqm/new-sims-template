@@ -197,50 +197,55 @@ const UserAccessTable = ({
     <th className={classes.th}>{heading}</th>
   ));
 
-  const rows = dataRendered.map((row: any, index: number) => {
-    const unique = row[idColumn];
-    return (
-      <tr key={unique}>
-        {Object.keys(row)
-          .filter((element) => {
-            if (ignoreColumn === undefined) return element;
-            if (!ignoreColumn.includes(element)) {
-              return element;
-            }
-            // This filter function ultimately removes the indicated columns to ignore using the ignoreColumn props
-          })
-          .map((rowdata) => {
-            return (
-              <td className={classes.td}>
-                {row[rowdata].toString().match(/<[^>]*>/) !== null
-                  ? ""
-                  : row[rowdata]}
-              </td>
-              // We loop through the remaining elements of row data to create
-              // table rows
-            );
-          })}
-        <td>
-          <Group>
-            <ActionIcon
-              onClick={() => {
-                openEditModal({ row });
-              }}
-            >
-              <Edit size={15} />
-            </ActionIcon>
-            <ActionIcon
-              onClick={() => {
-                openDeleteModal({ row });
-              }}
-            >
-              <TrashX size={15} />
-            </ActionIcon>
-          </Group>
-        </td>
-      </tr>
+  const rows =
+    dataRendered.length > 0 ? (
+      dataRendered.map((row: any, index: number) => {
+        const unique = row[idColumn];
+        return (
+          <tr key={unique}>
+            {Object.keys(row)
+              .filter((element) => {
+                if (ignoreColumn === undefined) return element;
+                if (!ignoreColumn.includes(element)) {
+                  return element;
+                }
+                // This filter function ultimately removes the indicated columns to ignore using the ignoreColumn props
+              })
+              .map((rowdata) => {
+                return (
+                  <td className={classes.td}>
+                    {row[rowdata].toString().match(/<[^>]*>/) !== null
+                      ? ""
+                      : row[rowdata]}
+                  </td>
+                  // We loop through the remaining elements of row data to create
+                  // table rows
+                );
+              })}
+            <td>
+              <Group>
+                <ActionIcon
+                  onClick={() => {
+                    openEditModal({ row });
+                  }}
+                >
+                  <Edit size={15} />
+                </ActionIcon>
+                <ActionIcon
+                  onClick={() => {
+                    openDeleteModal({ row });
+                  }}
+                >
+                  <TrashX size={15} />
+                </ActionIcon>
+              </Group>
+            </td>
+          </tr>
+        );
+      })
+    ) : (
+      <></>
     );
-  });
 
   return (
     <>

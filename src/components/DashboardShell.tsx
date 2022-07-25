@@ -32,7 +32,7 @@ import { Feedback } from "./Feedback";
 import { ChangePasswordForm } from "./ChangePasswordForm";
 import Reports from "./Reports";
 import BaitStationMonitoring from "./BaitStationMonitoring";
-import ServiceManagement from "./admin/ServiceManagement";
+import ServiceManagement from "./admin/ServiceManagement/ServiceManagement";
 import DeviceManagement from "./admin/DeviceManagement";
 import UserManagement from "./admin/UserManagement/UserManagement";
 import { getAssignedLocation } from "../api/user";
@@ -44,6 +44,7 @@ import { NotFoundTitle } from "./Page404";
 import UserAccess from "./admin/UserManagement/UserAccess";
 import UserSites from "./admin/UserManagement/UserSites";
 import UserPermissions from "./admin/UserManagement/UserPermissions";
+import ServiceTasks from "./admin/ServiceManagement/ServiceTasks";
 
 interface AuthFormProps {
   user: any;
@@ -218,6 +219,7 @@ const DashboardShell = ({
           <>
             <Route path="*" element={<NotFoundTitle />} />
             <Route index element={<ServiceManagement />} />
+            <Route path="/service-tasks/:id" element={<ServiceTasks />} />
             <Route path="/user-management" element={<UserManagement />} />
             <Route
               path="/user-management/access/:userName"
