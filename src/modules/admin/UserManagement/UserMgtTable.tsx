@@ -62,18 +62,15 @@ interface Props {
   actionButtons?: React.ReactNode;
 }
 
-const UserMgtTable = (
-  {
-    data,
-    description,
-    idColumn,
-    ignoreColumn,
-    actionButtons,
-    columnHeadings,
-    filterableHeadings,
-  }: Props,
-  { testEdit, testDelete }: any
-) => {
+const UserMgtTable = ({
+  data,
+  description,
+  idColumn,
+  ignoreColumn,
+  actionButtons,
+  columnHeadings,
+  filterableHeadings,
+}: Props) => {
   const modals = useModals();
   const { classes } = useStyles();
   const [loading, setLoading] = useState<boolean>(true);
@@ -82,6 +79,26 @@ const UserMgtTable = (
   const [dataRendered, setDataRendered] = useState<any>([]);
 
   // MODAL FUNCTIONS
+
+  const openAddUserModal = () => {
+    const id = modals.openModal({
+      title: "Add User",
+      children: (
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            alert("Submitted");
+            console.log(e.target);
+          }}
+        >
+          <TextInput label="Name" name="inp_name" />
+          <TextInput label="Username" name="inp_username" />
+          <TextInput mb={15} label="Email" name="inp_email" />
+          <Button type="submit">Submit</Button>
+        </form>
+      ),
+    });
+  };
 
   const openEditModal = ({ row }: any) => {
     modals.openConfirmModal({
@@ -284,9 +301,11 @@ const UserMgtTable = (
 
   useEffect(() => {
     setTimeout(function () {
-      setDataRendered(data.slice(0, 9));
       setLoading(false);
     }, 300);
+    if (data.length > 0) {
+      setDataRendered(data.slice(0, 9));
+    }
   }, [data]);
 
   const reloadData = (page: number) => {
@@ -313,7 +332,16 @@ const UserMgtTable = (
         ) : (
           <></>
         )}
-        <Group>{filterableHeadings ? <Group> {filters} </Group> : <></>}</Group>
+        <Group>
+          {filterableHeadings ? (
+            <Group align="end">
+              {filters}
+              <Button onClick={openAddUserModal}>Add User</Button>
+            </Group>
+          ) : (
+            <></>
+          )}
+        </Group>
         <ScrollArea sx={{ height: "auto" }}>
           <Table
             fontSize={12}
@@ -343,25 +371,7 @@ const UserMgtTable = (
         </ScrollArea>
       </Skeleton>
       <Group>
-        <Text>
-          {/* <Group>
-						Showing 1 to {currentLimit} of {data.length} rows{' '}
-						<NativeSelect
-							data={['10', '25', '50']}
-							value={currentLimit}
-							placeholder={currentLimit.toString()}
-							onChange={(event) => {
-								setCurrentLimit(Number(event.currentTarget.value));
-								console.log(event);
-								console.log(currentLimit);
-								setPage(1);
-								reloadData(1);
-							}}
-						/>
-						rows per page
-					</Group> */}
-        </Text>
-        {dataRendered.length > 9 ? (
+        {data.length >= 9 ? (
           <Pagination
             my="sm"
             page={activePage}
@@ -369,7 +379,7 @@ const UserMgtTable = (
               reloadData(page);
               setPage(page);
             }}
-            total={Math.floor(data.length / 10)}
+            total={Math.ceil(data.length / 10)}
           />
         ) : (
           <></>

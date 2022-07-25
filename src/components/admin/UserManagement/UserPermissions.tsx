@@ -4,12 +4,13 @@ import UserAccessTable from "../../../modules/admin/UserManagement/UserAccessTab
 import { userAccess } from "../dummyData";
 import { useLocation } from "react-router-dom";
 import UserPermissionsTable from "../../../modules/admin/UserManagement/UserPermissionsTable";
-import { getUserPermissions, getUserRoles } from "../../../api/user";
+import { getUserPermissions } from "../../../api/user";
 
 const UserPermissions = () => {
   const [userPermissions, setUserPermissions] = useState([]);
   const location = useLocation();
   const { data }: any = location.state;
+  console.log("data", data);
   const nameProps = data.name;
 
   const fetchRolePermissions = async (id: number) => {

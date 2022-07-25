@@ -84,6 +84,22 @@ export async function getUserAccess(id: number) {
   }
 }
 
+export async function getUserSites(id: number) {
+  try {
+    const csrf = await http.get("/sanctum/csrf-cookie");
+    const authToken = sessionStorage.getItem("token");
+    const headers = { headers: { Authorization: `Bearer ${authToken}` } };
+    const response = await http.get(
+      `/api/admin/user/site-assignment/search?id=${id}`,
+      headers
+    );
+    return response;
+  } catch (err: any) {
+    console.error(err.response);
+    return null;
+  }
+}
+
 export async function getAssignedLocation() {
   try {
     const csrf = await http.get("/sanctum/csrf-cookie");

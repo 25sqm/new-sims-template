@@ -50,10 +50,8 @@ const useStyles = createStyles((theme) => ({
 }));
 
 interface Props {
-  data: {
-    name: string;
-    sites: Array<{ siteName: string; id: string }>;
-  };
+  name: string;
+  data: Array<{ site: string; id: number; client_location_id: number }>;
   description?: string;
   idColumn: string;
   ignoreColumn?: Array<string>;
@@ -68,6 +66,7 @@ const possibleSites = [
 ];
 
 const UserSitesTable = ({
+  name,
   data,
   description,
   idColumn,
@@ -76,17 +75,20 @@ const UserSitesTable = ({
 }: Props) => {
   const { classes } = useStyles();
   const [loading, setLoading] = useState<boolean>(true);
-  const [user, setUser] = useState(data.name);
+  const [user, setUser] = useState(name);
   const [activePage, setPage] = useState<number>(1);
   const [currentLimit, setCurrentLimit] = useState<number>(10);
-  const [dataRendered, setDataRendered] = useState(data.sites);
+  const [dataRendered, setDataRendered] = useState<any>([]);
   // const [addModalRole, setAddModalRole] = useState(data.roles[0].roleName);
   const modals = useModals();
   useEffect(() => {
+    if (data.length > 0) {
+      setDataRendered(data.slice(0, 9));
+    }
     setTimeout(function () {
       setLoading(false);
     }, 300);
-  }, []);
+  }, [data]);
 
   // MODAL FUNCTIONS
 
@@ -112,7 +114,7 @@ const UserSitesTable = ({
           ...dataRendered,
           {
             siteName: addModalRole,
-            id: String(data.sites.length + 1),
+            id: String(data.length + 1),
           },
         ]);
         console.log("You confirmed");
@@ -161,8 +163,7 @@ const UserSitesTable = ({
       children: (
         <>
           <Text>
-            Are you sure you want to delete "{row.siteName}" role from{" "}
-            {data.name}?
+            Are you sure you want to delete "{row.siteName}" role from {name}?
           </Text>
         </>
       ),
@@ -294,7 +295,7 @@ const UserSitesTable = ({
       </Skeleton>
       <Group>
         <Text></Text>
-        {data.sites.length >= 9 ? (
+        {data.length >= 9 ? (
           <Pagination
             my="sm"
             page={activePage}
@@ -302,7 +303,7 @@ const UserSitesTable = ({
               // reloadData(page);
               setPage(page);
             }}
-            total={Math.floor(data.sites.length / 10)}
+            total={Math.floor(data.length / 10)}
           />
         ) : (
           <></>
