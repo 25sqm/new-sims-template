@@ -60,7 +60,7 @@ export async function addNewUser({
   inp_landline,
   inp_mobile,
   inp_address,
-  inp_org,
+  inp_org = 8,
 }: any) {
   try {
     const csrf = await http.get("/sanctum/csrf-cookie");
@@ -107,7 +107,7 @@ export async function editUser({
       },
     };
 
-    const bodyContent = `enct=add&inp_name=${inp_name}&inp_username=${inp_username}&inp_org=${inp_org}&sex=${sex}&inp_email=${inp_email}&inp_landline=${inp_landline}&inp_mobile=${inp_mobile}&inp_address=${inp_address}&id=${id}`;
+    const bodyContent = `enct=edit&inp_name=${inp_name}&inp_username=${inp_username}&inp_org=${inp_org}&sex=${sex}&inp_email=${inp_email}&inp_landline=${inp_landline}&inp_mobile=${inp_mobile}&inp_address=${inp_address}&id=${id}`;
 
     const response = await http.post(
       "/api/admin/user/information/crud",

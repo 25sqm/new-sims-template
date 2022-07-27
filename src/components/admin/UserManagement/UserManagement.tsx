@@ -29,6 +29,7 @@ const UserManagement = () => {
         <Tabs>
           <Tabs.Tab label="User Management">
             <UserMgtTable
+              fetchUsersData={fetchUsersData}
               data={userInfo}
               filterableHeadings={["Organization"]}
               ignoreColumn={[

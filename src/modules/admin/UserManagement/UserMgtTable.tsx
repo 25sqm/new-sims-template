@@ -18,7 +18,7 @@ import { useModals } from "@mantine/modals";
 import { showNotification } from "@mantine/notifications";
 import { DatePicker } from "@mantine/dates";
 import { Link } from "react-router-dom";
-import { getUsersInfo } from "../../../api/user";
+import { addNewUser, deleteUser, editUser } from "../../../api/user";
 
 const useStyles = createStyles((theme) => ({
   th: {
@@ -56,6 +56,7 @@ interface Props {
   data: Array<Object>;
   description?: string;
   idColumn: string;
+  fetchUsersData: Function;
   ignoreColumn?: Array<string>;
   columnHeadings?: Array<string>;
   filterableHeadings?: Array<string>;
@@ -68,6 +69,7 @@ const UserMgtTable = ({
   idColumn,
   ignoreColumn,
   actionButtons,
+  fetchUsersData,
   columnHeadings,
   filterableHeadings,
 }: Props) => {
@@ -89,7 +91,7 @@ const UserMgtTable = ({
       sex: "",
       inp_landline: "",
       inp_address: "",
-      inp_org: 0,
+      inp_org: 8,
     };
 
     const id = modals.openModal({
@@ -98,7 +100,15 @@ const UserMgtTable = ({
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            console.log(newUserObject);
+            addNewUser(newUserObject);
+            refetch();
+            showNotification({
+              title: `Success!`,
+              message: `You have successfully added ${newUserObject.inp_name}`,
+              autoClose: 3000,
+              color: "green",
+            });
+            modals.closeModal(id);
           }}
         >
           <TextInput
@@ -114,10 +124,15 @@ const UserMgtTable = ({
             }
           />
           <TextInput
-            mb={15}
             label="Email"
             name="inp_email"
             onChange={(e) => (newUserObject.inp_email = e.currentTarget.value)}
+          />
+          <TextInput
+            mb={15}
+            label="Mobile"
+            name="inp_mobile"
+            onChange={(e) => (newUserObject.inp_mobile = e.currentTarget.value)}
           />
           <Button type="submit">Submit</Button>
         </form>
@@ -126,31 +141,59 @@ const UserMgtTable = ({
   };
 
   const openEditModal = ({ row }: any) => {
+    let newUserObject = {
+      id: row.ID,
+      inp_name: row.name,
+      inp_email: row.email_add,
+      inp_username: row.username,
+      inp_mobile: row.mobile_no,
+      sex: row.sex,
+      inp_landline: row.landline,
+      inp_address: row.address,
+      inp_org: 8,
+    };
+
     modals.openConfirmModal({
       title: "Edit This User",
       children: (
         <form onSubmit={(event) => event.preventDefault()}>
-          <TextInput label="Name" placeholder={row.name} data-autofocus />
-          <TextInput label="User Name" placeholder={row.username} />
-          <TextInput label="Email Address" placeholder={row.emailAddress} />
-          <TextInput label="Organization" placeholder={row.organization} />
-          <TextInput label="Address" placeholder={row.address} />
-          <DatePicker label="Birthday" value={new Date(row.birthday)} />
-          <NativeSelect data={["M", "F"]} placeholder={row.sex} label="Sex" />
-          <TextInput label="Landline" placeholder={row.landline} />
-          <TextInput label="Mobile Number" placeholder={row.mobileNumber} />
+          <TextInput
+            label="Name"
+            placeholder={row.name}
+            data-autofocus
+            onChange={(e) => (newUserObject.inp_name = e.currentTarget.value)}
+          />
+          <TextInput
+            label="User Name"
+            placeholder={row.username}
+            onChange={(e) =>
+              (newUserObject.inp_username = e.currentTarget.value)
+            }
+          />
+          <TextInput
+            label="Email Address"
+            placeholder={row.email_add}
+            onChange={(e) => (newUserObject.inp_email = e.currentTarget.value)}
+          />
+          {/* <TextInput label="Organization" placeholder={row.organization} onChange={(e) => newUserObject.inp_name = e.currentTarget.value} /> */}
+          <TextInput
+            label="Mobile Number"
+            placeholder={row.mobile_no}
+            onChange={(e) => (newUserObject.inp_mobile = e.currentTarget.value)}
+          />
         </form>
       ),
       labels: { confirm: "Submit", cancel: "Cancel" },
       onCancel: () => console.log("You Cancelled"),
       onConfirm: () => {
+        editUser(newUserObject);
+        refetch();
         showNotification({
           title: "Edit success!",
           message: "This is a future functionality",
           autoClose: 3000,
           color: "green",
         });
-        console.log("you submitted: ", row);
       },
     });
   };
@@ -166,13 +209,14 @@ const UserMgtTable = ({
       labels: { confirm: "Delete", cancel: "Cancel" },
       onCancel: () => console.log("You Cancelled"),
       onConfirm: () => {
+        deleteUser(row.ID);
+        refetch();
         showNotification({
-          title: `You have successfully deleted ${row.name}`,
-          message: "This is a future functionality",
+          title: `Delete successful.`,
+          message: `You have successfully deleted ${row.name}`,
           autoClose: 3000,
           color: "green",
         });
-        console.log("You tried to delete ", row.name);
       },
     });
   };
@@ -200,6 +244,16 @@ const UserMgtTable = ({
   };
 
   // END MODAL FUNCTIONS
+
+  // FETCH FUNCTIONS
+
+  const refetch = async () => {
+    fetchUsersData();
+    setPage(1);
+    reloadData(1);
+  };
+
+  // TABLE DATA CONTENTS
 
   const handleFilter = (filterBy: string) => {
     const filteredData = data.filter(
@@ -270,14 +324,14 @@ const UserMgtTable = ({
             >
               <Edit size={15} />
             </ActionIcon>
-            <ActionIcon
+            {/* <ActionIcon
               onClick={() => {
                 openResetModal({ row });
               }}
               size={25}
             >
               <Refresh size={15} />
-            </ActionIcon>
+            </ActionIcon> */}
             <ActionIcon
               onClick={() => {
                 openDeleteModal({ row });
@@ -323,19 +377,21 @@ const UserMgtTable = ({
     <></>
   );
 
+  // END TABLE DATA CONTENTS
+
   useEffect(() => {
     setTimeout(function () {
       setLoading(false);
     }, 300);
     if (data.length > 0) {
-      setDataRendered(data.slice(0, 9));
+      setDataRendered(data.slice(0, 10));
     }
   }, [data]);
 
   const reloadData = (page: number) => {
     setLoading(true);
     const lowerBound = page * 10 - 10;
-    const upperBound = page * 10 - 1;
+    const upperBound = page * 10;
     setDataRendered(data.slice(lowerBound, upperBound));
     setLoading(false);
   };
@@ -395,7 +451,7 @@ const UserMgtTable = ({
         </ScrollArea>
       </Skeleton>
       <Group>
-        {data.length >= 9 ? (
+        {data.length > 10 ? (
           <Pagination
             my="sm"
             page={activePage}

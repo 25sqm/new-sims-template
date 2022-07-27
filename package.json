@@ -1,6 +1,6 @@
 {
-  "name": "new-sims-template",
-  "version": "0.1.0",
+  "name": "SIMS Client",
+  "version": "2.0.0-beta",
   "private": true,
   "dependencies": {
     "@emailjs/browser": "^3.6.2",
