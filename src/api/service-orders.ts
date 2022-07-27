@@ -39,3 +39,19 @@ export async function getServiceTasks(id: number) {
     return null;
   }
 }
+
+export async function getServiceAreas(id: number) {
+  try {
+    const csrf = await http.get("/sanctum/csrf-cookie");
+    const authToken = sessionStorage.getItem("token");
+    const headers = { headers: { Authorization: `Bearer ${authToken}` } };
+    const response = await http.get(
+      `/api/admin/service-order/area/search?id=${id}`,
+      headers
+    );
+    return response;
+  } catch (err: any) {
+    console.error(err.response);
+    return null;
+  }
+}

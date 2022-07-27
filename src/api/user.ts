@@ -52,6 +52,94 @@ export async function getUsersInfo() {
   }
 }
 
+export async function addNewUser({
+  inp_name,
+  inp_username,
+  sex,
+  inp_email,
+  inp_landline,
+  inp_mobile,
+  inp_address,
+  inp_org,
+}: any) {
+  try {
+    const csrf = await http.get("/sanctum/csrf-cookie");
+    const authToken = sessionStorage.getItem("token");
+    const headers = {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    };
+
+    const bodyContent = `enct=add&inp_name=${inp_name}&inp_username=${inp_username}&inp_org=${inp_org}&sex=${sex}&inp_email=${inp_email}&inp_landline=${inp_landline}&inp_mobile=${inp_mobile}&inp_address=${inp_address}`;
+
+    const response = await http.post(
+      "/api/admin/user/information/crud",
+      bodyContent,
+      headers
+    );
+    return response;
+  } catch (err: any) {
+    console.error(err.response);
+    return null;
+  }
+}
+
+export async function editUser({
+  id,
+  inp_name,
+  inp_username,
+  sex,
+  inp_email,
+  inp_landline,
+  inp_mobile,
+  inp_address,
+  inp_org,
+}: any) {
+  try {
+    const csrf = await http.get("/sanctum/csrf-cookie");
+    const authToken = sessionStorage.getItem("token");
+    const headers = {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    };
+
+    const bodyContent = `enct=add&inp_name=${inp_name}&inp_username=${inp_username}&inp_org=${inp_org}&sex=${sex}&inp_email=${inp_email}&inp_landline=${inp_landline}&inp_mobile=${inp_mobile}&inp_address=${inp_address}&id=${id}`;
+
+    const response = await http.post(
+      "/api/admin/user/information/crud",
+      bodyContent,
+      headers
+    );
+    return response;
+  } catch (err: any) {
+    console.error(err.response);
+    return null;
+  }
+}
+
+export async function deleteUser(id: number) {
+  try {
+    const csrf = await http.get("/sanctum/csrf-cookie");
+    const authToken = sessionStorage.getItem("token");
+    const headers = { headers: { Authorization: `Bearer ${authToken}` } };
+    const bodyContent = `enct=delete&id=${id}`;
+
+    const response = await http.post(
+      `/api/admin/user/information/crud`,
+      bodyContent,
+      headers
+    );
+    return response;
+  } catch (err: any) {
+    console.error(err.response);
+    return null;
+  }
+}
+
 export async function getUserPermissions(id: number) {
   try {
     const csrf = await http.get("/sanctum/csrf-cookie");

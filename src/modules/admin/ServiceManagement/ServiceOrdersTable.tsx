@@ -106,9 +106,11 @@ const ServiceOrdersTable = ({
                 Tasks
               </Button>
             </Link>
-            <Button variant="subtle" size="xs">
-              Areas
-            </Button>
+            <Link state={{ data: row }} to={`/service-areas/${row.ref_no}`}>
+              <Button variant="subtle" size="xs">
+                Areas
+              </Button>
+            </Link>
           </Group>
         </td>
         {Object.keys(row)
@@ -158,11 +160,14 @@ const ServiceOrdersTable = ({
   const filters = filterableHeadings ? (
     filterableHeadings.map((filter) => {
       const arrayValues: string[] = ["All"];
-      data.forEach((el: any) => {
-        if (arrayValues.includes(el[filter]) !== true) {
-          arrayValues.push(el[filter]);
-        }
-      });
+      console.log(data);
+      if (data.length > 0) {
+        data.forEach((el: any) => {
+          if (arrayValues.includes(el[filter]) !== true) {
+            arrayValues.push(el[filter]);
+          }
+        });
+      }
 
       return (
         <NativeSelect
@@ -183,7 +188,9 @@ const ServiceOrdersTable = ({
 
   useEffect(() => {
     setTimeout(function () {
-      setDataRendered(data.slice(0, 9));
+      if (data.length > 0) {
+        setDataRendered(data.slice(0, 9));
+      }
       setLoading(false);
     }, 300);
   }, [data]);

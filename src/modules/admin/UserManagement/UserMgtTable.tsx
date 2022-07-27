@@ -81,19 +81,44 @@ const UserMgtTable = ({
   // MODAL FUNCTIONS
 
   const openAddUserModal = () => {
+    let newUserObject = {
+      inp_name: "",
+      inp_email: "",
+      inp_username: "",
+      inp_mobile: "",
+      sex: "",
+      inp_landline: "",
+      inp_address: "",
+      inp_org: 0,
+    };
+
     const id = modals.openModal({
       title: "Add User",
       children: (
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            alert("Submitted");
-            console.log(e.target);
+            console.log(newUserObject);
           }}
         >
-          <TextInput label="Name" name="inp_name" />
-          <TextInput label="Username" name="inp_username" />
-          <TextInput mb={15} label="Email" name="inp_email" />
+          <TextInput
+            label="Name"
+            name="inp_name"
+            onChange={(e) => (newUserObject.inp_name = e.currentTarget.value)}
+          />
+          <TextInput
+            label="Username"
+            name="inp_username"
+            onChange={(e) =>
+              (newUserObject.inp_username = e.currentTarget.value)
+            }
+          />
+          <TextInput
+            mb={15}
+            label="Email"
+            name="inp_email"
+            onChange={(e) => (newUserObject.inp_email = e.currentTarget.value)}
+          />
           <Button type="submit">Submit</Button>
         </form>
       ),
@@ -190,10 +215,9 @@ const UserMgtTable = ({
     <th className={classes.th}>{heading}</th>
   ));
 
-  const rows = dataRendered.map((row: any, index: any) => {
-    const unique = index;
+  const rows = dataRendered.map((row: any, index: number) => {
     return (
-      <tr key={unique}>
+      <tr key={index}>
         <td>
           <Group noWrap>
             <Link

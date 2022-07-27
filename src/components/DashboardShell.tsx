@@ -45,6 +45,7 @@ import UserAccess from "./admin/UserManagement/UserAccess";
 import UserSites from "./admin/UserManagement/UserSites";
 import UserPermissions from "./admin/UserManagement/UserPermissions";
 import ServiceTasks from "./admin/ServiceManagement/ServiceTasks";
+import ServiceAreas from "./admin/ServiceManagement/ServiceAreas";
 
 interface AuthFormProps {
   user: any;
@@ -220,6 +221,7 @@ const DashboardShell = ({
             <Route path="*" element={<NotFoundTitle />} />
             <Route index element={<ServiceManagement />} />
             <Route path="/service-tasks/:id" element={<ServiceTasks />} />
+            <Route path="/service-areas/:id" element={<ServiceAreas />} />
             <Route path="/user-management" element={<UserManagement />} />
             <Route
               path="/user-management/access/:userName"

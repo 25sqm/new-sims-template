@@ -47,11 +47,6 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-interface ActionButton {
-  content: string;
-  buttonNode: React.ReactNode;
-}
-
 interface Props {
   data: Array<Object>;
   description?: string;
@@ -205,7 +200,7 @@ const ServiceAreasTable = ({
         )}
         <Group align="end">
           {filterableHeadings ? { filters } : <></>}
-          <Button>Add Task</Button>
+          <Button>Add Area</Button>
         </Group>
         <ScrollArea sx={{ height: "auto" }}>
           <Table

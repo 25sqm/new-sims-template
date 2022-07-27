@@ -12,8 +12,6 @@ const ServiceTasks = () => {
   const [serviceTasks, setServiceTasks] = useState([]);
   const location = useLocation();
   const { data }: any = location.state;
-  console.log(data);
-  const nameProps = data.name;
 
   const fetchServiceTasks = async (id: number) => {
     const data = await getServiceTasks(id);

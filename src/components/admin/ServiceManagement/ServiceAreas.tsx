@@ -6,21 +6,21 @@ import { useLocation } from "react-router-dom";
 import { getUserAccess } from "../../../api/user";
 import ServiceOrderTasksTable from "../../../modules/admin/ServiceManagement/ServiceOrderTasksTable";
 import ServiceAreasTable from "../../../modules/admin/ServiceManagement/ServiceAreasTable";
-import { getServiceTasks } from "../../../api/service-orders";
+import { getServiceAreas } from "../../../api/service-orders";
 import { RowInsertBottom } from "tabler-icons-react";
 
 const ServiceAreas = () => {
-  const [serviceTasks, setServiceTasks] = useState([]);
+  const [serviceAreas, setServiceAreas] = useState([]);
   const location = useLocation();
   const { data }: any = location.state;
 
-  const fetchServiceTasks = async (id: number) => {
-    const data = await getServiceTasks(id);
-    setServiceTasks(data.data);
+  const fetchServiceAreas = async (id: number) => {
+    const data = await getServiceAreas(id);
+    setServiceAreas(data.data);
   };
 
   useEffect(() => {
-    fetchServiceTasks(data.ref_no);
+    fetchServiceAreas(data.ref_no);
   }, []);
 
   return (
@@ -48,18 +48,10 @@ const ServiceAreas = () => {
           </SimpleGrid>
         </Card>
         <ServiceAreasTable
-          data={serviceTasks}
-          idColumn={"ID"}
-          ignoreColumn={["ID", "actionbtn", "user_access_ID"]}
-          columnHeadings={[
-            "Task",
-            "Target Time",
-            "Status",
-            "Actual Time",
-            "Finished?",
-            "Area",
-            "Action",
-          ]}
+          data={serviceAreas}
+          idColumn={"order_of_inspection"}
+          ignoreColumn={["actionbtn"]}
+          columnHeadings={["Area", "Order", "Action"]}
         />
       </Paper>
     </>
