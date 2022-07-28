@@ -160,7 +160,6 @@ const ServiceOrdersTable = ({
   const filters = filterableHeadings ? (
     filterableHeadings.map((filter) => {
       const arrayValues: string[] = ["All"];
-      console.log(data);
       if (data.length > 0) {
         data.forEach((el: any) => {
           if (arrayValues.includes(el[filter]) !== true) {

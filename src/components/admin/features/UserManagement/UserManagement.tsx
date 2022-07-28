@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 
 import { Text, Paper, Divider, Tabs, Button } from "@mantine/core";
-import UserMgtTable from "../../../modules/admin/UserManagement/UserMgtTable";
-import UserRolesTable from "../../../modules/admin/UserManagement/UserRoles";
-import { getUserRoles, getUsersInfo } from "../../../api/user";
+import UserMgtTable from "../../../../modules/admin/UserManagement/UserMgtTable";
+import UserRolesTable from "../../../../modules/admin/UserManagement/UserRoles";
+import { getUserRoles, getUsersInfo } from "../../../../api/user";
 const UserManagement = () => {
   const [userInfo, setUserInfo] = useState([]);
   const [userRoles, setUserRoles] = useState([]);

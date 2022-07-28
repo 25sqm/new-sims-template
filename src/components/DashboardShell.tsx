@@ -32,20 +32,24 @@ import { Feedback } from "./Feedback";
 import { ChangePasswordForm } from "./ChangePasswordForm";
 import Reports from "./Reports";
 import BaitStationMonitoring from "./BaitStationMonitoring";
-import ServiceManagement from "./admin/ServiceManagement/ServiceManagement";
+import ServiceManagement from "./admin/features/ServiceManagement/ServiceManagement";
 import DeviceManagement from "./admin/DeviceManagement";
-import UserManagement from "./admin/UserManagement/UserManagement";
+import UserManagement from "./admin/features/UserManagement/UserManagement";
 import { getAssignedLocation } from "../api/user";
-import AreaMonitoring from "./admin/AreaMonitoring";
 import ClientManagement from "./admin/ClientManagement";
 import TrendsAndReports from "./admin/TrendsAndReports";
 import { notifData } from "../components/admin/dummyData";
 import { NotFoundTitle } from "./Page404";
-import UserAccess from "./admin/UserManagement/UserAccess";
-import UserSites from "./admin/UserManagement/UserSites";
-import UserPermissions from "./admin/UserManagement/UserPermissions";
-import ServiceTasks from "./admin/ServiceManagement/ServiceTasks";
-import ServiceAreas from "./admin/ServiceManagement/ServiceAreas";
+import UserAccess from "./admin/features/UserManagement/UserAccess";
+import UserSites from "./admin/features/UserManagement/UserSites";
+import UserPermissions from "./admin/features/UserManagement/UserPermissions";
+import ServiceTasks from "./admin/features/ServiceManagement/ServiceTasks";
+import ServiceAreas from "./admin/features/ServiceManagement/ServiceAreas";
+import AreaMonitoringTable from "./admin/features/AreaManagement/AreaMonitoringTable";
+import AreaInformationTable from "./admin/features/AreaManagement/AreaInformationTable";
+import PestIncidenceMap from "./admin/features/AreaManagement/PestIncidenceMap";
+import CriticalPests from "./admin/features/AreaManagement/CriticalPests";
+import AreaThresholdTable from "./admin/features/AreaManagement/AreaThresholdTable";
 
 interface AuthFormProps {
   user: any;
@@ -236,7 +240,14 @@ const DashboardShell = ({
               element={<UserPermissions />}
             />
             <Route path="/device-management" element={<DeviceManagement />} />
-            <Route path="/area-management" element={<AreaMonitoring />} />
+            <Route path="/area/monitoring" element={<AreaMonitoringTable />} />
+            <Route
+              path="/area/information"
+              element={<AreaInformationTable />}
+            />
+            <Route path="/area/threshold" element={<AreaThresholdTable />} />
+            <Route path="/area/pest-incidence" element={<PestIncidenceMap />} />
+            <Route path="/area/critical-pests" element={<CriticalPests />} />
             <Route path="/client-management" element={<ClientManagement />} />
             <Route path="/trends-reports" element={<TrendsAndReports />} />
             <Route

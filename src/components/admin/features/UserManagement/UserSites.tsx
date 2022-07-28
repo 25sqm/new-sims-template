@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Paper } from "@mantine/core";
-import UserSitesTable from "../../../modules/admin/UserManagement/UserSitesTable";
-import { userAccess } from "../dummyData";
+import UserSitesTable from "../../../../modules/admin/UserManagement/UserSitesTable";
+import { userAccess } from "../../dummyData";
 import { useLocation } from "react-router-dom";
-import { getUserSites } from "../../../api/user";
+import { getUserSites } from "../../../../api/user";
 
 const UserSites = () => {
   const [userSites, setUserSites] = useState([]);

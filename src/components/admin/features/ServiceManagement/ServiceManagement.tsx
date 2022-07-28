@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 
 import { Text, Paper, Divider } from "@mantine/core";
-import { serviceOrders } from "../dummyData";
-import ServiceOrdersTable from "../../../modules/admin/ServiceManagement/ServiceOrdersTable";
-import { getServiceOrders } from "../../../api/service-orders";
+import { serviceOrders } from "../../dummyData";
+import ServiceOrdersTable from "../../../../modules/admin/ServiceManagement/ServiceOrdersTable";
+import { getServiceOrders } from "../../../../api/service-orders";
 
 const ServiceManagement = () => {
   const [serviceOrders, setServiceOrders] = useState<any>([]);

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Button, Paper } from "@mantine/core";
-import UserAccessTable from "../../../modules/admin/UserManagement/UserAccessTable";
-import { userAccess } from "../dummyData";
+import UserAccessTable from "../../../../modules/admin/UserManagement/UserAccessTable";
+import { userAccess } from "../../dummyData";
 import { useLocation } from "react-router-dom";
-import UserPermissionsTable from "../../../modules/admin/UserManagement/UserPermissionsTable";
-import { getUserPermissions } from "../../../api/user";
+import UserPermissionsTable from "../../../../modules/admin/UserManagement/UserPermissionsTable";
+import { getUserPermissions } from "../../../../api/user";
 
 const UserPermissions = () => {
   const [userPermissions, setUserPermissions] = useState([]);

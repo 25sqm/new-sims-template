@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Card, Paper, SimpleGrid, Text } from "@mantine/core";
-import UserAccessTable from "../../../modules/admin/UserManagement/UserAccessTable";
-import { userAccess } from "../dummyData";
+import UserAccessTable from "../../../../modules/admin/UserManagement/UserAccessTable";
+import { userAccess } from "../../dummyData";
 import { useLocation } from "react-router-dom";
-import { getUserAccess } from "../../../api/user";
-import ServiceOrderTasksTable from "../../../modules/admin/ServiceManagement/ServiceOrderTasksTable";
-import ServiceAreasTable from "../../../modules/admin/ServiceManagement/ServiceAreasTable";
-import { getServiceAreas } from "../../../api/service-orders";
+import { getUserAccess } from "../../../../api/user";
+import ServiceOrderTasksTable from "../../../../modules/admin/ServiceManagement/ServiceOrderTasksTable";
+import ServiceAreasTable from "../../../../modules/admin/ServiceManagement/ServiceAreasTable";
+import { getServiceAreas } from "../../../../api/service-orders";
 import { RowInsertBottom } from "tabler-icons-react";
 
 const ServiceAreas = () => {

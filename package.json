@@ -1,5 +1,5 @@
 {
-  "name": "SIMS Client",
+  "name": "sims-client",
   "version": "2.0.0-beta",
   "private": true,
   "dependencies": {
@@ -7,7 +7,7 @@
     "@mantine/core": "^4.0.8",
     "@mantine/dates": "^4.0.8",
     "@mantine/form": "^4.2.9",
-    "@mantine/hooks": "^4.0.8",
+    "@mantine/hooks": "^4.2.9",
     "@mantine/modals": "^4.2.6",
     "@mantine/notifications": "^4.2.5",
     "@testing-library/jest-dom": "^5.16.3",
