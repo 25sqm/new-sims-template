@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 
-import { getDevices } from "../../api/devices";
+import { getDevices } from "../../../../api/devices";
 import { Text, Paper, Divider, Tabs } from "@mantine/core";
-import { DeviceMgtTable } from "../../modules/admin/DeviceMgtTable";
+import { DeviceMgtTable } from "../../../../modules/admin/DeviceMgtTable";
 
 interface RowData {
   deviceID: string;
@@ -21,9 +21,6 @@ interface TableSortProps {
 }
 
 const DeviceManagement = () => {
-  // const [tableData, setTableData] = useState<TableSortProps>({ data: [ ]});
-  // const [queryData, setQueryData] = useState({});
-
   return (
     <>
       <Paper shadow="md" p="sm" my="md" sx={{ height: "auto" }}>

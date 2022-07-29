@@ -232,7 +232,15 @@ const adminNav = [
     icon: <FileDescription size={16} />,
     color: "blue",
     label: "Device Management",
-    link: "/device-management",
+    links: [
+      { label: "Device Information", link: "/device/information" },
+      { label: "Device Monitoring", link: "/device/monitoring" },
+      {
+        label: "Realtime Device Monitoring",
+        link: "/device/realtime-monitoring",
+      },
+      { label: "Device Threshold", link: "/device/threshold" },
+    ],
   },
   {
     icon: <Backpack size={16} />,

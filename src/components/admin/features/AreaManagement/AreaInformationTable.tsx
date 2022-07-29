@@ -22,7 +22,14 @@ import {
   Pagination,
 } from "@mantine/core";
 import { useModals } from "@mantine/modals";
-import { Edit, Eye, FileExport, Report, TrashX } from "tabler-icons-react";
+import {
+  Edit,
+  Eye,
+  FileExport,
+  Printer,
+  Report,
+  TrashX,
+} from "tabler-icons-react";
 import { getAreasInfo } from "../../../../api/areas";
 import { showNotification } from "@mantine/notifications";
 
@@ -285,17 +292,10 @@ const InformationTable = ({
     <>
       <Skeleton visible={loading}>
         {description ? <Text size="xl">{description}</Text> : <></>}
-        <Group>
-          {filterableHeadings ? (
-            <Group align="end">
-              {filters}
-              <Button leftIcon={<FileExport size={20} />}>Export</Button>
-              <Button>Area Monitoring PDF</Button>
-              <Button>Area Monitoring Excel</Button>
-            </Group>
-          ) : (
-            <></>
-          )}
+        <Group align="end">
+          {filterableHeadings ? <Group align="end">{filters}</Group> : <></>}
+          <Button>Add</Button>
+          <Button leftIcon={<Printer size={20} />}>Print List</Button>
         </Group>
         <ScrollArea sx={{ height: "auto" }}>
           <Table

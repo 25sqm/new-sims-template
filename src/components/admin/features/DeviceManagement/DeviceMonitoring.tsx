@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 
+import { showNotification } from "@mantine/notifications";
+
 import {
   Title,
   Text,
   Paper,
   Divider,
+  Table,
   Tabs,
   Group,
   NativeSelect,
@@ -14,29 +17,35 @@ import {
   Container,
   Image,
   createStyles,
-  Tooltip,
   ActionIcon,
-  ScrollArea,
-  Table,
   Skeleton,
+  ScrollArea,
   Pagination,
+  Tooltip,
 } from "@mantine/core";
-import TableRender from "../../../../modules/admin/TableRender";
 import { useModals } from "@mantine/modals";
-import { Edit, FileExport, TrashX, Printer } from "tabler-icons-react";
-import { getAreaThreshold } from "../../../../api/areas";
-import { showNotification } from "@mantine/notifications";
+import {
+  Eye,
+  Edit,
+  Trash,
+  Report,
+  Map2,
+  FileExport,
+  TrashX,
+} from "tabler-icons-react";
+import {
+  getDeviceIdentification,
+  getDeviceMonitoring,
+} from "../../../../api/devices";
 
-const AreaThresholdTable = () => {
+const DeviceMonitoring = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
 
-  async function fetchAreaThreshold() {
-    const data = await getAreaThreshold();
-    // alert(JSON.stringify(data));
+  async function fetchDeviceMonitoring() {
+    const data = await getDeviceMonitoring();
     if (data === null) {
       showNotification({
-        title: "Uh-oh!",
         message: "Something went wrong. Please try again later.",
         color: "red",
       });
@@ -47,7 +56,7 @@ const AreaThresholdTable = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    fetchAreaThreshold();
+    fetchDeviceMonitoring();
     setIsLoading(false);
   }, []);
 
@@ -64,24 +73,25 @@ const AreaThresholdTable = () => {
         mt={15}
         order={1}
       >
-        Area Threshold
+        Device Monitoring
       </Title>
-
       <Paper shadow="md" p="sm" my="md" sx={{ height: "auto" }}>
-        <ThresholdTable
-          fetchAreaInfo={fetchAreaThreshold}
+        <MonitoringTable
           data={data}
-          idColumn={"id"}
-          ignoreColumn={["actionbtn", "id"]}
+          fetchDeviceMonitoring={fetchDeviceMonitoring}
+          idColumn={"area_monitoring_ID"}
+          ignoreColumn={["actionbtn"]}
           columnHeadings={[
+            "Pest Found",
+            "Device Code",
+            "Timestamp",
+            "Condition",
+            "Activity",
             "Area",
-            "Pest",
-            "Inspection Threshold",
-            "Monthly Threshold",
-            "Effectivity",
-            "Action",
+            "Service Order",
+            "Image",
           ]}
-          filterableHeadings={["area", "pest_name"]}
+          filterableHeadings={["area", "condition"]}
         />
       </Paper>
     </>
@@ -126,20 +136,20 @@ interface Props {
   data: Array<Object>;
   description?: string;
   idColumn: string;
-  fetchAreaInfo: Function;
+  fetchDeviceMonitoring: Function;
   ignoreColumn?: Array<string>;
   columnHeadings?: Array<string>;
   filterableHeadings?: Array<string>;
   actionButtons?: React.ReactNode;
 }
 
-const ThresholdTable = ({
+const MonitoringTable = ({
   data,
   description,
   idColumn,
   ignoreColumn,
   actionButtons,
-  fetchAreaInfo,
+  fetchDeviceMonitoring,
   columnHeadings,
   filterableHeadings,
 }: Props) => {
@@ -153,7 +163,7 @@ const ThresholdTable = ({
   // FETCH FUNCTIONS
 
   const refetch = async () => {
-    fetchAreaInfo();
+    fetchDeviceMonitoring();
     setPage(1);
     reloadData(1);
   };
@@ -184,11 +194,7 @@ const ThresholdTable = ({
             // This filter function ultimately removes the indicated columns to ignore using the ignoreColumn props
           })
           .map((rowdata, index) => {
-            if (
-              row[rowdata] === null ||
-              row[rowdata] === undefined ||
-              row[rowdata] === ""
-            ) {
+            if (row[rowdata] === null) {
               return <td key={index}>-</td>;
             }
             return (
@@ -201,20 +207,6 @@ const ThresholdTable = ({
               // table rows
             );
           })}
-        <td>
-          <Group noWrap>
-            <Tooltip label="Edit">
-              <ActionIcon size={25}>
-                <Edit size={15} />
-              </ActionIcon>
-            </Tooltip>
-            <Tooltip label="Delete">
-              <ActionIcon size={25}>
-                <TrashX size={15} />
-              </ActionIcon>
-            </Tooltip>
-          </Group>
-        </td>
       </tr>
     );
   });
@@ -279,12 +271,7 @@ const ThresholdTable = ({
     <>
       <Skeleton visible={loading}>
         {description ? <Text size="xl">{description}</Text> : <></>}
-        <Group align="end">
-          {filterableHeadings ? <Group align="end">{filters}</Group> : <></>}
-
-          <Button>Add</Button>
-          <Button leftIcon={<Printer size={20} />}>Print List</Button>
-        </Group>
+        <Group>{filterableHeadings ? <>{filters}</> : <></>}</Group>
         <ScrollArea sx={{ height: "auto" }}>
           <Table
             fontSize={12}
@@ -302,7 +289,7 @@ const ThresholdTable = ({
                 rows
               ) : (
                 <tr>
-                  <td colSpan={columnStrings.length}>
+                  <td colSpan={12}>
                     <Text color="dimmed" size="sm" align="center">
                       Nothing found
                     </Text>
@@ -332,4 +319,4 @@ const ThresholdTable = ({
   );
 };
 
-export default AreaThresholdTable;
+export default DeviceMonitoring;

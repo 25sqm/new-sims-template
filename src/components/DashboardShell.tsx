@@ -26,14 +26,14 @@ import DashboardContents from "./DashboardContents";
 import { Routes, Route } from "react-router-dom";
 import ThresholdBreaches from "./ThresholdBreaches";
 import Findings from "./Findings";
-import RealtimeMonitoring from "./RealtimeMonitoring";
+import RealtimeMonitoring from "./admin/features/DeviceManagement/RealtimeMonitoring";
 import ServiceOrders from "./ServiceOrders";
 import { Feedback } from "./Feedback";
 import { ChangePasswordForm } from "./ChangePasswordForm";
 import Reports from "./Reports";
 import BaitStationMonitoring from "./BaitStationMonitoring";
 import ServiceManagement from "./admin/features/ServiceManagement/ServiceManagement";
-import DeviceManagement from "./admin/DeviceManagement";
+import DeviceManagement from "./admin/features/DeviceManagement/DeviceManagement";
 import UserManagement from "./admin/features/UserManagement/UserManagement";
 import { getAssignedLocation } from "../api/user";
 import ClientManagement from "./admin/ClientManagement";
@@ -50,6 +50,9 @@ import AreaInformationTable from "./admin/features/AreaManagement/AreaInformatio
 import PestIncidenceMap from "./admin/features/AreaManagement/PestIncidenceMap";
 import CriticalPests from "./admin/features/AreaManagement/CriticalPests";
 import AreaThresholdTable from "./admin/features/AreaManagement/AreaThresholdTable";
+import DeviceInformation from "./admin/features/DeviceManagement/DeviceInformation";
+import DeviceMonitoring from "./admin/features/DeviceManagement/DeviceMonitoring";
+import DeviceThreshold from "./admin/features/DeviceManagement/DeviceThreshold";
 
 interface AuthFormProps {
   user: any;
@@ -240,6 +243,15 @@ const DashboardShell = ({
               element={<UserPermissions />}
             />
             <Route path="/device-management" element={<DeviceManagement />} />
+            <Route path="/device/information" element={<DeviceInformation />} />
+            <Route path="device/monitoring" element={<DeviceMonitoring />} />
+            <Route
+              path="/device/realtime-monitoring"
+              element={<RealtimeMonitoring />}
+            />
+
+            <Route path="/device/threshold" element={<DeviceThreshold />} />
+
             <Route path="/area/monitoring" element={<AreaMonitoringTable />} />
             <Route
               path="/area/information"

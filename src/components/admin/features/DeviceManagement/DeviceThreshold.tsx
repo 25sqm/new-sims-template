@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 
+import { showNotification } from "@mantine/notifications";
+
 import {
   Title,
   Text,
   Paper,
   Divider,
+  Table,
   Tabs,
   Group,
   NativeSelect,
@@ -14,29 +17,36 @@ import {
   Container,
   Image,
   createStyles,
-  Tooltip,
   ActionIcon,
-  ScrollArea,
-  Table,
   Skeleton,
+  ScrollArea,
   Pagination,
+  Tooltip,
 } from "@mantine/core";
-import TableRender from "../../../../modules/admin/TableRender";
 import { useModals } from "@mantine/modals";
-import { Edit, FileExport, TrashX, Printer } from "tabler-icons-react";
-import { getAreaThreshold } from "../../../../api/areas";
-import { showNotification } from "@mantine/notifications";
+import {
+  Eye,
+  Edit,
+  Trash,
+  Report,
+  Map2,
+  FileExport,
+  TrashX,
+} from "tabler-icons-react";
+import {
+  getDeviceIdentification,
+  getDeviceThreshold,
+  getRealtimeMonitoringInfo,
+} from "../../../../api/devices";
 
-const AreaThresholdTable = () => {
+const DeviceThreshold = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
 
-  async function fetchAreaThreshold() {
-    const data = await getAreaThreshold();
-    // alert(JSON.stringify(data));
-    if (data === null) {
+  async function fetchDeviceThreshold() {
+    const data = await getDeviceThreshold();
+    if (data === null || Array.isArray(data) === false) {
       showNotification({
-        title: "Uh-oh!",
         message: "Something went wrong. Please try again later.",
         color: "red",
       });
@@ -47,7 +57,7 @@ const AreaThresholdTable = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    fetchAreaThreshold();
+    fetchDeviceThreshold();
     setIsLoading(false);
   }, []);
 
@@ -64,24 +74,25 @@ const AreaThresholdTable = () => {
         mt={15}
         order={1}
       >
-        Area Threshold
+        Device Threshold
       </Title>
-
       <Paper shadow="md" p="sm" my="md" sx={{ height: "auto" }}>
-        <ThresholdTable
-          fetchAreaInfo={fetchAreaThreshold}
+        <ThresholdsTable
           data={data}
-          idColumn={"id"}
-          ignoreColumn={["actionbtn", "id"]}
+          fetchDeviceThreshold={fetchDeviceThreshold}
+          idColumn={"area_monitoring_ID"}
+          ignoreColumn={["actionbtn", "id", "report"]}
           columnHeadings={[
+            "Item ID",
+            "Service Order",
             "Area",
-            "Pest",
-            "Inspection Threshold",
-            "Monthly Threshold",
-            "Effectivity",
-            "Action",
+            "Device Code",
+            "Condition",
+            "Activity",
+            "Image",
+            "Timestamp",
           ]}
-          filterableHeadings={["area", "pest_name"]}
+          filterableHeadings={["area", "condition"]}
         />
       </Paper>
     </>
@@ -126,20 +137,20 @@ interface Props {
   data: Array<Object>;
   description?: string;
   idColumn: string;
-  fetchAreaInfo: Function;
+  fetchDeviceThreshold: Function;
   ignoreColumn?: Array<string>;
   columnHeadings?: Array<string>;
   filterableHeadings?: Array<string>;
   actionButtons?: React.ReactNode;
 }
 
-const ThresholdTable = ({
+const ThresholdsTable = ({
   data,
   description,
   idColumn,
   ignoreColumn,
   actionButtons,
-  fetchAreaInfo,
+  fetchDeviceThreshold,
   columnHeadings,
   filterableHeadings,
 }: Props) => {
@@ -153,7 +164,7 @@ const ThresholdTable = ({
   // FETCH FUNCTIONS
 
   const refetch = async () => {
-    fetchAreaInfo();
+    fetchDeviceThreshold();
     setPage(1);
     reloadData(1);
   };
@@ -184,11 +195,7 @@ const ThresholdTable = ({
             // This filter function ultimately removes the indicated columns to ignore using the ignoreColumn props
           })
           .map((rowdata, index) => {
-            if (
-              row[rowdata] === null ||
-              row[rowdata] === undefined ||
-              row[rowdata] === ""
-            ) {
+            if (row[rowdata] === null) {
               return <td key={index}>-</td>;
             }
             return (
@@ -203,6 +210,11 @@ const ThresholdTable = ({
           })}
         <td>
           <Group noWrap>
+            <Tooltip label="View Map">
+              <ActionIcon size={25}>
+                <Map2 size={15} />
+              </ActionIcon>
+            </Tooltip>
             <Tooltip label="Edit">
               <ActionIcon size={25}>
                 <Edit size={15} />
@@ -222,11 +234,15 @@ const ThresholdTable = ({
   const filters = filterableHeadings ? (
     filterableHeadings.map((filter) => {
       const arrayValues: string[] = ["All"];
-      data.forEach((el: any) => {
-        if (arrayValues.includes(el[filter]) !== true) {
-          arrayValues.push(el[filter]);
-        }
-      });
+
+      // check if data is an array
+      if (Array.isArray(data)) {
+        data.forEach((el: any) => {
+          if (arrayValues.includes(el[filter]) !== true) {
+            arrayValues.push(el[filter]);
+          }
+        });
+      }
 
       return (
         <NativeSelect
@@ -279,12 +295,7 @@ const ThresholdTable = ({
     <>
       <Skeleton visible={loading}>
         {description ? <Text size="xl">{description}</Text> : <></>}
-        <Group align="end">
-          {filterableHeadings ? <Group align="end">{filters}</Group> : <></>}
-
-          <Button>Add</Button>
-          <Button leftIcon={<Printer size={20} />}>Print List</Button>
-        </Group>
+        <Group>{filterableHeadings ? <>{filters}</> : <></>}</Group>
         <ScrollArea sx={{ height: "auto" }}>
           <Table
             fontSize={12}
@@ -302,7 +313,7 @@ const ThresholdTable = ({
                 rows
               ) : (
                 <tr>
-                  <td colSpan={columnStrings.length}>
+                  <td colSpan={12}>
                     <Text color="dimmed" size="sm" align="center">
                       Nothing found
                     </Text>
@@ -332,4 +343,4 @@ const ThresholdTable = ({
   );
 };
 
-export default AreaThresholdTable;
+export default DeviceThreshold;

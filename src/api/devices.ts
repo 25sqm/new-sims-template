@@ -59,7 +59,7 @@ export async function getDevices(page: number) {
     return response;
     // return tableProps;
   } catch (err) {
-    return {};
+    return null;
   }
 }
 
@@ -94,5 +94,77 @@ export async function addDevice(deviceData: DeviceData) {
     // return tableProps;
   } catch (err) {
     throw err;
+  }
+}
+
+export async function getDeviceIdentification() {
+  try {
+    const csrf = await http.get("/sanctum/csrf-cookie");
+    const authToken = sessionStorage.getItem("token");
+    const headers = {
+      headers: { Authorization: `Bearer ${authToken}` },
+    };
+
+    const response = await http.get(
+      "/api/admin/device/identification/search",
+      headers
+    );
+    return response;
+  } catch (err) {
+    return null;
+  }
+}
+
+export async function getDeviceMonitoring() {
+  try {
+    const csrf = await http.get("/sanctum/csrf-cookie");
+    const authToken = sessionStorage.getItem("token");
+    const headers = {
+      headers: { Authorization: `Bearer ${authToken}` },
+    };
+
+    const response = await http.get(
+      "/api/admin/device/monitoring/search",
+      headers
+    );
+    return response;
+  } catch (err) {
+    return null;
+  }
+}
+
+export async function getRealtimeMonitoringInfo() {
+  try {
+    const csrf = await http.get("/sanctum/csrf-cookie");
+    const authToken = sessionStorage.getItem("token");
+    const headers = {
+      headers: { Authorization: `Bearer ${authToken}` },
+    };
+
+    const response = await http.get(
+      "/api/admin/device/realtime-monitoring/search",
+      headers
+    );
+    return response;
+  } catch (err) {
+    return null;
+  }
+}
+
+export async function getDeviceThreshold() {
+  try {
+    const csrf = await http.get("/sanctum/csrf-cookie");
+    const authToken = sessionStorage.getItem("token");
+    const headers = {
+      headers: { Authorization: `Bearer ${authToken}` },
+    };
+
+    const response = await http.get(
+      "/api/admin/device/threshold/search",
+      headers
+    );
+    return response;
+  } catch (err) {
+    return null;
   }
 }
