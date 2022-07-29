@@ -26,10 +26,13 @@ export async function getData() {
     headers
   );
   const acknowledgeCount = await http.get(
-    "/api/client/for-acknowledgement",
+    "/api/client/service-orders/for-acknowledgement",
     headers
   );
-  const nextVisit = await http.get("/api/client/next-visit", headers);
+  const nextVisit = await http.get(
+    "/api/client/service-orders/next-visit",
+    headers
+  );
   const dailyPestCount = await http.get(
     "/api/client/daily-pest-count",
     headers

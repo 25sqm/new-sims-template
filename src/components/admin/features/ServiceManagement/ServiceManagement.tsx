@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { Text, Paper, Divider } from "@mantine/core";
+import { Text, Paper, Divider, Title } from "@mantine/core";
 import { serviceOrders } from "../../dummyData";
 import ServiceOrdersTable from "../../../../modules/admin/ServiceManagement/ServiceOrdersTable";
 import { getServiceOrders } from "../../../../api/service-orders";
@@ -18,9 +18,20 @@ const ServiceManagement = () => {
   }, []);
   return (
     <>
+      <Title
+        sx={(theme) => ({
+          color: `${
+            theme.colorScheme === "dark"
+              ? theme.colors.gray[2]
+              : theme.colors.dark[3]
+          }`,
+        })}
+        mt={15}
+        order={1}
+      >
+        Service Orders
+      </Title>
       <Paper shadow="md" p="sm" my="md" sx={{ height: "auto" }}>
-        <Text size="xl">Service Order</Text>
-        <Divider my="sm" />
         <ServiceOrdersTable
           data={serviceOrders}
           idColumn={"ref_no"}
