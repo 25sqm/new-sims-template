@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   createStyles,
   Table,
@@ -11,11 +11,13 @@ import {
   Button,
   ActionIcon,
   Divider,
+  Select,
 } from "@mantine/core";
 import { useModals } from "@mantine/modals";
 
 import { Edit, TrashX, CirclePlus, Rollercoaster } from "tabler-icons-react";
 import { showNotification } from "@mantine/notifications";
+import { addUserAccess, getUserRoles } from "../../../api/user";
 
 const useStyles = createStyles((theme) => ({
   th: {
@@ -57,17 +59,9 @@ interface Props {
   ignoreColumn?: Array<string>;
   columnHeadings?: Array<string>;
   testLog?: (message: any) => void;
+  possibleAccessRoles: Array<{ value: string; label: string }>;
+  userID: number;
 }
-
-const possibleAccessRoles = [
-  "Client Company Administrator",
-  "Data Encoder",
-  "Evaluators",
-  "Office Staff",
-  "Sterix Administrator",
-  "Sterix Supervisor",
-  "Sterix Technician",
-];
 
 const UserAccessTable = ({
   name,
@@ -76,6 +70,8 @@ const UserAccessTable = ({
   idColumn,
   ignoreColumn,
   columnHeadings,
+  possibleAccessRoles,
+  userID,
 }: Props) => {
   const { classes } = useStyles();
   const [loading, setLoading] = useState<boolean>(true);
@@ -94,16 +90,23 @@ const UserAccessTable = ({
 
   // MODAL FUNCTIONS
 
+  // Helper function to populate dropdown with user access roles
+
   const openAddRoleModal = () => {
     console.log(dataRendered);
-    let addModalRole = "";
+    let addModalRole: number;
+
     modals.openConfirmModal({
       title: "Add Role",
       children: (
-        <NativeSelect
-          onChange={(e) => {
-            addModalRole = e.currentTarget.value;
-            console.log(addModalRole);
+        <Select
+          placeholder="Select Role"
+          onChange={(value: any) => {
+            if (value) {
+              addModalRole = Number(value);
+            } else {
+              addModalRole = 1;
+            }
           }}
           data={possibleAccessRoles}
           label="Role"
@@ -112,29 +115,29 @@ const UserAccessTable = ({
       labels: { confirm: "Add Role", cancel: "Cancel" },
       onCancel: () => console.log("You Cancelled"),
       onConfirm: () => {
-        setDataRendered([
-          ...dataRendered,
-          {
-            role_id: dataRendered.length + 1,
-            roles: addModalRole,
-            user_access_ID: dataRendered.length + 1,
-          },
-        ]);
-        console.log("You confirmed");
+        // setDataRendered([
+        //   ...dataRendered,
+        //   {
+        //     role_id: dataRendered.length + 1,
+        //     roles: addModalRole,
+        //     user_access_ID: dataRendered.length + 1,
+        //   },
+        // ]);
+        addUserAccess(userID, addModalRole);
       },
     });
   };
 
-  const openEditModal = ({ row }: any) => {
+  const openEditModal = async ({ row }: any) => {
     let editRoleName = row.roleName;
     modals.openConfirmModal({
       title: "Edit This User",
       children: (
         <form onSubmit={(event) => event.preventDefault()}>
-          <NativeSelect
+          <Select
             placeholder={row.roleName}
             onChange={(e) => {
-              editRoleName = e.currentTarget.value;
+              editRoleName = e;
             }}
             data={possibleAccessRoles}
             label="Role"

@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 
 import { Paper, Tabs } from "@mantine/core";
-import { clientManagement, clientSites } from "./dummyData";
-import TableRender from "../../modules/admin/TableRender";
-import ClientSitesTable from "../../modules/admin/ClientSitesTable";
+import { clientManagement, clientSites } from "../../dummyData";
+import TableRender from "../../../../modules/admin/TableRender";
+import ClientSitesTable from "../../../../modules/admin/ClientSitesTable";
 
 const ClientManagement = () => {
   return (

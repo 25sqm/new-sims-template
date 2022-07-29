@@ -1,23 +1,70 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+
 import {
-  createStyles,
-  Table,
-  ScrollArea,
-  Group,
   Text,
-  Pagination,
-  Skeleton,
-  NativeSelect,
+  Paper,
+  Divider,
+  Tabs,
   Button,
-  ActionIcon,
+  Title,
+  createStyles,
   TextInput,
-  SimpleGrid,
+  NativeSelect,
+  Group,
+  ActionIcon,
+  Skeleton,
+  ScrollArea,
+  Table,
+  Pagination,
+  Select,
 } from "@mantine/core";
-import { Edit, TrashX, Refresh } from "tabler-icons-react";
-import { useModals } from "@mantine/modals";
+import UserMgtTable from "../../../../modules/admin/UserManagement/UserMgtTable";
+import { addUserRole, getUserRoles, getUsersInfo } from "../../../../api/user";
 import { showNotification } from "@mantine/notifications";
-import { DatePicker } from "@mantine/dates";
 import { Link } from "react-router-dom";
+import { Edit, TrashX } from "tabler-icons-react";
+import { useModals } from "@mantine/modals";
+const UserRoles = () => {
+  const [userRoles, setUserRoles] = useState([]);
+
+  const fetchUserRoles = async () => {
+    const data = await getUserRoles();
+    setUserRoles(data.data);
+  };
+
+  useEffect(() => {
+    fetchUserRoles();
+  }, []);
+
+  return (
+    <>
+      <Title
+        sx={(theme) => ({
+          color: `${
+            theme.colorScheme === "dark"
+              ? theme.colors.gray[2]
+              : theme.colors.dark[3]
+          }`,
+        })}
+        mt={15}
+        order={1}
+      >
+        User Roles
+      </Title>
+      <Paper shadow="md" p="sm" my="md" sx={{ height: "auto" }}>
+        <UserRolesTable
+          data={userRoles}
+          fetchUserRoles={fetchUserRoles}
+          idColumn={"ID"}
+          ignoreColumn={["Permissions", "actionbtn", "ID"]}
+          columnHeadings={["", "Role Name", "Description", "Type", "Action"]}
+        />
+      </Paper>
+    </>
+  );
+};
+
+// TABLE RENDER
 
 const useStyles = createStyles((theme) => ({
   th: {
@@ -56,6 +103,7 @@ interface Props {
   description?: string;
   idColumn: string;
   ignoreColumn?: Array<string>;
+  fetchUserRoles: Function;
   columnHeadings?: Array<string>;
   filterableHeadings?: Array<string>;
   actionButtons?: React.ReactNode;
@@ -67,6 +115,7 @@ const UserRolesTable = ({
   idColumn,
   ignoreColumn,
   actionButtons,
+  fetchUserRoles,
   columnHeadings,
   filterableHeadings,
 }: Props) => {
@@ -77,7 +126,74 @@ const UserRolesTable = ({
   const [currentLimit, setCurrentLimit] = useState<number>(10);
   const [dataRendered, setDataRendered] = useState<any>([]);
 
+  const refetch = async () => {
+    fetchUserRoles();
+    setPage(1);
+    reloadData(1);
+  };
+
   // MODAL FUNCTIONS
+
+  const openAddRoleModal = () => {
+    let newRoleObject = {
+      Name: "",
+      Description: "",
+      Type: 1,
+    };
+
+    const id = modals.openModal({
+      title: "Add User",
+      children: (
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+
+            // @TODO: Add new user query should be here
+            setDataRendered([...dataRendered, newRoleObject]);
+            showNotification({
+              title: `Success!`,
+              message: `You have successfully added ${newRoleObject.Name}`,
+              autoClose: 3000,
+              color: "green",
+            });
+            modals.closeModal(id);
+          }}
+        >
+          <TextInput
+            label="Name"
+            name="Name"
+            onChange={(e) => (newRoleObject.Name = e.currentTarget.value)}
+          />
+          <TextInput
+            label="Description"
+            name="Description"
+            onChange={(e) =>
+              (newRoleObject.Description = e.currentTarget.value)
+            }
+          />
+          <Select
+            label="Type"
+            data={[
+              { value: "1", label: "Admin" },
+              { value: "2", label: "Client" },
+              { value: "3", label: "Technician" },
+            ]}
+            name="Type"
+            onChange={(value) => {
+              if (value !== null) {
+                newRoleObject.Type = Number(value);
+              } else {
+                newRoleObject.Type = 2;
+              }
+            }}
+          />
+          <Button mt={15} type="submit">
+            Submit
+          </Button>
+        </form>
+      ),
+    });
+  };
 
   const openEditModal = ({ row }: any) => {
     let newObject = {
@@ -118,14 +234,14 @@ const UserRolesTable = ({
       onCancel: () => console.log("You Cancelled"),
       onConfirm: () => {
         setDataRendered(
-          data.map((item: any) =>
+          dataRendered.map((item: any) =>
             item[idColumn] === row[idColumn] ? newObject : item
           )
         );
 
         showNotification({
           title: "Edit success!",
-          message: "This is a future functionality",
+          message: `You've successfully edited ${row.Name}`,
           autoClose: 3000,
           color: "green",
         });
@@ -187,7 +303,7 @@ const UserRolesTable = ({
           <Group noWrap>
             <Link
               state={{ data: row }}
-              to={`/user-management/permissions/${row.Name}`}
+              to={`/user/roles/permissions/${row.Name}`}
             >
               <Button variant="subtle" size="xs">
                 Permissions
@@ -301,7 +417,10 @@ const UserRolesTable = ({
         ) : (
           <></>
         )}
-        <Group>{filterableHeadings ? <Group> {filters} </Group> : <></>}</Group>
+        <Group>
+          {filterableHeadings ? <Group> {filters} </Group> : <></>}
+          <Button onClick={openAddRoleModal}>Add Role</Button>
+        </Group>
         <ScrollArea sx={{ height: "auto" }}>
           <Table
             fontSize={12}
@@ -367,4 +486,4 @@ const UserRolesTable = ({
   );
 };
 
-export default UserRolesTable;
+export default UserRoles;

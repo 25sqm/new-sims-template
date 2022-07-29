@@ -36,6 +36,86 @@ export async function getUserRoles() {
   }
 }
 
+export async function addUserRole(
+  name: string,
+  description: string,
+  type: number
+) {
+  try {
+    const csrf = await http.get("/sanctum/csrf-cookie");
+    const authToken = sessionStorage.getItem("token");
+    const headers = { headers: { Authorization: `Bearer ${authToken}` } };
+    const bodyContent = `enct=add&user_roles_name=${name}&user_roles_description=${description}&role_type=${type}`;
+
+    const response = await http.post(
+      `/api/admin/user/roles/crud`,
+      bodyContent,
+      headers
+    );
+    return response;
+  } catch (err: any) {
+    console.error(err.response);
+    return null;
+  }
+}
+
+export async function addUserAccess(userId: number, roleId: number) {
+  try {
+    const csrf = await http.get("/sanctum/csrf-cookie");
+    const authToken = sessionStorage.getItem("token");
+    const headers = { headers: { Authorization: `Bearer ${authToken}` } };
+    const bodyContent = `enct=add&user_ID=${userId}&role_inp=${roleId}`;
+
+    const response = await http.post(
+      `/api/admin/user/access/crud`,
+      bodyContent,
+      headers
+    );
+    return response;
+  } catch (err: any) {
+    console.error(err.response);
+    return null;
+  }
+}
+
+export async function editUserAccess(userId: number, roleId: number) {
+  try {
+    const csrf = await http.get("/sanctum/csrf-cookie");
+    const authToken = sessionStorage.getItem("token");
+    const headers = { headers: { Authorization: `Bearer ${authToken}` } };
+    const bodyContent = `enct=edit&id=${userId}&role_inp=${roleId}`;
+
+    const response = await http.post(
+      `/api/admin/user/access/crud`,
+      bodyContent,
+      headers
+    );
+    return response;
+  } catch (err: any) {
+    console.error(err.response);
+    return null;
+  }
+}
+
+export async function deleteUserAccess(roleId: number) {
+  try {
+    const csrf = await http.get("/sanctum/csrf-cookie");
+    const authToken = sessionStorage.getItem("token");
+    const headers = { headers: { Authorization: `Bearer ${authToken}` } };
+    const bodyContent = `enct=delete&id=${roleId}`;
+
+    const response = await http.post(
+      `/api/admin/user/access/crud`,
+      bodyContent,
+      headers
+    );
+    return response;
+  } catch (err: any) {
+    console.error(err.response);
+    return null;
+  }
+}
+
 export async function getUsersInfo() {
   try {
     const csrf = await http.get("/sanctum/csrf-cookie");

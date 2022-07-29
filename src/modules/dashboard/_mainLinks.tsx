@@ -213,12 +213,12 @@ const clientNav = [
     label: "Feedback",
     link: "/feedback",
   },
-  {
-    icon: <TriangleSquareCircle size={16} />,
-    color: "blue",
-    label: "Bait Station Monitoring",
-    link: "/bait-monitoring",
-  },
+  // {
+  //   icon: <TriangleSquareCircle size={16} />,
+  //   color: "blue",
+  //   label: "Bait Station Monitoring",
+  //   link: "/bait-monitoring",
+  // },
 ];
 
 const adminNav = [
@@ -226,7 +226,10 @@ const adminNav = [
     icon: <UserSearch size={16} />,
     color: "blue",
     label: "User Management",
-    link: "/user-management",
+    links: [
+      { label: "User Information", link: "/user/information" },
+      { label: "User Roles", link: "/user/roles" },
+    ],
   },
   {
     icon: <FileDescription size={16} />,
@@ -272,12 +275,12 @@ const adminNav = [
     label: "Trends and Reports",
     link: "/trends-reports",
   },
-  {
-    icon: <TriangleSquareCircle size={16} />,
-    color: "blue",
-    label: "Bait Station Monitoring",
-    link: "/bait-monitoring",
-  },
+  // {
+  //   icon: <TriangleSquareCircle size={16} />,
+  //   color: "blue",
+  //   label: "Bait Station Monitoring",
+  //   link: "/bait-monitoring",
+  // },
 ];
 
 export function MainLinks({ isAdmin, setIsAdmin }: any) {

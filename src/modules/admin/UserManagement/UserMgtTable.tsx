@@ -276,7 +276,7 @@ const UserMgtTable = ({
           <Group noWrap>
             <Link
               state={{ data: row }}
-              to={`/user-management/access/${row.username}`}
+              to={`/user/information/access/${row.username}`}
             >
               <Button variant="subtle" size="xs">
                 Access
@@ -284,7 +284,7 @@ const UserMgtTable = ({
             </Link>
             <Link
               state={{ data: row }}
-              to={`/user-management/sites/${row.username}`}
+              to={`/user/information/sites/${row.username}`}
             >
               <Button variant="subtle" size="xs">
                 Sites

@@ -33,10 +33,8 @@ import { ChangePasswordForm } from "./ChangePasswordForm";
 import Reports from "./Reports";
 import BaitStationMonitoring from "./BaitStationMonitoring";
 import ServiceManagement from "./admin/features/ServiceManagement/ServiceManagement";
-import DeviceManagement from "./admin/features/DeviceManagement/DeviceManagement";
-import UserManagement from "./admin/features/UserManagement/UserManagement";
 import { getAssignedLocation } from "../api/user";
-import ClientManagement from "./admin/ClientManagement";
+import ClientManagement from "./admin/features/ClientManagement/ClientManagement";
 import TrendsAndReports from "./admin/TrendsAndReports";
 import { notifData } from "../components/admin/dummyData";
 import { NotFoundTitle } from "./Page404";
@@ -53,6 +51,9 @@ import AreaThresholdTable from "./admin/features/AreaManagement/AreaThresholdTab
 import DeviceInformation from "./admin/features/DeviceManagement/DeviceInformation";
 import DeviceMonitoring from "./admin/features/DeviceManagement/DeviceMonitoring";
 import DeviceThreshold from "./admin/features/DeviceManagement/DeviceThreshold";
+import UserInformation from "./admin/features/UserManagement/UserInformation";
+import UserRoles from "./admin/features/UserManagement/UserRoles";
+import ClientInformation from "./admin/features/ClientManagement/ClientInformation";
 
 interface AuthFormProps {
   user: any;
@@ -229,20 +230,20 @@ const DashboardShell = ({
             <Route index element={<ServiceManagement />} />
             <Route path="/service-tasks/:id" element={<ServiceTasks />} />
             <Route path="/service-areas/:id" element={<ServiceAreas />} />
-            <Route path="/user-management" element={<UserManagement />} />
+            <Route path="/user/information" element={<UserInformation />} />
+            <Route path="/user/roles" element={<UserRoles />} />
             <Route
-              path="/user-management/access/:userName"
+              path="/user/information/access/:userName"
               element={<UserAccess />}
             />
             <Route
-              path="/user-management/sites/:userName"
+              path="/user/information/sites/:userName"
               element={<UserSites />}
             />
             <Route
-              path="/user-management/permissions/:Name"
+              path="/user/roles/permissions/:Name"
               element={<UserPermissions />}
             />
-            <Route path="/device-management" element={<DeviceManagement />} />
             <Route path="/device/information" element={<DeviceInformation />} />
             <Route path="device/monitoring" element={<DeviceMonitoring />} />
             <Route
@@ -260,12 +261,14 @@ const DashboardShell = ({
             <Route path="/area/threshold" element={<AreaThresholdTable />} />
             <Route path="/area/pest-incidence" element={<PestIncidenceMap />} />
             <Route path="/area/critical-pests" element={<CriticalPests />} />
+
             <Route path="/client-management" element={<ClientManagement />} />
+            <Route path="/client/information" element={<ClientInformation />} />
             <Route path="/trends-reports" element={<TrendsAndReports />} />
-            <Route
+            {/* <Route
               path="/bait-monitoring"
               element={<BaitStationMonitoring />}
-            />
+            /> */}
             <Route path="/change-password" element={<ChangePasswordForm />} />
           </>
         ) : (
@@ -278,10 +281,10 @@ const DashboardShell = ({
             <Route path="/service-orders" element={<ServiceOrders />} />
             <Route path="/reports" element={<Reports />} />
             <Route path="/feedback" element={<Feedback />} />
-            <Route
+            {/* <Route
               path="/bait-monitoring"
               element={<BaitStationMonitoring />}
-            />
+            /> */}
             <Route path="/change-password" element={<ChangePasswordForm />} />
           </>
         )}
