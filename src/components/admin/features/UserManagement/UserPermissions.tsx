@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { NewLifecycle, useEffect, useState } from "react";
 import {
   ActionIcon,
   Button,
@@ -42,6 +42,8 @@ const UserPermissions = () => {
       <Paper shadow="md" p="sm" my="md" sx={{ height: "auto" }}>
         <UserPermissionsTable
           role={data.Name}
+          userID={data.ID}
+          fetchRolePermissions={fetchRolePermissions}
           data={userPermissions}
           idColumn={"ID"}
           ignoreColumn={["actionbtn", "ID", "permission_id", "page_id"]}
@@ -94,6 +96,8 @@ interface Props {
   }>;
   description?: string;
   idColumn: string;
+  userID: number;
+  fetchRolePermissions: Function;
   ignoreColumn?: Array<string>;
   columnHeadings?: Array<string>;
   testLog?: (message: any) => void;
@@ -104,6 +108,8 @@ const UserPermissionsTable = ({
   data,
   description,
   idColumn,
+  userID,
+  fetchRolePermissions,
   ignoreColumn,
   columnHeadings,
 }: Props) => {
@@ -122,6 +128,12 @@ const UserPermissionsTable = ({
       setDataRendered(data.slice(0, 9));
     }
   }, [data]);
+
+  const refetch = async () => {
+    fetchRolePermissions();
+    setPage(1);
+    reloadData(1);
+  };
 
   const reloadData = (page: number) => {
     setLoading(true);

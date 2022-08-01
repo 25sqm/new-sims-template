@@ -54,6 +54,7 @@ import DeviceThreshold from "./admin/features/DeviceManagement/DeviceThreshold";
 import UserInformation from "./admin/features/UserManagement/UserInformation";
 import UserRoles from "./admin/features/UserManagement/UserRoles";
 import ClientInformation from "./admin/features/ClientManagement/ClientInformation";
+import ClientSitesTable from "./admin/features/ClientManagement/ClientSitesTable";
 
 interface AuthFormProps {
   user: any;
@@ -264,6 +265,10 @@ const DashboardShell = ({
 
             <Route path="/client-management" element={<ClientManagement />} />
             <Route path="/client/information" element={<ClientInformation />} />
+            <Route
+              path="/client/information/sites/:id"
+              element={<ClientSitesTable />}
+            />
             <Route path="/trends-reports" element={<TrendsAndReports />} />
             {/* <Route
               path="/bait-monitoring"

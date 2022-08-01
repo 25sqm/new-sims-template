@@ -267,7 +267,12 @@ const adminNav = [
     icon: <Users size={16} />,
     color: "blue",
     label: "Client Management",
-    link: "/client-management",
+    links: [
+      {
+        label: "Client Information",
+        link: "/client/information",
+      },
+    ],
   },
   {
     icon: <AntennaBars5 size={16} />,
