@@ -293,7 +293,7 @@ const SitesTable = ({
         return (
           <tr key={unique}>
             <td>
-              <Group noWrap>
+              <Group spacing="xs" noWrap>
                 <Button variant="subtle" size="xs">
                   Area
                 </Button>
