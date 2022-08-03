@@ -116,15 +116,17 @@ export async function deleteUserAccess(roleId: number) {
   }
 }
 
-export async function getUsersInfo() {
+export async function getUsersInfo(area_id?: number) {
   try {
     const csrf = await http.get("/sanctum/csrf-cookie");
     const authToken = sessionStorage.getItem("token");
     const headers = { headers: { Authorization: `Bearer ${authToken}` } };
-    const response = await http.get(
-      "/api/admin/user/information/search",
-      headers
-    );
+    const response = area_id
+      ? await http.get(
+          `/api/admin/user/information/search?area_id=${area_id}`,
+          headers
+        )
+      : await http.get("/api/admin/user/information/search", headers);
     return response;
   } catch (err: any) {
     console.error(err.response);

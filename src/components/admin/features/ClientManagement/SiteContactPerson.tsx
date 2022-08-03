@@ -22,21 +22,23 @@ import {
   editUserAccess,
   getUserAccess,
   getUserRoles,
+  getUsersInfo,
 } from "../../../../api/user";
 import { useModals } from "@mantine/modals";
 import { showNotification } from "@mantine/notifications";
 import { CirclePlus, Edit, TrashX } from "tabler-icons-react";
-import { getClientSites } from "../../../../api/clients";
+import { getClientContracts, getClientSites } from "../../../../api/clients";
+import { getAreasInfo } from "../../../../api/areas";
 
-const ClientSitesTable = () => {
-  const [clientSitesData, setClientSitesData] = useState([]);
+const SiteContactPerson = () => {
+  const [contactPersons, setContactPersons] = useState([]);
   //   const [userRoles, setUserRoles] = useState([]);
   const location = useLocation();
   const { data }: any = location.state;
 
-  const fetchClientSites = async (id: number) => {
-    const data = await getClientSites(id);
-    setClientSitesData(data.data);
+  const fetchContactPersons = async (id: number) => {
+    const data = await getUsersInfo(id);
+    setContactPersons(data.data);
   };
 
   //   const rolesDropdownPopulate = async () => {
@@ -49,7 +51,7 @@ const ClientSitesTable = () => {
   //   };
 
   useEffect(() => {
-    fetchClientSites(data.ID);
+    fetchContactPersons(data.ID);
     // rolesDropdownPopulate();
   }, []);
 
@@ -76,19 +78,28 @@ const ClientSitesTable = () => {
             </div>
           </SimpleGrid>
         </Card>
-        <SitesTable
+        <ContactsTable
           name={data.name}
           userID={data.ID}
-          data={clientSitesData}
-          fetchClientSites={fetchClientSites}
+          data={contactPersons}
+          fetchContactPersons={fetchContactPersons}
           idColumn={"ID"}
-          ignoreColumn={["ID"]}
+          ignoreColumn={[
+            "ID",
+            "actionbtn",
+            "permanent_add",
+            "birthday",
+            "landline_no",
+            "sex",
+            "org_id",
+          ]}
           columnHeadings={[
             "",
             "Name",
-            "Description",
-            "Site Code",
-            "Address",
+            "Email",
+            "Username",
+            "Mobile Number",
+            "Organization",
             "Actions",
           ]}
           //   possibleAccessRoles={userRoles}
@@ -137,19 +148,19 @@ interface Props {
   idColumn: string;
   ignoreColumn?: Array<string>;
   columnHeadings?: Array<string>;
-  fetchClientSites: Function;
+  fetchContactPersons: Function;
   //   possibleAccessRoles: Array<{ value: string; label: string }>;
   userID: number;
 }
 
-const SitesTable = ({
+const ContactsTable = ({
   name,
   data,
   description,
   idColumn,
   ignoreColumn,
   columnHeadings,
-  fetchClientSites,
+  fetchContactPersons,
   //   possibleAccessRoles,
   userID,
 }: Props) => {
@@ -172,14 +183,16 @@ const SitesTable = ({
   }, [data]);
 
   const refetch = async () => {
-    fetchClientSites(userID);
+    fetchContactPersons(userID);
     setPage(1);
     reloadData(1);
   };
 
   const reloadData = (page: number) => {
     setLoading(true);
-    setDataRendered(data.slice(0, 10));
+    const lowerBound = page * 10 - 10;
+    const upperBound = page * 10;
+    setDataRendered(data.slice(lowerBound, upperBound));
     setLoading(false);
   };
 
@@ -315,29 +328,21 @@ const SitesTable = ({
         return (
           <tr key={unique}>
             <td>
-              <Group spacing="xs" noWrap>
+              <Group noWrap>
                 <Link
                   state={{ data: row }}
-                  to={`/client/information/sites/${userID}/areas/${row.ID}`}
+                  to={`/user/information/access/${row.username}`}
                 >
                   <Button variant="subtle" size="xs">
-                    Area
+                    Access
                   </Button>
                 </Link>
                 <Link
                   state={{ data: row }}
-                  to={`/client/information/sites/${userID}/contacts/${row.ID}`}
+                  to={`/user/information/sites/${row.username}`}
                 >
                   <Button variant="subtle" size="xs">
-                    Contact Person
-                  </Button>
-                </Link>
-                <Link
-                  state={{ data: row }}
-                  to={`/client/information/sites/${userID}/contracts/${row.ID}`}
-                >
-                  <Button variant="subtle" size="xs">
-                    Contracts
+                    Sites
                   </Button>
                 </Link>
               </Group>
@@ -405,7 +410,7 @@ const SitesTable = ({
             variant="outline"
             leftIcon={<CirclePlus />}
           >
-            Add Site
+            Add Area
           </Button>
         </Group>
         <Divider />
@@ -426,7 +431,7 @@ const SitesTable = ({
                 rows
               ) : (
                 <tr>
-                  <td colSpan={9}>
+                  <td colSpan={columnStrings.length}>
                     <Text color="dimmed" weight={500} align="center">
                       Nothing found
                     </Text>
@@ -439,12 +444,12 @@ const SitesTable = ({
       </Skeleton>
       <Group>
         <Text></Text>
-        {data.length >= 9 ? (
+        {data.length >= 10 ? (
           <Pagination
             my="sm"
             page={activePage}
             onChange={(page) => {
-              // reloadData(page);
+              reloadData(page);
               setPage(page);
             }}
             total={Math.floor(data.length / 10)}
@@ -457,4 +462,4 @@ const SitesTable = ({
   );
 };
 
-export default ClientSitesTable;
+export default SiteContactPerson;

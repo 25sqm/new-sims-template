@@ -56,6 +56,8 @@ import UserRoles from "./admin/features/UserManagement/UserRoles";
 import ClientInformation from "./admin/features/ClientManagement/ClientInformation";
 import ClientSitesTable from "./admin/features/ClientManagement/ClientSitesTable";
 import ClientContractsInfo from "./admin/features/ClientManagement/ClientContractInfo";
+import SiteAreaInfo from "./admin/features/ClientManagement/SiteAreaInfo";
+import SiteContactPerson from "./admin/features/ClientManagement/SiteContactPerson";
 
 interface AuthFormProps {
   user: any;
@@ -273,6 +275,16 @@ const DashboardShell = ({
             <Route
               path="/client/information/sites/:id/contracts/:siteID"
               element={<ClientContractsInfo />}
+            />
+
+            <Route
+              path="/client/information/sites/:id/areas/:siteID"
+              element={<SiteAreaInfo />}
+            />
+
+            <Route
+              path="/client/information/sites/:id/contacts/:siteID"
+              element={<SiteContactPerson />}
             />
 
             <Route path="/trends-reports" element={<TrendsAndReports />} />

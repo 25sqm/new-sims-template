@@ -15,7 +15,7 @@ import {
   Table,
   Text,
 } from "@mantine/core";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import {
   addUserAccess,
   deleteUserAccess,
@@ -26,17 +26,18 @@ import {
 import { useModals } from "@mantine/modals";
 import { showNotification } from "@mantine/notifications";
 import { CirclePlus, Edit, TrashX } from "tabler-icons-react";
-import { getClientSites } from "../../../../api/clients";
+import { getClientContracts, getClientSites } from "../../../../api/clients";
+import { getAreasInfo } from "../../../../api/areas";
 
-const ClientSitesTable = () => {
-  const [clientSitesData, setClientSitesData] = useState([]);
+const SiteAreaInfo = () => {
+  const [siteAreas, setSiteAreas] = useState([]);
   //   const [userRoles, setUserRoles] = useState([]);
   const location = useLocation();
   const { data }: any = location.state;
 
-  const fetchClientSites = async (id: number) => {
-    const data = await getClientSites(id);
-    setClientSitesData(data.data);
+  const fetchSiteAreas = async (id: number) => {
+    const data = await getAreasInfo(id);
+    setSiteAreas(data.data);
   };
 
   //   const rolesDropdownPopulate = async () => {
@@ -49,7 +50,7 @@ const ClientSitesTable = () => {
   //   };
 
   useEffect(() => {
-    fetchClientSites(data.ID);
+    fetchSiteAreas(data.ID);
     // rolesDropdownPopulate();
   }, []);
 
@@ -76,20 +77,28 @@ const ClientSitesTable = () => {
             </div>
           </SimpleGrid>
         </Card>
-        <SitesTable
+        <SiteAreas
           name={data.name}
           userID={data.ID}
-          data={clientSitesData}
-          fetchClientSites={fetchClientSites}
+          data={siteAreas}
+          fetchSiteAreas={fetchSiteAreas}
           idColumn={"ID"}
-          ignoreColumn={["ID"]}
+          ignoreColumn={["ID", "client", "actionbtn"]}
           columnHeadings={[
-            "",
-            "Name",
+            "Area Code",
+            "Area",
+            "Level",
             "Description",
-            "Site Code",
-            "Address",
-            "Actions",
+            "Length",
+            "Width",
+            "Height",
+            "Perimeter",
+            "Volume",
+            "Custom Volume",
+            "Map",
+            "SRA",
+            "TAM",
+            "Action",
           ]}
           //   possibleAccessRoles={userRoles}
         />
@@ -137,19 +146,19 @@ interface Props {
   idColumn: string;
   ignoreColumn?: Array<string>;
   columnHeadings?: Array<string>;
-  fetchClientSites: Function;
+  fetchSiteAreas: Function;
   //   possibleAccessRoles: Array<{ value: string; label: string }>;
   userID: number;
 }
 
-const SitesTable = ({
+const SiteAreas = ({
   name,
   data,
   description,
   idColumn,
   ignoreColumn,
   columnHeadings,
-  fetchClientSites,
+  fetchSiteAreas,
   //   possibleAccessRoles,
   userID,
 }: Props) => {
@@ -172,14 +181,16 @@ const SitesTable = ({
   }, [data]);
 
   const refetch = async () => {
-    fetchClientSites(userID);
+    fetchSiteAreas(userID);
     setPage(1);
     reloadData(1);
   };
 
   const reloadData = (page: number) => {
     setLoading(true);
-    setDataRendered(data.slice(0, 10));
+    const lowerBound = page * 10 - 10;
+    const upperBound = page * 10;
+    setDataRendered(data.slice(lowerBound, upperBound));
     setLoading(false);
   };
 
@@ -314,34 +325,6 @@ const SitesTable = ({
         const unique = row[idColumn];
         return (
           <tr key={unique}>
-            <td>
-              <Group spacing="xs" noWrap>
-                <Link
-                  state={{ data: row }}
-                  to={`/client/information/sites/${userID}/areas/${row.ID}`}
-                >
-                  <Button variant="subtle" size="xs">
-                    Area
-                  </Button>
-                </Link>
-                <Link
-                  state={{ data: row }}
-                  to={`/client/information/sites/${userID}/contacts/${row.ID}`}
-                >
-                  <Button variant="subtle" size="xs">
-                    Contact Person
-                  </Button>
-                </Link>
-                <Link
-                  state={{ data: row }}
-                  to={`/client/information/sites/${userID}/contracts/${row.ID}`}
-                >
-                  <Button variant="subtle" size="xs">
-                    Contracts
-                  </Button>
-                </Link>
-              </Group>
-            </td>
             {Object.keys(row)
               .filter((element) => {
                 if (ignoreColumn === undefined) return element;
@@ -405,7 +388,7 @@ const SitesTable = ({
             variant="outline"
             leftIcon={<CirclePlus />}
           >
-            Add Site
+            Add Area
           </Button>
         </Group>
         <Divider />
@@ -426,7 +409,7 @@ const SitesTable = ({
                 rows
               ) : (
                 <tr>
-                  <td colSpan={9}>
+                  <td colSpan={columnStrings.length}>
                     <Text color="dimmed" weight={500} align="center">
                       Nothing found
                     </Text>
@@ -439,12 +422,12 @@ const SitesTable = ({
       </Skeleton>
       <Group>
         <Text></Text>
-        {data.length >= 9 ? (
+        {data.length >= 10 ? (
           <Pagination
             my="sm"
             page={activePage}
             onChange={(page) => {
-              // reloadData(page);
+              reloadData(page);
               setPage(page);
             }}
             total={Math.floor(data.length / 10)}
@@ -457,4 +440,4 @@ const SitesTable = ({
   );
 };
 
-export default ClientSitesTable;
+export default SiteAreaInfo;

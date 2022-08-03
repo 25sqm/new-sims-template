@@ -25,15 +25,17 @@ export async function getAreaMonitoringInfo() {
   }
 }
 
-export async function getAreasInfo() {
+export async function getAreasInfo(location_id?: number) {
   try {
     const csrf = await http.get("/sanctum/csrf-cookie");
     const authToken = sessionStorage.getItem("token");
     const headers = { headers: { Authorization: `Bearer ${authToken}` } };
-    const response = await http.get(
-      "/api/admin/area/information/search",
-      headers
-    );
+    const response = location_id
+      ? await http.get(
+          `/api/admin/area/information/search?location_id=${location_id}`,
+          headers
+        )
+      : await http.get("/api/admin/area/information/search", headers);
     return response;
   } catch (err: any) {
     console.error(err.response);
