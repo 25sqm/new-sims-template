@@ -15,7 +15,7 @@ import {
   Table,
   Text,
 } from "@mantine/core";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import {
   addUserAccess,
   deleteUserAccess,
@@ -26,17 +26,17 @@ import {
 import { useModals } from "@mantine/modals";
 import { showNotification } from "@mantine/notifications";
 import { CirclePlus, Edit, TrashX } from "tabler-icons-react";
-import { getClientSites } from "../../../../api/clients";
+import { getClientContracts, getClientSites } from "../../../../api/clients";
 
-const ClientSitesTable = () => {
-  const [clientSitesData, setClientSitesData] = useState([]);
+const ClientContractInfo = () => {
+  const [clientContracts, setClientContracts] = useState([]);
   //   const [userRoles, setUserRoles] = useState([]);
   const location = useLocation();
   const { data }: any = location.state;
 
-  const fetchClientSites = async (id: number) => {
-    const data = await getClientSites(id);
-    setClientSitesData(data.data);
+  const fetchClientContracts = async (id: number) => {
+    const data = await getClientContracts(id);
+    setClientContracts(data.data);
   };
 
   //   const rolesDropdownPopulate = async () => {
@@ -49,7 +49,7 @@ const ClientSitesTable = () => {
   //   };
 
   useEffect(() => {
-    fetchClientSites(data.ID);
+    fetchClientContracts(data.ID);
     // rolesDropdownPopulate();
   }, []);
 
@@ -76,11 +76,11 @@ const ClientSitesTable = () => {
             </div>
           </SimpleGrid>
         </Card>
-        <SitesTable
+        <ClientsTable
           name={data.name}
           userID={data.ID}
-          data={clientSitesData}
-          fetchClientSites={fetchClientSites}
+          data={clientContracts}
+          fetchClientContracts={fetchClientContracts}
           idColumn={"ID"}
           ignoreColumn={["ID"]}
           columnHeadings={[
@@ -137,19 +137,19 @@ interface Props {
   idColumn: string;
   ignoreColumn?: Array<string>;
   columnHeadings?: Array<string>;
-  fetchClientSites: Function;
+  fetchClientContracts: Function;
   //   possibleAccessRoles: Array<{ value: string; label: string }>;
   userID: number;
 }
 
-const SitesTable = ({
+const ClientsTable = ({
   name,
   data,
   description,
   idColumn,
   ignoreColumn,
   columnHeadings,
-  fetchClientSites,
+  fetchClientContracts,
   //   possibleAccessRoles,
   userID,
 }: Props) => {
@@ -172,7 +172,7 @@ const SitesTable = ({
   }, [data]);
 
   const refetch = async () => {
-    fetchClientSites(userID);
+    fetchClientContracts(userID);
     setPage(1);
     reloadData(1);
   };
@@ -314,24 +314,6 @@ const SitesTable = ({
         const unique = row[idColumn];
         return (
           <tr key={unique}>
-            <td>
-              <Group spacing="xs" noWrap>
-                <Button variant="subtle" size="xs">
-                  Area
-                </Button>
-                <Button variant="subtle" size="xs">
-                  Contact Person
-                </Button>
-                <Link
-                  state={{ data: row }}
-                  to={`/client/information/sites/${userID}/contracts/${row.ID}`}
-                >
-                  <Button variant="subtle" size="xs">
-                    Contracts
-                  </Button>
-                </Link>
-              </Group>
-            </td>
             {Object.keys(row)
               .filter((element) => {
                 if (ignoreColumn === undefined) return element;
@@ -395,7 +377,7 @@ const SitesTable = ({
             variant="outline"
             leftIcon={<CirclePlus />}
           >
-            Add Site
+            Add Contract
           </Button>
         </Group>
         <Divider />
@@ -447,4 +429,4 @@ const SitesTable = ({
   );
 };
 
-export default ClientSitesTable;
+export default ClientContractInfo;

@@ -56,6 +56,7 @@ const ClientManagement = () => {
           idColumn={"ref_no"}
           ignoreColumn={["actionbtn", "ID"]}
           columnHeadings={[
+            "",
             "Client",
             "Client Code",
             "Description",

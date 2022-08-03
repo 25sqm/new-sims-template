@@ -40,3 +40,19 @@ export async function getClientSites(clientID: number) {
     return null;
   }
 }
+
+export async function getClientContracts(siteID: number) {
+  try {
+    const csrf = await http.get("/sanctum/csrf-cookie");
+    const authToken = sessionStorage.getItem("token");
+    const headers = { headers: { Authorization: `Bearer ${authToken}` } };
+    const response = await http.get(
+      `/api/admin/client/contract/search?id=${siteID}`,
+      headers
+    );
+    return response;
+  } catch (err: any) {
+    console.error(err.response);
+    return null;
+  }
+}
