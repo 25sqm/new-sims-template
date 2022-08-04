@@ -19,7 +19,13 @@ import {
   Select,
 } from "@mantine/core";
 import UserMgtTable from "../../../../modules/admin/UserManagement/UserMgtTable";
-import { addUserRole, getUserRoles, getUsersInfo } from "../../../../api/user";
+import {
+  addUserRole,
+  deleteUserRole,
+  editUserRole,
+  getUserRoles,
+  getUsersInfo,
+} from "../../../../api/user";
 import { showNotification } from "@mantine/notifications";
 import { Link } from "react-router-dom";
 import { Edit, TrashX } from "tabler-icons-react";
@@ -149,7 +155,14 @@ const UserRolesTable = ({
             e.preventDefault();
 
             // @TODO: Add new user query should be here
-            setDataRendered([...dataRendered, newRoleObject]);
+            // setDataRendered([...dataRendered, newRoleObject]);
+
+            addUserRole(
+              newRoleObject.Name,
+              newRoleObject.Description,
+              newRoleObject.Type
+            );
+            refetch();
             showNotification({
               title: `Success!`,
               message: `You have successfully added ${newRoleObject.Name}`,
@@ -220,11 +233,13 @@ const UserRolesTable = ({
             label="Description"
             placeholder={row.Description}
           />
-          <NativeSelect
-            onChange={(e) =>
-              (newObject = { ...newObject, Type: e.currentTarget.value })
-            }
-            data={["Admin", "Client", "Technician"]}
+          <Select
+            onChange={(value) => (newObject = { ...newObject, Type: value })}
+            data={[
+              { value: "1", label: "Admin" },
+              { value: "2", label: "Client" },
+              { value: "3", label: "Technician" },
+            ]}
             placeholder={row.Type}
             label="Type"
           />
@@ -233,19 +248,26 @@ const UserRolesTable = ({
       labels: { confirm: "Submit", cancel: "Cancel" },
       onCancel: () => console.log("You Cancelled"),
       onConfirm: () => {
-        setDataRendered(
-          dataRendered.map((item: any) =>
-            item[idColumn] === row[idColumn] ? newObject : item
-          )
-        );
+        // setDataRendered(
+        //   dataRendered.map((item: any) =>
+        //     item[idColumn] === row[idColumn] ? newObject : item
+        //   )
+        // );
 
+        editUserRole(
+          row.ID,
+          newObject.Name,
+          newObject.Description,
+          newObject.Type
+        );
+        refetch();
         showNotification({
           title: "Edit success!",
           message: `You've successfully edited ${row.Name}`,
           autoClose: 3000,
           color: "green",
         });
-        console.log("you submitted: ", row);
+        // console.log("you submitted: ", row);
       },
     });
   };
@@ -261,11 +283,13 @@ const UserRolesTable = ({
       labels: { confirm: "Delete", cancel: "Cancel" },
       onCancel: () => console.log("You Cancelled"),
       onConfirm: () => {
-        setDataRendered([
-          ...dataRendered.filter(
-            (item: any) => item[idColumn] !== row[idColumn]
-          ),
-        ]);
+        // setDataRendered([
+        //   ...dataRendered.filter(
+        //     (item: any) => item[idColumn] !== row[idColumn]
+        //   ),
+        // ]);
+        deleteUserRole(row.ID);
+        refetch();
         showNotification({
           title: `You have successfully deleted ${row.Name}`,
           message: "This is a future functionality",

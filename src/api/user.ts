@@ -59,6 +59,48 @@ export async function addUserRole(
   }
 }
 
+export async function editUserRole(
+  id: number,
+  name: string,
+  description: string,
+  type: number
+) {
+  try {
+    const csrf = await http.get("/sanctum/csrf-cookie");
+    const authToken = sessionStorage.getItem("token");
+    const headers = { headers: { Authorization: `Bearer ${authToken}` } };
+    const bodyContent = `enct=edit&id=${id}&user_roles_name=${name}&user_roles_description=${description}&role_type=${type}`;
+
+    const response = await http.post(
+      `/api/admin/user/roles/crud`,
+      bodyContent,
+      headers
+    );
+    return response;
+  } catch (err: any) {
+    console.error(err.response);
+    return null;
+  }
+}
+
+export async function deleteUserRole(roleId: number) {
+  try {
+    const csrf = await http.get("/sanctum/csrf-cookie");
+    const authToken = sessionStorage.getItem("token");
+    const headers = { headers: { Authorization: `Bearer ${authToken}` } };
+    const bodyContent = `enct=delete&id=${roleId}`;
+
+    const response = await http.post(
+      `/api/admin/user/roles/crud`,
+      bodyContent,
+      headers
+    );
+    return response;
+  } catch (err: any) {
+    console.error(err.response);
+    return null;
+  }
+}
 export async function addUserAccess(userId: number, roleId: number) {
   try {
     const csrf = await http.get("/sanctum/csrf-cookie");
@@ -229,6 +271,70 @@ export async function getUserPermissions(id: number) {
     const headers = { headers: { Authorization: `Bearer ${authToken}` } };
     const response = await http.get(
       `/api/admin/user/roles/permissions/search?id=${id}`,
+      headers
+    );
+    return response;
+  } catch (err: any) {
+    console.error(err.response);
+    return null;
+  }
+}
+export async function addUserPermission(
+  roleID: number,
+  page_ID: number,
+  permission: number
+) {
+  try {
+    const csrf = await http.get("/sanctum/csrf-cookie");
+    const authToken = sessionStorage.getItem("token");
+    const headers = { headers: { Authorization: `Bearer ${authToken}` } };
+    const bodyContent = `enct=add&role_ID=${roleID}&page_ID=${page_ID}&permission=${permission}`;
+
+    const response = await http.post(
+      `/api/admin/user/roles/permissions/crud`,
+      bodyContent,
+      headers
+    );
+    return response;
+  } catch (err: any) {
+    console.error(err.response);
+    return null;
+  }
+}
+
+export async function editUserPermission(
+  id: number,
+  page_ID: number,
+  permission: number
+) {
+  try {
+    const csrf = await http.get("/sanctum/csrf-cookie");
+    const authToken = sessionStorage.getItem("token");
+    const headers = { headers: { Authorization: `Bearer ${authToken}` } };
+    const bodyContent = `enct=edit&id=${id}&page_ID=${page_ID}&permission=${permission}`;
+
+    const response = await http.post(
+      `/api/admin/user/roles/permissions/crud`,
+      bodyContent,
+      headers
+    );
+    return response;
+  } catch (err: any) {
+    console.error(err.response);
+    return null;
+  }
+}
+
+export async function deleteUserPermission(id: number) {
+  try {
+    const csrf = await http.get("/sanctum/csrf-cookie");
+    const authToken = sessionStorage.getItem("token");
+    const headers = { headers: { Authorization: `Bearer ${authToken}` } };
+    const bodyContent = `enct=delete&id=${id}`;
+
+    const response = await http.post(
+      `/api/admin/user/roles/permissions/crud`,
+      bodyContent,
       headers
     );
     return response;

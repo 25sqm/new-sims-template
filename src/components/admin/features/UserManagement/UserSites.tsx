@@ -141,7 +141,7 @@ const UserSitesTable = ({
           label="Site"
         />
       ),
-      labels: { confirm: "Add Role", cancel: "Cancel" },
+      labels: { confirm: "Add Site", cancel: "Cancel" },
       onCancel: () => console.log("You Cancelled"),
       onConfirm: () => {
         setDataRendered([
@@ -295,7 +295,7 @@ const UserSitesTable = ({
             variant="outline"
             leftIcon={<CirclePlus />}
           >
-            Add Role
+            Add Site
           </Button>
         </Group>
         <Divider />

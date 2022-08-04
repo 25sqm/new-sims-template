@@ -9,6 +9,7 @@ import {
   Pagination,
   Paper,
   ScrollArea,
+  Select,
   Skeleton,
   Table,
   Text,
@@ -16,7 +17,12 @@ import {
 import UserAccessTable from "../../../../modules/admin/UserManagement/UserAccessTable";
 import { userAccess } from "../../dummyData";
 import { useLocation } from "react-router-dom";
-import { getUserPermissions } from "../../../../api/user";
+import {
+  addUserPermission,
+  deleteUserPermission,
+  editUserPermission,
+  getUserPermissions,
+} from "../../../../api/user";
 import { useModals } from "@mantine/modals";
 import { showNotification } from "@mantine/notifications";
 import { CirclePlus, Edit, TrashX } from "tabler-icons-react";
@@ -42,7 +48,7 @@ const UserPermissions = () => {
       <Paper shadow="md" p="sm" my="md" sx={{ height: "auto" }}>
         <UserPermissionsTable
           role={data.Name}
-          userID={data.ID}
+          roleID={data.ID}
           fetchRolePermissions={fetchRolePermissions}
           data={userPermissions}
           idColumn={"ID"}
@@ -96,7 +102,7 @@ interface Props {
   }>;
   description?: string;
   idColumn: string;
-  userID: number;
+  roleID: number;
   fetchRolePermissions: Function;
   ignoreColumn?: Array<string>;
   columnHeadings?: Array<string>;
@@ -108,7 +114,7 @@ const UserPermissionsTable = ({
   data,
   description,
   idColumn,
-  userID,
+  roleID,
   fetchRolePermissions,
   ignoreColumn,
   columnHeadings,
@@ -130,7 +136,7 @@ const UserPermissionsTable = ({
   }, [data]);
 
   const refetch = async () => {
-    fetchRolePermissions();
+    fetchRolePermissions(roleID);
     setPage(1);
     reloadData(1);
   };
@@ -146,23 +152,63 @@ const UserPermissionsTable = ({
   // MODAL FUNCTIONS
 
   const openAddRoleModal = () => {
-    let addPermission = { pagetitle: "Dashboard", permission: "View Only" };
+    let addPermission = { page_ID: 1, permission: 1 };
     modals.openConfirmModal({
       title: "Add Role",
       children: (
         <>
-          <NativeSelect
-            onChange={(e) => {
-              addPermission.pagetitle = e.currentTarget.value;
+          <Select
+            onChange={(value) => {
+              addPermission.page_ID = Number(value);
             }}
-            data={["Dashboard", "Device Identification", "Device Monitoring"]}
+            placeholder="Choose a page"
+            data={[
+              { value: "1", label: "Dashboard" },
+              { value: "2", label: "Device Identification" },
+              { value: "3", label: "Device Deployment" },
+              { value: "4", label: "Device Monitoring" },
+              { value: "5", label: "Device Threshold" },
+              { value: "6", label: "Service Order" },
+              { value: "7", label: "Service Order Tasks" },
+              { value: "8", label: "Service Order Area" },
+              { value: "9", label: "Area Threshold" },
+              { value: "10", label: "User Info" },
+              { value: "11", label: "User Access" },
+              { value: "12", label: "Device Monitoring Pest Found" },
+              { value: "13", label: "Area Monitoring" },
+              { value: "14", label: "Monitoring Pest Found" },
+              { value: "15", label: "Area Monitoring Details" },
+              { value: "16", label: "Client Information" },
+              { value: "17", label: "Client Contract" },
+              { value: "18", label: "site Information" },
+              { value: "19", label: "Area Information" },
+              { value: "20", label: "Client Contract Services" },
+              { value: "21", label: "Pest Trending per Month" },
+              { value: "22", label: "User Roles" },
+              { value: "23", label: "Role Permissions" },
+              { value: "24", label: "Site Assignment" },
+              { value: "25", label: "Real-time Device Monitoring" },
+              { value: "26", label: "My Sites" },
+              { value: "27", label: "Threshold Breach Incident" },
+              { value: "28", label: "Bait Station Monitoring" },
+              { value: "29", label: "Service Order Activities" },
+              { value: "30", label: "Actual Treatment Activities" },
+              { value: "31", label: "Pest Incidence Map" },
+              { value: "32", label: "Critical Pests" },
+              { value: "33", label: "Summary of Pest Count" },
+              { value: "34", label: "Pest Trends and Thresholds" },
+            ]}
             label="Page"
           />
-          <NativeSelect
-            onChange={(e) => {
-              addPermission.permission = e.currentTarget.value;
+          <Select
+            onChange={(value) => {
+              addPermission.permission = Number(value);
             }}
-            data={["View Only", "Add/Edit/Delete"]}
+            placeholder="Choose Permissions Type"
+            data={[
+              { value: "1", label: "View Only" },
+              { value: "2", label: "Add/Edit/Delete" },
+            ]}
             label="Permission"
           />
         </>
@@ -170,34 +216,83 @@ const UserPermissionsTable = ({
       labels: { confirm: "Add Role", cancel: "Cancel" },
       onCancel: () => console.log("You Cancelled"),
       onConfirm: () => {
-        console.log("You confirmed");
+        addUserPermission(
+          roleID,
+          addPermission.page_ID,
+          addPermission.permission
+        );
+        refetch();
+        showNotification({
+          title: "Edit success!",
+          message: `You've successfully added a new permission`,
+          autoClose: 3000,
+          color: "green",
+        });
       },
     });
   };
 
   const openEditModal = ({ row }: any) => {
     let editPermission = {
-      pagetitle: row.pagetitle,
-      permission: row.permission,
+      page_ID: 1,
+      permission: 1,
     };
     modals.openConfirmModal({
       title: "Edit This User",
       children: (
         <>
-          <NativeSelect
-            placeholder={row.pagetitle}
-            onChange={(e) => {
-              editPermission.pagetitle = e.currentTarget.value;
+          <Select
+            onChange={(value) => {
+              editPermission.page_ID = Number(value);
             }}
-            data={["Dashboard", "Device Identification", "Device Monitoring"]}
+            placeholder={row.pagetitle}
+            data={[
+              { value: "1", label: "Dashboard" },
+              { value: "2", label: "Device Identification" },
+              { value: "3", label: "Device Deployment" },
+              { value: "4", label: "Device Monitoring" },
+              { value: "5", label: "Device Threshold" },
+              { value: "6", label: "Service Order" },
+              { value: "7", label: "Service Order Tasks" },
+              { value: "8", label: "Service Order Area" },
+              { value: "9", label: "Area Threshold" },
+              { value: "10", label: "User Info" },
+              { value: "11", label: "User Access" },
+              { value: "12", label: "Device Monitoring Pest Found" },
+              { value: "13", label: "Area Monitoring" },
+              { value: "14", label: "Monitoring Pest Found" },
+              { value: "15", label: "Area Monitoring Details" },
+              { value: "16", label: "Client Information" },
+              { value: "17", label: "Client Contract" },
+              { value: "18", label: "site Information" },
+              { value: "19", label: "Area Information" },
+              { value: "20", label: "Client Contract Services" },
+              { value: "21", label: "Pest Trending per Month" },
+              { value: "22", label: "User Roles" },
+              { value: "23", label: "Role Permissions" },
+              { value: "24", label: "Site Assignment" },
+              { value: "25", label: "Real-time Device Monitoring" },
+              { value: "26", label: "My Sites" },
+              { value: "27", label: "Threshold Breach Incident" },
+              { value: "28", label: "Bait Station Monitoring" },
+              { value: "29", label: "Service Order Activities" },
+              { value: "30", label: "Actual Treatment Activities" },
+              { value: "31", label: "Pest Incidence Map" },
+              { value: "32", label: "Critical Pests" },
+              { value: "33", label: "Summary of Pest Count" },
+              { value: "34", label: "Pest Trends and Thresholds" },
+            ]}
             label="Page"
           />
-          <NativeSelect
-            placeholder={row.permission}
-            onChange={(e) => {
-              editPermission.permission = e.currentTarget.value;
+          <Select
+            onChange={(value) => {
+              editPermission.permission = Number(value);
             }}
-            data={["View Only", "Add/Edit/Delete"]}
+            placeholder={row.permission_name}
+            data={[
+              { value: "1", label: "View Only" },
+              { value: "2", label: "Add/Edit/Delete" },
+            ]}
             label="Permission"
           />
         </>
@@ -205,13 +300,18 @@ const UserPermissionsTable = ({
       labels: { confirm: "Submit", cancel: "Cancel" },
       onCancel: () => console.log("You Cancelled"),
       onConfirm: () => {
+        editUserPermission(
+          row.ID,
+          editPermission.page_ID,
+          editPermission.permission
+        );
+        refetch();
         showNotification({
           title: "Edit success!",
-          message: "This is a future functionality",
+          message: `You successfully edited the permission on page ${row.pagetitle}`,
           autoClose: 3000,
           color: "green",
         });
-        console.log("you submitted: ", row);
       },
     });
   };
@@ -221,15 +321,19 @@ const UserPermissionsTable = ({
       title: "Delete User",
       children: (
         <>
-          <Text>Are you sure you want to delete "{row.roleName}" role?</Text>
+          <Text>
+            Are you sure you want to delete "{row.pagetitle}" permission?
+          </Text>
         </>
       ),
       labels: { confirm: "Delete", cancel: "Cancel" },
       onCancel: () => console.log("You Cancelled"),
       onConfirm: () => {
+        deleteUserPermission(row.ID);
+        refetch();
         showNotification({
-          title: `You have successfully deleted ${row.roleName}`,
-          message: "This is a future functionality",
+          title: `Success!`,
+          message: "You have successfully deleted a user permission!",
           autoClose: 3000,
           color: "green",
         });
