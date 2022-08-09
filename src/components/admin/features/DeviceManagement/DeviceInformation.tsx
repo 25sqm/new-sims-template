@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import { DatePicker, TimeInput } from "@mantine/dates";
 import { showNotification } from "@mantine/notifications";
 
 import {
@@ -22,6 +22,8 @@ import {
   ScrollArea,
   Pagination,
   Tooltip,
+  Select,
+  MultiSelect,
 } from "@mantine/core";
 import { useModals } from "@mantine/modals";
 import {
@@ -284,21 +286,120 @@ const DeviceInfoTable = ({
   // 	setLoading(false);
   // };
 
+  const openAddDeviceModal = () => {
+    console.log(dataRendered);
+    let addDeviceObject = {
+      device_type: null,
+      device_code: "",
+      device_site: "",
+      device_area: "",
+      date_deployed: "",
+      time_deployed: "",
+      date_removed: "",
+      frequency: "",
+    };
+
+    let freqArray: string[] = [];
+
+    modals.openConfirmModal({
+      title: "Add Role",
+      children: (
+        <>
+          <Select
+            placeholder="Select Role"
+            onChange={(value) => console.log(value)}
+            data={[
+              { value: "1", label: "Bird Scare" },
+              { value: "2", label: "Bird Siren" },
+              { value: "3", label: "Cage Trap (Big)" },
+              { value: "4", label: "Cage Trap (Mini)" },
+            ]}
+            label="Role"
+          />
+          <TextInput
+            label="Device Code"
+            placeholder="Your device's code"
+            name="device_code"
+          />
+          <Select
+            placeholder="Select Site"
+            onChange={(value) => console.log(value)}
+            data={[
+              { value: "1", label: "Bird Scare" },
+              { value: "2", label: "Bird Siren" },
+              { value: "3", label: "Cage Trap (Big)" },
+              { value: "4", label: "Cage Trap (Mini)" },
+            ]}
+            label="Site"
+          />
+          <Select
+            placeholder="Select Area"
+            onChange={(value) => console.log(value)}
+            data={[
+              { value: "1", label: "Bird Scare" },
+              { value: "2", label: "Bird Siren" },
+              { value: "3", label: "Cage Trap (Big)" },
+              { value: "4", label: "Cage Trap (Mini)" },
+            ]}
+            label="Area"
+          />
+          <DatePicker placeholder="Pick Date" label="Date Depoloyed" required />
+          <TimeInput
+            label="Time Deployed"
+            format="12"
+            defaultValue={new Date()}
+            required
+          />
+          <DatePicker placeholder="Pick Date" label="Date Removed" required />
+          <MultiSelect
+            data={[
+              { value: "M", label: "Monday" },
+              { value: "T", label: "Tuesday" },
+              { value: "W", label: "Wednesday" },
+              { value: "TH", label: "Thursday" },
+              { value: "F", label: "Friday" },
+            ]}
+            label="Frequency"
+            onChange={(value) => {
+              freqArray = value;
+            }}
+            placeholder="Pick days of frequency"
+          />
+        </>
+      ),
+      labels: { confirm: "Add Device", cancel: "Cancel" },
+      onCancel: () => console.log("You Cancelled"),
+      onConfirm: () => {
+        // setDataRendered([
+        //   ...dataRendered,
+        //   {
+        //     role_id: dataRendered.length + 1,
+        //     roles: addModalRole,
+        //     user_access_ID: dataRendered.length + 1,
+        //   },
+        // ]);
+        // addUserAccess(userID, addModalRole);
+        refetch();
+        showNotification({
+          title: `Success!`,
+          message: `You have successfully added a new role`,
+          autoClose: 3000,
+          color: "green",
+        });
+      },
+    });
+  };
+
   return (
     <>
       <Skeleton visible={loading}>
         {description ? <Text size="xl">{description}</Text> : <></>}
-        <Group>
-          {filterableHeadings ? (
-            <Group align="end">
-              {filters}
-              <Button leftIcon={<FileExport size={20} />}>Export</Button>
-              <Button>Area Monitoring PDF</Button>
-              <Button>Area Monitoring Excel</Button>
-            </Group>
-          ) : (
-            <></>
-          )}
+        <Group align="end">
+          {filterableHeadings ? { filters } : <></>}
+          <Button onClick={openAddDeviceModal}>Add Device</Button>
+          <Button leftIcon={<FileExport size={20} />}>Export</Button>
+          <Button>Area Monitoring PDF</Button>
+          <Button>Area Monitoring Excel</Button>
         </Group>
         <ScrollArea sx={{ height: "auto" }}>
           <Table

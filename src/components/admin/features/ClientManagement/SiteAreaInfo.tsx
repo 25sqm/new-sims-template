@@ -430,7 +430,7 @@ const SiteAreas = ({
               reloadData(page);
               setPage(page);
             }}
-            total={Math.floor(data.length / 10)}
+            total={Math.ceil(data.length / 10)}
           />
         ) : (
           <></>
