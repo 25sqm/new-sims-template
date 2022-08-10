@@ -9,19 +9,27 @@ import {
   Pagination,
   Paper,
   ScrollArea,
+  Select,
   Skeleton,
   Table,
   Text,
 } from "@mantine/core";
 import { userAccess } from "../../dummyData";
 import { useLocation } from "react-router-dom";
-import { getUserSites } from "../../../../api/user";
+import {
+  addUserSite,
+  deleteUserSite,
+  editUserSite,
+  getUserSites,
+} from "../../../../api/user";
 import { useModals } from "@mantine/modals";
 import { showNotification } from "@mantine/notifications";
 import { CirclePlus, Edit, TrashX } from "tabler-icons-react";
+import { getSites } from "../../../../api/service-orders";
 
 const UserSites = () => {
   const [userSites, setUserSites] = useState([]);
+  const [sitesDropdown, setSitesDropdown] = useState([]);
   const location = useLocation();
   const { data }: any = location.state;
   const nameProps = data.name;
@@ -31,8 +39,20 @@ const UserSites = () => {
     setUserSites(data.data);
   };
 
+  const populateDropdowns = async () => {
+    const response = await getSites();
+    const possibleSites = response.data.map((site: any) => {
+      return {
+        value: site.client_location_ID,
+        label: site.client_location_name,
+      };
+    });
+    setSitesDropdown(possibleSites);
+  };
+
   useEffect(() => {
     fetchUserSites(data.ID);
+    populateDropdowns();
   }, []);
 
   return (
@@ -40,8 +60,11 @@ const UserSites = () => {
       <Paper shadow="md" p="sm" my="md" sx={{ height: "auto" }}>
         <UserSitesTable
           name={nameProps}
+          userID={data.ID}
           data={userSites}
+          fetchUserSites={fetchUserSites}
           idColumn={"id"}
+          possibleSites={sitesDropdown}
           ignoreColumn={["client_location_ID", "id"]}
           columnHeadings={["Sites", "Action"]}
         />
@@ -89,21 +112,20 @@ interface Props {
   idColumn: string;
   ignoreColumn?: Array<string>;
   columnHeadings?: Array<string>;
-  testLog?: (message: any) => void;
+  userID: number;
+  possibleSites: Array<{ value: string; label: string }>;
+  fetchUserSites: Function;
 }
-
-const possibleSites = [
-  "Nutri Asia Incorporated - Marilao Plant",
-  "Sterix Incorporated",
-  "Mead Johnson Nutrition Incorporated - Philippines",
-];
 
 const UserSitesTable = ({
   name,
   data,
   description,
   idColumn,
+  userID,
   ignoreColumn,
+  possibleSites,
+  fetchUserSites,
   columnHeadings,
 }: Props) => {
   const { classes } = useStyles();
@@ -123,19 +145,32 @@ const UserSitesTable = ({
     }, 300);
   }, [data]);
 
+  const refetch = () => {
+    fetchUserSites(userID);
+    setPage(1);
+    reloadData(1);
+  };
+
+  const reloadData = (page: number) => {
+    setLoading(true);
+    const lowerBound = page * 10 - 10;
+    const upperBound = page * 10;
+    setDataRendered(data.slice(lowerBound, upperBound));
+    setLoading(false);
+  };
+
   // MODAL FUNCTIONS
   // @TODO: NO ROUTE YET FOR USER SITES (no way to know what are the sites and what are their IDs; their IDs are needed for the /api/admin/user/site-assignment/search and crud routes)
 
   const openAddRoleModal = () => {
     console.log(dataRendered);
-    let addModalRole = "";
+    let addModalRole: any = "";
     modals.openConfirmModal({
       title: "Add Site",
       children: (
-        <NativeSelect
-          onChange={(e) => {
-            addModalRole = e.currentTarget.value;
-            console.log(addModalRole);
+        <Select
+          onChange={(value) => {
+            addModalRole = value;
           }}
           data={possibleSites}
           label="Site"
@@ -144,14 +179,14 @@ const UserSitesTable = ({
       labels: { confirm: "Add Site", cancel: "Cancel" },
       onCancel: () => console.log("You Cancelled"),
       onConfirm: () => {
-        setDataRendered([
-          ...dataRendered,
-          {
-            siteName: addModalRole,
-            id: String(data.length + 1),
-          },
-        ]);
-        console.log("You confirmed");
+        addUserSite({ user_ID: userID, site: addModalRole });
+        refetch();
+        showNotification({
+          title: `Success!`,
+          message: `You have successfully added a new site`,
+          autoClose: 3000,
+          color: "green",
+        });
       },
     });
   };
@@ -162,10 +197,10 @@ const UserSitesTable = ({
       title: "Edit This User",
       children: (
         <form onSubmit={(event) => event.preventDefault()}>
-          <NativeSelect
-            placeholder={row.siteName}
-            onChange={(e) => {
-              editRoleName = e.currentTarget.value;
+          <Select
+            placeholder={row.site}
+            onChange={(value) => {
+              editRoleName = value;
             }}
             data={possibleSites}
             label="Site"
@@ -175,14 +210,11 @@ const UserSitesTable = ({
       labels: { confirm: "Submit", cancel: "Cancel" },
       onCancel: () => console.log("You Cancelled"),
       onConfirm: () => {
-        setDataRendered([
-          ...dataRendered.map((item: any) =>
-            item.id === row.id ? { ...item, siteName: editRoleName } : item
-          ),
-        ]);
+        editUserSite({ id: row.id, site: editRoleName });
+        refetch();
         showNotification({
           title: "Edit success!",
-          message: "This is a future functionality",
+          message: "You have successfully edited this site",
           autoClose: 3000,
           color: "green",
         });
@@ -197,24 +229,21 @@ const UserSitesTable = ({
       children: (
         <>
           <Text>
-            Are you sure you want to delete "{row.siteName}" role from {name}?
+            Are you sure you want to delete "{row.site}" role from {name}?
           </Text>
         </>
       ),
       labels: { confirm: "Delete", cancel: "Cancel" },
       onCancel: () => console.log("You Cancelled"),
       onConfirm: () => {
-        const newDataRendered = dataRendered.filter((element: any) => {
-          return element.id !== row.id;
-        });
-        setDataRendered(newDataRendered);
+        deleteUserSite({ id: row.id });
+        refetch();
         showNotification({
-          title: `You have successfully deleted ${row.siteName}`,
-          message: "This is a future functionality",
+          title: `Success!`,
+          message: `You have successfully deleted ${row.siteName}`,
           autoClose: 3000,
           color: "green",
         });
-        console.log("You tried to delete ", row.siteName);
       },
     });
   };

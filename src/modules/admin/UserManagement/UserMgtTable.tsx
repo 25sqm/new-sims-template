@@ -134,7 +134,17 @@ const UserMgtTable = ({
             name="inp_mobile"
             onChange={(e) => (newUserObject.inp_mobile = e.currentTarget.value)}
           />
-          <Button type="submit">Submit</Button>
+          <Group mt={15} noWrap grow>
+            <Button
+              variant="outline"
+              onClick={() => {
+                modals.closeModal(id);
+              }}
+            >
+              Cancel
+            </Button>
+            <Button type="submit">Submit</Button>
+          </Group>
         </form>
       ),
     });

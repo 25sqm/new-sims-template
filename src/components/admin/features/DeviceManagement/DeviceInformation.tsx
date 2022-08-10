@@ -72,7 +72,7 @@ const DeviceInformation = () => {
         mt={15}
         order={1}
       >
-        Device Information
+        Device Identification
       </Title>
       <Paper shadow="md" p="sm" my="md" sx={{ height: "auto" }}>
         <DeviceInfoTable
@@ -288,42 +288,77 @@ const DeviceInfoTable = ({
 
   const openAddDeviceModal = () => {
     console.log(dataRendered);
-    let addDeviceObject = {
-      device_type: null,
+    let addDeviceObject: any = {
+      device_type: "",
       device_code: "",
       device_site: "",
       device_area: "",
-      date_deployed: "",
-      time_deployed: "",
-      date_removed: "",
+      date_deployed: undefined,
+      time_deployed: new Date().toLocaleTimeString("en-US", {
+        hour12: false,
+        hour: "numeric",
+        minute: "numeric",
+      }),
+      date_removed: undefined,
       frequency: "",
     };
 
     let freqArray: string[] = [];
 
-    modals.openConfirmModal({
-      title: "Add Role",
+    const id = modals.openModal({
+      title: "Add Device",
       children: (
-        <>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            addDeviceObject.frequency = freqArray.join(", ");
+            addDeviceObject.date_deployed = addDeviceObject.date_deployed
+              .toISOString()
+              .split("T")[0];
+
+            addDeviceObject.date_removed = addDeviceObject.date_removed
+              .toISOString()
+              .split("T")[0];
+            console.table(addDeviceObject);
+            refetch();
+            showNotification({
+              title: `Success!`,
+              message: `You have successfully added a new role`,
+              autoClose: 3000,
+              color: "green",
+            });
+            modals.closeModal(id);
+          }}
+        >
           <Select
-            placeholder="Select Role"
-            onChange={(value) => console.log(value)}
+            placeholder="Select device type"
+            onChange={(value) => {
+              addDeviceObject.device_type = value || "";
+            }}
+            required
             data={[
               { value: "1", label: "Bird Scare" },
               { value: "2", label: "Bird Siren" },
               { value: "3", label: "Cage Trap (Big)" },
               { value: "4", label: "Cage Trap (Mini)" },
             ]}
-            label="Role"
+            label="Device Type"
           />
           <TextInput
             label="Device Code"
             placeholder="Your device's code"
             name="device_code"
+            required
+            onChange={(e) => {
+              addDeviceObject.device_code = e.target.value;
+            }}
           />
           <Select
-            placeholder="Select Site"
-            onChange={(value) => console.log(value)}
+            placeholder="Select site"
+            onChange={(value) => {
+              addDeviceObject.device_site = value || "";
+            }}
+            required
             data={[
               { value: "1", label: "Bird Scare" },
               { value: "2", label: "Bird Siren" },
@@ -334,7 +369,10 @@ const DeviceInfoTable = ({
           />
           <Select
             placeholder="Select Area"
-            onChange={(value) => console.log(value)}
+            onChange={(value) => {
+              addDeviceObject.device_area = value || "";
+            }}
+            required
             data={[
               { value: "1", label: "Bird Scare" },
               { value: "2", label: "Bird Siren" },
@@ -343,14 +381,31 @@ const DeviceInfoTable = ({
             ]}
             label="Area"
           />
-          <DatePicker placeholder="Pick Date" label="Date Depoloyed" required />
+          <DatePicker
+            placeholder="Pick Date"
+            label="Date Deployed"
+            required
+            onChange={(date) => {
+              addDeviceObject.date_deployed = date;
+            }}
+          />
           <TimeInput
             label="Time Deployed"
             format="12"
             defaultValue={new Date()}
             required
+            onChange={(time) => {
+              addDeviceObject.time_deployed = time.toTimeString();
+            }}
           />
-          <DatePicker placeholder="Pick Date" label="Date Removed" required />
+          <DatePicker
+            placeholder="Pick Date"
+            label="Date Removed"
+            required
+            onChange={(date) => {
+              addDeviceObject.date_removed = date;
+            }}
+          />
           <MultiSelect
             data={[
               { value: "M", label: "Monday" },
@@ -365,28 +420,14 @@ const DeviceInfoTable = ({
             }}
             placeholder="Pick days of frequency"
           />
-        </>
+          <Group grow mt={15} noWrap>
+            <Button variant="outline" onClick={() => modals.closeModal(id)}>
+              Cancel
+            </Button>
+            <Button type="submit">Add</Button>
+          </Group>
+        </form>
       ),
-      labels: { confirm: "Add Device", cancel: "Cancel" },
-      onCancel: () => console.log("You Cancelled"),
-      onConfirm: () => {
-        // setDataRendered([
-        //   ...dataRendered,
-        //   {
-        //     role_id: dataRendered.length + 1,
-        //     roles: addModalRole,
-        //     user_access_ID: dataRendered.length + 1,
-        //   },
-        // ]);
-        // addUserAccess(userID, addModalRole);
-        refetch();
-        showNotification({
-          title: `Success!`,
-          message: `You have successfully added a new role`,
-          autoClose: 3000,
-          color: "green",
-        });
-      },
     });
   };
 
@@ -397,9 +438,9 @@ const DeviceInfoTable = ({
         <Group align="end">
           {filterableHeadings ? { filters } : <></>}
           <Button onClick={openAddDeviceModal}>Add Device</Button>
-          <Button leftIcon={<FileExport size={20} />}>Export</Button>
+          {/* <Button leftIcon={<FileExport size={20} />}>Export</Button>
           <Button>Area Monitoring PDF</Button>
-          <Button>Area Monitoring Excel</Button>
+          <Button>Area Monitoring Excel</Button> */}
         </Group>
         <ScrollArea sx={{ height: "auto" }}>
           <Table

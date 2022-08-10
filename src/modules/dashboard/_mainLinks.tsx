@@ -236,7 +236,7 @@ const adminNav = [
     color: "blue",
     label: "Device Management",
     links: [
-      { label: "Device Information", link: "/device/information" },
+      { label: "Device Identification", link: "/device/information" },
       { label: "Device Monitoring", link: "/device/monitoring" },
       {
         label: "Realtime Device Monitoring",

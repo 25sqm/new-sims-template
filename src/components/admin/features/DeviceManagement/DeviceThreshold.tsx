@@ -45,10 +45,15 @@ const DeviceThreshold = () => {
 
   async function fetchDeviceThreshold() {
     const data = await getDeviceThreshold();
-    if (data === null || Array.isArray(data) === false) {
+    if (data === null) {
       showNotification({
         message: "Something went wrong. Please try again later.",
         color: "red",
+      });
+    } else if (Array.isArray(data) === false) {
+      showNotification({
+        message: "Success! But we couldn't find anything.",
+        color: "green",
       });
     } else {
       setData(data.data);

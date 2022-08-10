@@ -10,9 +10,12 @@ import {
   NativeSelect,
   ActionIcon,
   Button,
+  Select,
 } from "@mantine/core";
 import { Edit, TrashX } from "tabler-icons-react";
 import { Link } from "react-router-dom";
+import { useModals } from "@mantine/modals";
+import { DatePicker, TimeInput } from "@mantine/dates";
 
 const useStyles = createStyles((theme) => ({
   th: {
@@ -82,6 +85,7 @@ const ServiceOrdersTable = ({
   columnHeadings,
   filterableHeadings,
 }: Props) => {
+  const modals = useModals();
   const { classes } = useStyles();
   const [loading, setLoading] = useState<boolean>(true);
   const [activePage, setPage] = useState<number>(1);
@@ -202,6 +206,77 @@ const ServiceOrdersTable = ({
     setLoading(false);
   };
 
+  const openAddServiceOrder = () => {
+    const id = modals.openModal({
+      title: "Add Service Order",
+      children: (
+        <form
+          onSubmit={(e: any) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const inputObject = Object.fromEntries(formData);
+            console.table(inputObject);
+          }}
+        >
+          <Select
+            label="Service Type"
+            name="service_type"
+            required
+            placeholder="Select your service type"
+            data={[{ value: "1", label: "Fumigation" }]}
+          />
+          <Select
+            label="Site"
+            name="site"
+            required
+            placeholder="Select your site"
+            data={[{ value: "1", label: "Fumigation" }]}
+          />
+          <DatePicker
+            placeholder="Pick Date"
+            name="date"
+            label="Date"
+            required
+            onChange={(date) => {
+              console.log(date);
+            }}
+          />
+          <TimeInput
+            label="Time Start"
+            format="12"
+            name="time_start"
+            defaultValue={new Date()}
+            required
+            onChange={(time) => {
+              console.log(time);
+            }}
+          />
+          <TimeInput
+            label="Time End"
+            format="12"
+            name="time_end"
+            defaultValue={new Date()}
+            required
+            onChange={(time) => {
+              console.log(time);
+            }}
+          />
+          <Select
+            label="Staff"
+            name="staff"
+            required
+            placeholder="Select user"
+            data={[{ value: "1", label: "Fumigation" }]}
+          />
+          <Group noWrap grow mt={15}>
+            <Button variant="outline">Cancel</Button>
+            <Button type="submit">Submit</Button>
+          </Group>
+        </form>
+      ),
+    });
+  };
+
   // const changeFilter = (query: string) => {
   // 	setLoading(true);
   // 	setDataRendered(filterData(data, query).slice(0, 9));
@@ -222,7 +297,7 @@ const ServiceOrdersTable = ({
           {filterableHeadings ? (
             <Group align="end">
               {filters}
-              <Button>New Service Order</Button>
+              <Button onClick={openAddServiceOrder}>New Service Order</Button>
             </Group>
           ) : (
             <></>

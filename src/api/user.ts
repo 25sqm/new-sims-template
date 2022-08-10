@@ -376,6 +376,63 @@ export async function getUserSites(id: number) {
   }
 }
 
+export async function addUserSite({ user_ID, site }: any) {
+  try {
+    const csrf = await http.get("/sanctum/csrf-cookie");
+    const authToken = sessionStorage.getItem("token");
+    const headers = { headers: { Authorization: `Bearer ${authToken}` } };
+    const bodyContent = `enct=add&user_ID=${user_ID}&site=${site}`;
+
+    const response = await http.post(
+      `/api/admin/user/site-assignment/crud`,
+      bodyContent,
+      headers
+    );
+    return response;
+  } catch (err: any) {
+    console.error(err.response);
+    return null;
+  }
+}
+
+export async function editUserSite({ id, site }: any) {
+  try {
+    const csrf = await http.get("/sanctum/csrf-cookie");
+    const authToken = sessionStorage.getItem("token");
+    const headers = { headers: { Authorization: `Bearer ${authToken}` } };
+    const bodyContent = `enct=edit&id=${id}&site=${site}`;
+
+    const response = await http.post(
+      `/api/admin/user/site-assignment/crud`,
+      bodyContent,
+      headers
+    );
+    return response;
+  } catch (err: any) {
+    console.error(err.response);
+    return null;
+  }
+}
+
+export async function deleteUserSite({ id }: any) {
+  try {
+    const csrf = await http.get("/sanctum/csrf-cookie");
+    const authToken = sessionStorage.getItem("token");
+    const headers = { headers: { Authorization: `Bearer ${authToken}` } };
+    const bodyContent = `enct=delete&id=${id}`;
+
+    const response = await http.post(
+      `/api/admin/user/site-assignment/crud`,
+      bodyContent,
+      headers
+    );
+    return response;
+  } catch (err: any) {
+    console.error(err.response);
+    return null;
+  }
+}
+
 export async function getAssignedLocation() {
   try {
     const csrf = await http.get("/sanctum/csrf-cookie");

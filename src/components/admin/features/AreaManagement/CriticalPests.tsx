@@ -62,7 +62,6 @@ const CriticalPests = () => {
           data={data}
           fetchCriticalPests={fetchCriticalPests}
           idColumn={"id"}
-          description="Mock data for now"
           ignoreColumn={["actionbtn", "active", "client_location_ID"]}
           columnHeadings={[
             "ID",
