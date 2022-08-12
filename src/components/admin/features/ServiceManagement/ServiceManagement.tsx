@@ -18,6 +18,9 @@ import {
 } from "@mantine/core";
 import { serviceOrders } from "../../dummyData";
 import {
+  addServiceOrder,
+  deleteServiceOrder,
+  editServiceOrder,
   getServiceOrders,
   getServiceTypes,
   getSites,
@@ -250,14 +253,14 @@ const ServiceOrdersTable = ({
           <Group noWrap>
             <ActionIcon
               onClick={() => {
-                alert("Edit");
+                openEditServiceOrder({ row });
               }}
             >
               <Edit size={15} />
             </ActionIcon>
             <ActionIcon
               onClick={() => {
-                alert("Delete");
+                openDeleteModal({ row });
               }}
             >
               <TrashX size={15} />
@@ -314,15 +317,28 @@ const ServiceOrdersTable = ({
   };
 
   const openAddServiceOrder = () => {
+    let startTime = "";
+    let endTime = "";
     const id = modals.openModal({
       title: "Add Service Order",
       children: (
         <form
           onSubmit={(e: any) => {
             e.preventDefault();
+            console.log("Form Value: ", e);
             const formData = new FormData(e.target);
             const inputObject = Object.fromEntries(formData);
-            console.table(inputObject);
+            inputObject.inp_timestart = startTime;
+            inputObject.inp_timeend = endTime;
+            // console.table(inputObject);
+            addServiceOrder(inputObject);
+            refetch();
+            showNotification({
+              title: `Success!`,
+              message: `Service order added`,
+              autoClose: 3000,
+              color: "green",
+            });
             modals.closeModal(id);
           }}
         >
@@ -349,19 +365,30 @@ const ServiceOrdersTable = ({
           />
           <TimeInput
             label="Time Start"
-            format="24"
+            format="12"
             name="inp_timestart"
-            defaultValue={new Date()}
+            defaultValue={null}
             onChange={(e: any) => {
-              console.log(e);
+              startTime = e.toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: false,
+              });
             }}
             required
           />
           <TimeInput
             label="Time End"
-            format="24"
+            format="12"
             name="inp_timeend"
-            defaultValue={new Date()}
+            defaultValue={null}
+            onChange={(e: any) => {
+              endTime = e.toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: false,
+              });
+            }}
             required
           />
           <Select
@@ -388,6 +415,8 @@ const ServiceOrdersTable = ({
   };
 
   const openEditServiceOrder = ({ row }: any) => {
+    let startTime = row.inp_timestart;
+    let endTime = row.inp_timeend;
     const id = modals.openModal({
       title: "Edit Service Order",
       children: (
@@ -396,8 +425,18 @@ const ServiceOrdersTable = ({
             e.preventDefault();
             const formData = new FormData(e.target);
             const inputObject = Object.fromEntries(formData);
+            inputObject.inp_timestart = startTime;
+            inputObject.inp_timeend = endTime;
             inputObject.id = row.id;
-            console.table(inputObject);
+            editServiceOrder(inputObject);
+            refetch();
+            showNotification({
+              title: `Success!`,
+              message: `Service order edited`,
+              autoClose: 3000,
+              color: "green",
+            });
+            modals.closeModal(id);
           }}
         >
           <Select
@@ -405,17 +444,17 @@ const ServiceOrdersTable = ({
             name="service_type"
             required
             placeholder="Select your service type"
-            data={[{ value: "1", label: "Fumigation" }]}
+            data={serviceTypes}
           />
           <Select
             label="Site"
             name="site"
             required
             placeholder="Select your site"
-            data={[{ value: "1", label: "Fumigation" }]}
+            data={sites}
           />
           <DatePicker
-            placeholder="Pick Date"
+            defaultValue={new Date(row.inp_date)}
             name="date"
             label="Date"
             required
@@ -427,20 +466,30 @@ const ServiceOrdersTable = ({
             label="Time Start"
             format="12"
             name="time_start"
-            defaultValue={new Date()}
+            defaultValue={new Date(row.inp_timestart)}
+            placeholder={row.inp_timestart}
             required
             onChange={(time) => {
-              console.log(time);
+              startTime = time.toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: false,
+              });
             }}
           />
           <TimeInput
             label="Time End"
             format="12"
             name="time_end"
-            defaultValue={new Date()}
+            defaultValue={new Date(row.inp_timeend)}
+            placeholder={row.inp_timeend}
             required
             onChange={(time) => {
-              console.log(time);
+              endTime = time.toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: false,
+              });
             }}
           />
           <Select
@@ -448,14 +497,51 @@ const ServiceOrdersTable = ({
             name="staff"
             required
             placeholder="Select user"
-            data={[{ value: "1", label: "Fumigation" }]}
+            data={staff}
           />
           <Group noWrap grow mt={15}>
-            <Button variant="outline">Cancel</Button>
+            <Button
+              onClick={() => {
+                modals.closeModal(id);
+              }}
+              variant="outline"
+            >
+              Cancel
+            </Button>
             <Button type="submit">Submit</Button>
           </Group>
         </form>
       ),
+    });
+  };
+
+  const openDeleteModal = ({ row }: any) => {
+    modals.openConfirmModal({
+      title: "Delete Service Order",
+      children: (
+        <>
+          <Text>
+            Are you sure you want to delete "{row.service_type}" role from{" "}
+            {row.location}?
+          </Text>
+        </>
+      ),
+      labels: { confirm: "Delete", cancel: "Cancel" },
+      onCancel: () => console.log("You Cancelled"),
+      onConfirm: () => {
+        //  delete from dataRendered
+        setDataRendered(
+          dataRendered.filter((item: any) => item.role_id !== row.id)
+        );
+        deleteServiceOrder(row.id);
+        refetch();
+        showNotification({
+          title: `Success!`,
+          message: "You have successfully deleted a service order",
+          autoClose: 3000,
+          color: "green",
+        });
+      },
     });
   };
 

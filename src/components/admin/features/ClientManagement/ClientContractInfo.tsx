@@ -294,7 +294,6 @@ const ClientsTable = ({
           autoClose: 3000,
           color: "green",
         });
-        console.log("You tried to delete ", row.roleName);
       },
     });
   };
