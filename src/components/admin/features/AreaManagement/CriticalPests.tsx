@@ -64,6 +64,7 @@ const CriticalPests = () => {
           idColumn={"id"}
           ignoreColumn={["actionbtn", "active", "client_location_ID"]}
           columnHeadings={[
+            "",
             "ID",
             "Pest",
             "Area",
@@ -267,9 +268,9 @@ const CriticalPestsTable = ({
           {filterableHeadings ? (
             <Group align="end">
               {filters}
-              <Button leftIcon={<FileExport size={20} />}>Export</Button>
+              {/* <Button leftIcon={<FileExport size={20} />}>Export</Button>
               <Button>Area Monitoring PDF</Button>
-              <Button>Area Monitoring Excel</Button>
+              <Button>Area Monitoring Excel</Button> */}
             </Group>
           ) : (
             <></>

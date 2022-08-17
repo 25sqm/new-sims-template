@@ -28,6 +28,7 @@ import {
   FileExport,
   Printer,
   Report,
+  Map,
   TrashX,
 } from "tabler-icons-react";
 import { getAreasInfo } from "../../../../api/areas";
@@ -76,7 +77,7 @@ const AreaInformationTable = () => {
           data={data}
           fetchAreaInfo={fetchAreaInfo}
           idColumn={"client"}
-          ignoreColumn={["actionbtn"]}
+          ignoreColumn={["actionbtn", "map"]}
           columnHeadings={[
             "Area Code",
             "Area",
@@ -89,9 +90,9 @@ const AreaInformationTable = () => {
             "Perimeter",
             "Volume",
             "Custom Volume",
-            "Map",
             "SRA",
             "TAM",
+            "Map",
             "Action",
           ]}
           filterableHeadings={["client"]}
@@ -215,6 +216,18 @@ const InformationTable = ({
             );
           })}
         <td>
+          <Tooltip label="View Area Map">
+            <ActionIcon
+              onClick={() => {
+                openImgModal(row.map);
+              }}
+              size={25}
+            >
+              <Map size={15} />
+            </ActionIcon>
+          </Tooltip>
+        </td>
+        <td>
           <Group noWrap>
             <Tooltip label="Edit">
               <ActionIcon size={25}>
@@ -280,6 +293,26 @@ const InformationTable = ({
     const upperBound = page * 10;
     setDataRendered(data.slice(lowerBound, upperBound));
     setLoading(false);
+  };
+
+  const openImgModal = (image: any) => {
+    const id = modals.openModal({
+      title: "Map",
+      children: (
+        <>
+          <div dangerouslySetInnerHTML={{ __html: image }}></div>
+          <Button
+            sx={{ float: "right" }}
+            variant="outline"
+            onClick={() => {
+              modals.closeModal(id);
+            }}
+          >
+            Close
+          </Button>
+        </>
+      ),
+    });
   };
 
   // const changeFilter = (query: string) => {

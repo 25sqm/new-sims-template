@@ -287,7 +287,150 @@ const DeviceInfoTable = ({
   // };
 
   const openAddDeviceModal = () => {
-    console.log(dataRendered);
+    let addDeviceObject: any = {
+      device_type: "",
+      device_code: "",
+      device_site: "",
+      device_area: "",
+      date_deployed: undefined,
+      time_deployed: new Date().toLocaleTimeString("en-US", {
+        hour12: false,
+        hour: "numeric",
+        minute: "numeric",
+      }),
+      date_removed: undefined,
+      frequency: "",
+    };
+
+    let freqArray: string[] = [];
+
+    const id = modals.openModal({
+      title: "Add Device",
+      children: (
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            addDeviceObject.frequency = freqArray.join(", ");
+            addDeviceObject.date_deployed = addDeviceObject.date_deployed
+              .toISOString()
+              .split("T")[0];
+
+            addDeviceObject.date_removed = addDeviceObject.date_removed
+              .toISOString()
+              .split("T")[0];
+            console.table(addDeviceObject);
+            refetch();
+            showNotification({
+              title: `Success!`,
+              message: `You have successfully added a new role`,
+              autoClose: 3000,
+              color: "green",
+            });
+            modals.closeModal(id);
+          }}
+        >
+          <Select
+            placeholder="Select device type"
+            onChange={(value) => {
+              addDeviceObject.device_type = value || "";
+            }}
+            required
+            data={[
+              { value: "1", label: "Bird Scare" },
+              { value: "2", label: "Bird Siren" },
+              { value: "3", label: "Cage Trap (Big)" },
+              { value: "4", label: "Cage Trap (Mini)" },
+            ]}
+            label="Device Type"
+          />
+          <TextInput
+            label="Device Code"
+            placeholder="Your device's code"
+            name="device_code"
+            required
+            onChange={(e) => {
+              addDeviceObject.device_code = e.target.value;
+            }}
+          />
+          <Select
+            placeholder="Select site"
+            onChange={(value) => {
+              addDeviceObject.device_site = value || "";
+            }}
+            required
+            data={[
+              { value: "1", label: "Bird Scare" },
+              { value: "2", label: "Bird Siren" },
+              { value: "3", label: "Cage Trap (Big)" },
+              { value: "4", label: "Cage Trap (Mini)" },
+            ]}
+            label="Site"
+          />
+          <Select
+            placeholder="Select Area"
+            onChange={(value) => {
+              addDeviceObject.device_area = value || "";
+            }}
+            required
+            data={[
+              { value: "1", label: "Bird Scare" },
+              { value: "2", label: "Bird Siren" },
+              { value: "3", label: "Cage Trap (Big)" },
+              { value: "4", label: "Cage Trap (Mini)" },
+            ]}
+            label="Area"
+          />
+          <DatePicker
+            placeholder="Pick Date"
+            label="Date Deployed"
+            required
+            onChange={(date) => {
+              addDeviceObject.date_deployed = date;
+            }}
+          />
+          <TimeInput
+            label="Time Deployed"
+            format="12"
+            defaultValue={new Date()}
+            required
+            onChange={(time) => {
+              addDeviceObject.time_deployed = time.toTimeString();
+            }}
+          />
+          <DatePicker
+            placeholder="Pick Date"
+            label="Date Removed"
+            required
+            onChange={(date) => {
+              addDeviceObject.date_removed = date;
+            }}
+          />
+          <MultiSelect
+            data={[
+              { value: "M", label: "Monday" },
+              { value: "T", label: "Tuesday" },
+              { value: "W", label: "Wednesday" },
+              { value: "TH", label: "Thursday" },
+              { value: "F", label: "Friday" },
+            ]}
+            label="Frequency"
+            onChange={(value) => {
+              freqArray = value;
+            }}
+            placeholder="Pick days of frequency"
+          />
+          <Group grow mt={15} noWrap>
+            <Button variant="outline" onClick={() => modals.closeModal(id)}>
+              Cancel
+            </Button>
+            <Button type="submit">Add</Button>
+          </Group>
+        </form>
+      ),
+    });
+  };
+
+  const openEditDeviceModal = () => {
     let addDeviceObject: any = {
       device_type: "",
       device_code: "",
